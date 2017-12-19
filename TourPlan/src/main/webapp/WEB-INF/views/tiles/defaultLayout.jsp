@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <!DOCTYPE html>
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title><tiles:getAsString name="title" /></title>
@@ -15,7 +16,9 @@
 </head>
 <body>
 <!-- Navigation -->
+<<<<<<< HEAD
 <tiles:insertAttribute name="header" />
+=======
 <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark fixed-top">
 	<div class="container">
 		<a class="navbar-brand" href="../main/main.do">
@@ -51,6 +54,7 @@
 		</div>
 	</div>
 </nav>
+>>>>>>> branch 'master' of https://github.com/JeonHyeJu/TourPlan.git
 
 <!-- body -->
 <tiles:insertAttribute name="body" />
