@@ -22,15 +22,11 @@
     <div class="container">
 
       <!-- Page Heading/Breadcrumbs -->
-      <h1 class="mt-4 mb-3">Sidebar Page
-        <small>Subheading</small>
-      </h1>
+      <h1 class="mt-4 mb-3"></h1>
 
       <ol class="breadcrumb">
-        <li class="breadcrumb-item">
-          <a href="index.html">Home</a>
-        </li>
-        <li class="breadcrumb-item active">About</li>
+        <li class="breadcrumb-item"><a href="<c:url value='/'/>">Home</a></li>
+        <li class="breadcrumb-item">관리자</li>        
       </ol>
 
       <!-- Content Row -->
@@ -39,23 +35,28 @@
         <div class="col-lg-3 mb-4">
           <div class="list-group">
             <a href="" class="list-group-item">회원관리</a>
-            <a href="" class="list-group-item active">일정관리</a>
-            <a href="" class="list-group-item">명소관리</a>
+            <a href="<c:url value='/'/>admin/plan.do" class="list-group-item">일정관리</a>
+            <a href="<c:url value='/'/>admin/selectAll.do" class="list-group-item">명소관리</a>
             <a href="<c:url value='/'/>report/view" class="list-group-item">신고관리</a>
             <a href="" class="list-group-item">고객센터</a>
             <a href="" class="list-group-item">카테고리관리</a>
           </div>
         </div>
         <!-- Content Column -->
+        <div class="col-lg-9 mb-8">
         <tiles:insertAttribute name="body" />
+        </div>
       </div>
       <!-- /.row -->
 		
     </div>
     <!-- /.container -->
     
-   	<script>
-   		
+    <script>
+   		$('[href="'+document.location.pathname+'"]').addClass('active');
+   		var title = $('[href="'+document.location.pathname+'"]').text();
+   		$('.container > h1').append(title);
+   		$('.breadcrumb').append('<li class="breadcrumb-item active">'+title+'</li>');
    	</script>
 
 </body>
