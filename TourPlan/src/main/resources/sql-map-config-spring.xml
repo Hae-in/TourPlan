@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	
+	<!-- 오라클 컬럼이 first_name 를 VO firstName 처럼 카멜케이스로 변환 -->
+	<settings>
+		<setting name="mapUnderscoreToCamelCase" value="true" />
+	</settings>
+
+	<typeAliases>
+		<typeAlias type="com.yedam.tourplan.plan.service.PlanVO" alias="plan"></typeAlias>
+		<typeAlias type="com.yedam.tourplan.plan.service.PlanSearchVO" alias="planSearch"></typeAlias>
+		<typeAlias type="com.yedam.tourplan.place.service.PlaceVO" alias="place"></typeAlias>
+		<typeAlias type="com.yedam.tourplan.place.service.PlaceSearchVO" alias="placeSearch"></typeAlias>
+		<typeAlias type="com.yedam.tourplan.category.service.CategoryVO" alias="category"></typeAlias>
+		<typeAlias type="com.yedam.tourplan.files.service.FilesVO" alias="files"></typeAlias>
+		<typeAlias type="com.yedam.tourplan.plantable.service.PlanTableVO" alias="planTable"></typeAlias>
+		<typeAlias type="com.yedam.tourplan.post.service.PostVO" alias="post"></typeAlias>
+		<typeAlias type="com.yedam.tourplan.report.service.ReportVO" alias="report"></typeAlias>
+		<typeAlias type="com.yedam.tourplan.report.service.ReportSearchVO" alias="reportSearch"></typeAlias>
+	</typeAliases>
+
+</configuration>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="FilesDAO">
+	<insert id="insert" statementType="CALLABLE" parameterType="files">
+		{ 	call files_ins_proc(
+				#{tablename},
+				#{tablenum},
+				#{filename},
+				#{realfilename},
+				#{filesize},		
+				#{filenum, mode=OUT, jdbcType=VARCHAR, javaType=string},
+				#{out_msg, mode=OUT, jdbcType=VARCHAR, javaType=string}		
+			)
+		}	
+	</insert>
+	
+	<update id="update" parameterType="files">
+		update files set 
+			tablename = #{tablename},
+			tablenum = #{tablenum},
+			filename = #{filename},
+			realfilename = #{realfilename},
+			filesize = #{filesize}
+		where filenum = #{filenum}			
+	</update>	
+	
+	<delete id="delete">
+		update files set
+		state = '2'
+		where filenum = #{filenum}
+	</delete>
+	
+	<select id="select" resultType="files">
+		select *
+		from files
+		where filenum = #{filenum} 
+	</select>
+	
+	<select id="selectAll" parameterType="files" resultType="files">
+		select *
+		from files		
+		where state = '1'
+		<if test="tablename != null">
+			and tablename = #{tablename}
+		</if>		
+		<if test="tablenum != null">
+			and tablenum = #{tablenum}
+		</if>		
+	</select>
+</mapper>

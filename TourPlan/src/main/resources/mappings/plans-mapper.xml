@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="PlanDAO">
+
+	<!-- 플랜 전체조회 -->
+	<select id="selectAll" parameterType="planSearch" resultType="plan">
+		SELECT P.PLANNUM, P.ID "userid", P.PLANNAME, P.STATE, NVL(likecount,
+		'0') "likecount"
+		FROM PLAN P LEFT OUTER JOIN
+		(SELECT PLANNUM,
+		COUNT(PLANNUM) AS likecount FROM LIKEPLAN GROUP BY PLANNUM) L
+		ON
+		P.PLANNUM = L.PLANNUM
+		<where>
+			<if test="period1 != null and period1 != ''">
+				ARRIVALDATE-DEPARTUREDATE+1 BETWEEN #{period1} AND
+				#{period2}
+			</if>
+			<if test="city != null and city != ''">
+				P.PLANNUM IN (SELECT DISTINCT T.PLANNUM FROM PLANTABLE T
+				JOIN PLACE W
+				ON T.PLACENUM = W.PLACENUM
+				WHERE W.CITY LIKE '%대구%')
+			</if>
+		</where>
+		<choose>
+			<when test="plan_sort != null and plan_sort != ''">
+				ORDER BY likecount DESC
+			</when>
+			<otherwise>
+				ORDER BY writedate DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="select" parameterType="plan" resultType="plan">
+		<![CDATA[
+			SELECT *
+			FROM PLAN
+			WHERE PLANNUM = #{plannum}
+		]]>
+	</select>
+
+	<insert id="insert" parameterType="plan">
+		insert into plan
+		(plannum,planname, departuredate, arrivaldate, people, categorynum,
+		isopen,state)
+		values (seq_plan.nextVal, #{planname}, #{departuredate},
+		#{arrivaldate},
+		#{people}, #{categorynum}, #{isopen}, #{state},
+		#{writedate})
+	</insert>
+
+	<update id="update" parameterType="plan">
+		UPDATE PLAN
+		<set>
+			<if test="planname != null and planname != ''">
+				PLANNAME = #{planname},
+			</if>
+			<if test="departuredate != null and departuredate != ''">
+				DEPARTUREDATE = #{departuredate},
+			</if>
+			<if test="arrivaldate != null and arrivaldate != ''">
+				ARRIVALDATE = #{arrivaldate},
+			</if>
+			<if test="people != null and people != ''">
+				PEOPLE = #{people},
+			</if>
+			<if test="categorynum != null and categorynum != ''">
+				CATEGORYNUM = #{categorynum},
+			</if>
+			<if test="isopen != null and isopen != ''">
+				ISOPEN = #{isopen},
+			</if>
+			<if test="state != null and state != ''">
+				STATE = #{state}
+			</if>
+		</set>
+		WHERE PLANNUM = #{plannum}
+	</update>
+
+	<delete id="delete" parameterType="plan">
+		<![CDATA[
+		DELETE FROM PLAN
+		WHERE PLANNUM = #{plannum}
+		]]>
+	</delete>
+</mapper>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="PostDAO">
+
+	<select id="selectPost" parameterType="post" resultType="post">
+		<![CDATA[
+			SELECT *
+			FROM POST
+			WHERE PLANNUM = #{plannum}
+			ORDER BY DAY, TR
+		]]>
+	</select>
+
+	<select id="select" parameterType="planTable" resultType="planTable">
+		<![CDATA[
+			SELECT * 
+			FROM PLANTABLE
+			WHERE PLANNUM = #{plannum}
+			ORDER BY DAY, TR
+		]]>
+	</select>
+	
+	<insert id="insert" parameterType="post">
+		<![CDATA[
+			INSERT INTO POST (POSTNUM, PLANTABLENUM, PLANNUM, POST, DAY, TR)
+			VALUES (post_seq.nextVal, #{plantablenum}, #{plannum}, #{post}, #{day}, #{tr})
+		]]>
+	</insert>
+
+	<update id="update" parameterType="post">
+		UPDATE POST
+		<set>
+			<if test="post != null and post != ''">
+				POST = #{post}
+			</if>
+		</set>
+		WHERE POSTNUM = #{postnum}
+	</update>
+
+	<delete id="delete" parameterType="post">
+		<![CDATA[
+		DELETE FROM POST
+		WHERE POSTNUM = #{postnum}
+		]]>
+	</delete>
+</mapper>

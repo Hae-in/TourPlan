@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="PlaceDAO">
+	<insert id="insert" statementType="CALLABLE" parameterType="place">
+		{ 	call place_ins_proc(
+				#{lat},
+				#{lon},
+				#{addr},
+				#{city},
+				#{country},
+				#{placename},
+				#{content},
+				#{membernum},
+				#{categorynum},
+				#{placenum, mode=OUT, jdbcType=VARCHAR, javaType=string},
+				#{out_msg, mode=OUT, jdbcType=VARCHAR, javaType=string}
+			)
+		}
+	</insert>
+	
+	<update id="update" parameterType="place">
+		update place set
+			lat = #{lat},
+			lon = #{lon},
+			addr = #{addr},
+			city = #{city},
+			country = #{country},
+			placename = #{placename},
+			content = #{content},
+			categorynum = #{categorynum}
+		where placenum = #{placenum}   
+	</update>
+	
+	<delete id="delete">
+		delete from place 
+		where placenum = #{placenum}
+	</delete>
+	
+	<select id="select" resultType="place">
+		select *
+		 from place
+		  where placenum = #{placenum}
+	</select>	
+
+	<select id="selectAll" parameterType="placeSearch" resultType="place">
+		select *
+		 from place
+		<where> 
+		<if test="keyword != null">
+			placename like '%' || #{keyword} || '%'
+		</if>
+		</where>
+		order by placenum desc 			 
+	</select>
+</mapper>

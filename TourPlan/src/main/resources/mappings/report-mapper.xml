@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ReportDAO">
+
+	<select id="selectAll" parameterType="reportSearch" resultType="report">
+			SELECT R.REPORTNUM, R.PLACENUM, R.PLANNUM, M.ID "userid", R.REPORTDATE, R.STATE, R.REPORTCONTENT 
+			FROM REPORT R JOIN MEMBER M
+			ON R.MEMBERNUM = M.MEMBERNUM
+			<where>
+				<if test="place != null and place != ''">
+					R.PLACENUM IS NOT NULL
+				</if>
+				<if test="plan != null and plan != ''">
+					PLAN IS NOT NULL
+				</if>
+			</where>
+			ORDER BY REPORTNUM
+	</select>
+	
+	<insert id="insert" parameterType="report">
+		<![CDATA[
+			INSERT INTO REPORT (REPORTNUM, PLACENUM, MEMBERNUM, REPORTDATE, PLANNUM, STATE, REPORTCONTENT)
+			VALUES (rep_seq.nextVal, #{placenum}, #{membernum}, sysdate, #{plannum}, #{state}, #{reportcontent})
+		]]>
+	</insert>
+	
+	<update id="update" parameterType="report">
+		UPDATE REPORT
+		<set>
+			<if test="state != null and state != ''">
+				STATE = #{state}
+			</if>
+		</set>
+		WHERE REPORTNUM = #{reportnum}
+	</update>
+
+	<delete id="delete" parameterType="report">
+		<![CDATA[
+		DELETE FROM REPORT
+		WHERE REPORTNUM = #{reportnum}
+		]]>
+	</delete>
+
+</mapper>
