@@ -13,9 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.yedam.tourplan.plantable.service.PlanTableVO;
 
-/**
- * Handles requests for the application home page.
- */
 @Controller
 public class PlanTableController {
 	

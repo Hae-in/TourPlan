@@ -14,8 +14,7 @@
 <link href="../resources/thema/css/modern-business.css" rel="stylesheet">
 </head>
 <!-- Navigation -->
-<nav
-	class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark fixed-top">
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark fixed-top">
 	<div class="container">
 		<a class="navbar-brand" href="../main/main.do"><img src="../resources/images/white_logo.png"></a>
 		<button class="navbar-toggler navbar-toggler-right" type="button"
