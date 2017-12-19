@@ -2,15 +2,19 @@ package com.yedam.tourplan.member.web;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.yedam.tourplan.member.service.MemberVO;
+import com.yedam.tourplan.plan.service.PlanSearchVO;
 
+@Controller
+@RequestMapping("/member/")
 public class MemberController {
 	//로그인
-		@RequestMapping(value="/login.do", 
+		/*@RequestMapping(value="/login.do", 
 		                method = RequestMethod.POST )
 		public String login(
 				 MemberVO member,
@@ -63,5 +67,12 @@ public class MemberController {
 			return "redirect:/";
 		}	
 
+	}*/
+	
+	//뷰
+	@RequestMapping("view.do")
+	public String myPage() {
+		return "member/myPage/myPage";
 	}
+	
 }

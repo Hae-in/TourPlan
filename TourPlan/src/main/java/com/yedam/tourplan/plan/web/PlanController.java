@@ -31,6 +31,14 @@ public class PlanController {
 		return "plan/planList";
 	}
 	
+	@RequestMapping("selectLike.do")
+	public String selectLike(PlanSearchVO vo, Model model) {
+		//ID 세션에!!★★★
+		vo.setMembernum("1");
+		model.addAttribute("planList", planService.selectAll(vo));
+		return "member/myPage/likeplan";
+	}
+	
 	@RequestMapping("insert.do")
 	public String insert(PlanVO vo) {
 		planService.insert(vo);
