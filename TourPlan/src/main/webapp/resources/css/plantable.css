@@ -1,0 +1,319 @@
+@charset "UTF-8";
+
+body {
+	width: 90%;
+	height: 2000px;
+	margin: 10px auto 0px auto;
+}
+
+div {
+	/* border: 1px solid black; */
+}
+
+#divTop {
+	/* background-color: #578ca9; */
+	width: 100%;
+	height: 150px;
+	border: 1px solid black;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#divLeft {
+	/* background-color: #F6D155; */
+	float: left;
+	width: 25%;
+	height: 700px;
+	/* margin-left: 5px; */
+	position: fixed;
+	top: 250px;
+	border: 1px solid black;
+}
+
+#divRight {
+	/* background-color: #EDCDC2; */
+	float: right;
+	width: 70%;
+	height: 2000px;
+	border: 1px solid black;
+	margin-top: 20px;
+}
+
+#divTitle {
+	margin: 10px;
+}
+
+#planName {
+	width: 100%;
+	height: 50px;
+}
+
+#appendDivTitle {
+	width: 100%;
+	height: 70px;
+	/*border: 2px solid red;*/
+	margin-top: 10px;
+}
+
+#departureDate {
+	float: left;
+	margin: 5px;
+}
+
+#departureDate input {
+	height: 30px;
+}
+
+#day {
+	float: left;
+	margin: 5px;
+}
+
+#day input {
+	height: 30px;
+}
+
+#people {
+	float: left;
+	margin: 5px;
+}
+
+#people input {
+	height: 30px;
+}
+
+#category {
+	float: left;
+	margin: 5px;
+}
+
+#category input {
+	height: 34px;
+}
+
+#isopen {
+	float: left;
+	margin: 5px;
+}
+
+/*공개여부*/
+.switch {
+	position: relative;
+	display: inline-block;
+	width: 60px;
+	height: 32px;
+}
+
+.switch input {
+	display: none;
+}
+
+.slider {
+	position: absolute;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #ccc;
+	-webkit-transition: .4s;
+	transition: .4s;
+}
+
+.slider:before {
+	position: absolute;
+	content: "";
+	height: 24px;
+	width: 24px;
+	left: 4px;
+	bottom: 4px;
+	background-color: white;
+	-webkit-transition: .4s;
+	transition: .4s;
+}
+
+input:checked+.slider {
+	background-color: #2196F3;
+}
+
+input:focus+.slider {
+	box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked+.slider:before {
+	-webkit-transform: translateX(26px);
+	-ms-transform: translateX(26px);
+	transform: translateX(26px);
+}
+/* Rounded sliders */
+.slider.round {
+	border-radius: 34px;
+}
+
+.slider.round:before {
+	border-radius: 50%;
+}
+/*공개여부끝*/
+#leftSearchDiv {
+	padding: 20px;
+}
+
+#placeListDiv {
+	margin-top: 20px;
+}
+
+#searchRegion, #searchPlace {
+	width: 95%;
+	padding: 5px;
+	margin-top: 5px;
+}
+
+#selectCate {
+	width: 50%;
+	height: 25px;
+	margin-top: 5px;
+}
+
+#likePlace {
+	width: 43%;
+	height: 100%;
+	margin-top: 5px;
+	padding: 5px;
+}
+
+#placeList {
+	width: 90%;
+}
+/* tr {
+	margin: 2px;
+	height: 30px;
+} */
+#addNewPlace {
+	width: 100%;
+}
+
+/* Style the tab */
+.tab {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+    background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+    background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+}
+
+.tablinks {
+	width: 50%;
+}
+
+#map {
+	height: 100%;
+}
+
+#planList {
+	width: 100%;
+	height: 1000px;
+	margin-top: 10px;
+	border: 1px solid black;
+}
+/* 
+.prevnext {
+	width: 5%;
+	border: 1px solid black;
+}
+ */
+.planDay {
+	width: 30%;
+	height: 100%;
+	border: 1px solid yellowgreen;
+	float: left;
+	/* margin: 10px; */
+}
+
+#day1 {
+	margin-left: 10px;
+	/* margin-right: 20px; */ 
+}
+
+.cols {
+	width: 30%;
+	height: 1000px;
+	float: left;
+	border: 1px solid black;
+	margin: 10px 10px 10px auto;
+}
+
+.cols prev, .cols next {
+	width: 5%;
+}
+
+.optimizationBtn {
+	background-color: #609;
+	width: 40px;
+	height: 40px;
+	-webkit-border-radius:20px;
+	-moz-border-radius:20px;
+}
+
+#dropbtn {
+    background-color: #4CAF50;
+    color: white;
+    width: 40px;
+	height: 40px;
+	-webkit-border-radius:20px;
+	-moz-border-radius:20px;
+}
+
+.dropdownBtn {
+    position: relative;
+    display: inline-block;
+    /* margin-top: 20px; */
+}
+
+#dropdown-content {
+    display: none;
+/*     position: absolute; */
+	float: left;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    /* box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); */
+    z-index: 1;
+}
+
+#dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+#dropdown-content a:hover { background-color: #f1f1f1 }
+.dropdownBtn:hover #dropdown-content { display: block; }
+.dropdownBtn:hover #dropbtn { background-color: #3e8e41; }

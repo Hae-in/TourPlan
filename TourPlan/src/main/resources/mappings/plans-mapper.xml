@@ -6,13 +6,11 @@
 
 	<!-- 플랜 전체조회 -->
 	<select id="selectAll" parameterType="planSearch" resultType="plan">
-		SELECT P.PLANNUM, P.ID "userid", P.PLANNAME, P.STATE, NVL(likecount,
-		'0') "likecount"
+		SELECT P.PLANNUM, P.ID "userid", P.PLANNAME, P.STATE, NVL(likecount, '0') "likecount"
 		FROM PLAN P LEFT OUTER JOIN
 		(SELECT PLANNUM,
 		COUNT(PLANNUM) AS likecount FROM LIKEPLAN GROUP BY PLANNUM) L
-		ON
-		P.PLANNUM = L.PLANNUM
+		ON P.PLANNUM = L.PLANNUM
 		<where>
 			<if test="period1 != null and period1 != ''">
 				ARRIVALDATE-DEPARTUREDATE+1 BETWEEN #{period1} AND

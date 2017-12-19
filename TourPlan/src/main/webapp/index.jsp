@@ -5,7 +5,7 @@
 	//response.sendRedirect("plan/select.do?plannum=2");
 	//response.sendRedirect("plan/selectAll.do");
 	//response.sendRedirect("admin/plan.do");
-	response.sendRedirect("report/view");
+	//response.sendRedirect("report/view");
 	//response.sendRedirect("post/select.do?plannum=2");
-	//response.sendRedirect("main/main.do");
+	response.sendRedirect("main/main.do");
 %>
