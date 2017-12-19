@@ -14,7 +14,14 @@ public class PlaceVO {
 	private String city;
 	private String country;	
 	private String out_msg;
+	private String imagename;
 	
+	public String getImagename() {
+		return imagename;
+	}
+	public void setImagename(String imagename) {
+		this.imagename = imagename;
+	}
 	public String getOut_msg() {
 		return out_msg;
 	}

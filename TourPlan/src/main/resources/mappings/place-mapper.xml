@@ -39,19 +39,21 @@
 	</delete>
 	
 	<select id="select" resultType="place">
-		select *
-		 from place
-		  where placenum = #{placenum}
+		select place.*
+		, (select realfilename from files where tablenum = place.placenum and rownum=1) as imagename
+		from place
+		where placenum = #{placenum}
 	</select>	
 
 	<select id="selectAll" parameterType="placeSearch" resultType="place">
-		select *
-		 from place
+		select place.*		
+		, (select realfilename from files where tablenum = place.placenum and rownum=1) as imagename				
+		from place
 		<where> 
 		<if test="keyword != null">
 			placename like '%' || #{keyword} || '%'
 		</if>
 		</where>
-		order by placenum desc 			 
+		order by place.placenum desc 			 
 	</select>
 </mapper>

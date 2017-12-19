@@ -79,10 +79,7 @@ public class PlaceController {
 	@RequestMapping(value="insert.do", method=RequestMethod.GET)
 	public String insertForm() {
 		return "place/insert";
-	}	*/
-	
-	
-	
+	}	*/	
 	
 	//등록&수정 폼
 	@RequestMapping(value="form.do", method=RequestMethod.GET)
@@ -150,7 +147,29 @@ public class PlaceController {
 		
 		session.setAttribute("placenum", vo.getPlacenum());	
 		return "place/select";
-	}		
+	}	
+	
+	//삭제
+	@RequestMapping("delete.do")
+	public String delete(@RequestParam(value="num", required=false) String num) {		
+		//첨부파일 삭제		
+		FilesVO files = new FilesVO();		
+		files.setTablename("place");
+		files.setTablenum(num);				
+		List<FilesVO> files1 = filesService.selectAll(files);
+		if(files1 != null) {			
+			for(int i=0;i<files1.size();i++) {				
+				filesService.delete(files1.get(i));
+			}			
+		}		
+		
+		//삭제
+		PlaceVO place = new PlaceVO();
+		place.setPlacenum(num);
+		placeService.delete(place);		
+		
+		return "forward:selectAll.do";
+	}
 	
 	//단건조회
 	@RequestMapping("select.do")

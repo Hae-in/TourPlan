@@ -3,7 +3,7 @@
 	class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark fixed-top">
 	<div class="container">
 		<a class="navbar-brand" href="../main/main.do"><img
-			src="../images/white_logo.png">TourPlan</a>
+			src="../resources/images/white_logo.png" style="width:130px;"></a>
 		<button class="navbar-toggler navbar-toggler-right" type="button"
 			data-toggle="collapse" data-target="#navbarResponsive"
 			aria-controls="navbarResponsive" aria-expanded="false"
