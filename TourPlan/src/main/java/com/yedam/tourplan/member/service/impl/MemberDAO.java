@@ -18,7 +18,11 @@ public class MemberDAO {
 		
 		public List<MemberVO> selectAll(MemberSearchVO vo) {
 			return mybatis.selectList("MemberDAO.selectAll", vo);
-		}	
+		}
+		
+		public MemberVO select(MemberSearchVO vo) {
+			return mybatis.selectOne("MemberDAO.select", vo);
+		}
 		
 		public int insert(MemberVO vo) {
 			return mybatis.insert("MemberDAO.insert", vo);//insert는 mybatis에서 정해진 명령어
