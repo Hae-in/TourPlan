@@ -22,6 +22,11 @@
 				ON T.PLACENUM = W.PLACENUM
 				WHERE W.CITY LIKE '%대구%')
 			</if>
+			<!-- ★★★CITY랑 MEMBERNUM고쳐야 -->
+			<if test="membernum != null and membernum != ''">
+				AND P.PLANNUM IN (SELECT PLANNUM FROM LIKEPLAN
+				WHERE MEMBERNUM = 1)
+			</if>
 		</where>
 		<choose>
 			<when test="plan_sort != null and plan_sort != ''">
