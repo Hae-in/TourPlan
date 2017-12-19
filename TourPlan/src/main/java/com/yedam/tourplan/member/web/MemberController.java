@@ -1,20 +1,40 @@
 package com.yedam.tourplan.member.web;
 
-import javax.servlet.http.HttpSession;
+import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.yedam.tourplan.member.service.MemberSearchVO;
+import com.yedam.tourplan.member.service.MemberService;
 import com.yedam.tourplan.member.service.MemberVO;
-import com.yedam.tourplan.plan.service.PlanSearchVO;
-
 @Controller
 @RequestMapping("/member/")
+
 public class MemberController {
-	//로그인
-		/*@RequestMapping(value="/login.do", 
+	@Autowired
+	MemberService memberService;
+
+	@RequestMapping("selectAll.do")
+	public String selectAll(MemberSearchVO vo, Model model) {
+		model.addAttribute("list", memberService.selectAll(vo));
+		return "member/test";
+	}
+	@RequestMapping("insert.do")//jsp에서 폼에서 입력받은 것을 파라미터 형태로 전송, 이 파라미터가 MemberVO필드 명과 동일하므로 MemberVO에 담긴다(자동으로 변환)
+	public String insert(MemberVO vo, Model model) {
+		memberService.insert(vo); 
+		return "member/test";
+	}
+	
+	
+	
+	
+	
+	
+	/*//로그인
+		@RequestMapping(value="/login.do", 
 		                method = RequestMethod.POST )
 		public String login(
 				 MemberVO member,
@@ -68,11 +88,4 @@ public class MemberController {
 		}	
 
 	}*/
-	
-	//뷰
-	@RequestMapping("view.do")
-	public String myPage() {
-		return "member/myPage/myPage";
-	}
-	
 }

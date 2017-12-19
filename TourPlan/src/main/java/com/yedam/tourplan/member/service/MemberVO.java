@@ -3,12 +3,12 @@ package com.yedam.tourplan.member.service;
 	import org.springframework.web.multipart.MultipartFile;
 
 	public class MemberVO {
-		@Override
+		/*@Override
 		public String toString() {
-			return /*"MemberVO [member_img1=" + member_img1 + ", member_img2="
+			return "MemberVO [member_img1=" + member_img1 + ", member_img2="
 					+ member_img2 + ", member_img3=" + member_img3 + 
 					", member_id="
-					*/
+					
 					"MemberVO [memberNum=" + memberNum 
 					+ ", member_id=" + member_id 
 					+ ", member_password=" + member_password
@@ -16,50 +16,50 @@ package com.yedam.tourplan.member.service;
 					+ ", member_regDate=" + member_regDate 
 					+ ", member_state=" + member_state + "]";
 		}
-		/*private String member_img1;
+		private String member_img1;
 		private String member_img2;
 		private String member_img3;*/
-		private String memberNum;
-		public String getMemberNum() {
-			return memberNum;
+		private String membernum;
+		private String id;
+		private String password;
+		private String regdate;
+		private String state;
+		private String nickname;
+		public String getMembernum() {
+			return membernum;
 		}
-		public void setMemberNum(String memberNum) {
-			this.memberNum = memberNum;
+		public void setMembernum(String membernum) {
+			this.membernum = membernum;
 		}
-		public String getMember_id() {
-			return member_id;
+		public String getId() {
+			return id;
 		}
-		public void setMember_id(String member_id) {
-			this.member_id = member_id;
+		public void setId(String id) {
+			this.id = id;
 		}
-		public String getMember_password() {
-			return member_password;
+		public String getPassword() {
+			return password;
 		}
-		public void setMember_password(String member_password) {
-			this.member_password = member_password;
+		public void setPassword(String password) {
+			this.password = password;
 		}
-		public String getMember_nickname() {
-			return member_nickname;
+		public String getRegdate() {
+			return regdate;
 		}
-		public void setMember_nickname(String member_nickname) {
-			this.member_nickname = member_nickname;
+		public void setRegdate(String regdate) {
+			this.regdate = regdate;
 		}
-		public String getMember_regDate() {
-			return member_regDate;
+		public String getState() {
+			return state;
 		}
-		public void setMember_regDate(String member_regDate) {
-			this.member_regDate = member_regDate;
+		public void setState(String state) {
+			this.state = state;
 		}
-		public String getMember_state() {
-			return member_state;
+		public String getNickname() {
+			return nickname;
 		}
-		public void setMember_state(String member_state) {
-			this.member_state = member_state;
+		public void setNickname(String nickname) {
+			this.nickname = nickname;
 		}
-		private String member_id;
-		private String member_password;
-		private String member_nickname;
-		private String member_regDate;
-		private String member_state;
 		
 }

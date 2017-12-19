@@ -13,11 +13,18 @@
 	rel="stylesheet">
 <!-- Custom styles for this template -->
 <link href="../resources/thema/css/modern-business.css" rel="stylesheet">
+<<<<<<< HEAD
 <link rel="stylesheet"
 	href='<c:url value='/'/>resources/js/jquery-ui.min.css'>
 <script src='<c:url value='/'/>resources/js/jquery-3.2.1.min.js'></script>
 <script src='<c:url value='/'/>resources/js/jquery-ui.min.js'></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+=======
+<script src='<c:url value='/'/>resources/js/jquery-3.2.1.min.js'></script>
+<script src='<c:url value='/'/>resources/js/jquery-ui.min.js'></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+>>>>>>> branch 'master' of https://github.com/JeonHyeJu/TourPlan.git
 </head>
 <body>
 <!-- Navigation -->
