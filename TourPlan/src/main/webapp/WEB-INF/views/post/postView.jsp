@@ -9,6 +9,7 @@
 <title>Insert title here</title>
 <link rel="stylesheet" href='<c:url value='/'/>resources/js/jquery-ui.min.css'>
 <script src='<c:url value='/'/>resources/js/jquery-3.2.1.min.js'></script>
+<script src='<c:url value='/'/>resources/js/jquery.form.min.js'></script>
 <script src='<c:url value='/'/>resources/js/jquery-ui.min.js'></script>
 <style>
     label, input { display:block; }
@@ -18,10 +19,22 @@
     .validateTips { border: 1px solid transparent; padding: 0.3em; }
   </style>
 <script>
-$(function() {
+function onImage() {
+	$("#frm1").hide();
+	$("#frm2").show();
+}
+function onPost() {
+	$("#frm2").hide();
+	$("#frm1").show();
+}
 
+$(function() {
+	
+	$("#frm2").hide();
+	
 	var p_all;
 	var arr = new Array();
+	var post = "";
 	
 	//처음 Post목록 불러오는 ajax
 	var param = "plannum=2";	//★★★수정해야함
@@ -38,12 +51,27 @@ $(function() {
 		}
 	})	
 	
+	function firstFunc() {
+		if($("#frm1").css("display") != "none") {
+			postAdd();
+		} else {
+			imageAdd();
+		}
+	}
+	
 	//insert Ajax & 포스트 추가ui
 	function postAdd(){
-		var post = $("#post").val();						//포스트 insert후 추가 위한 변수
-		arr = p_all.split(",");								//클릭한 위치 알기 위한 버튼 id String split
-		var param = $("form").serialize();					//포스트 입력값 파라미터로 전환
+		var param = '';
+		if($("#frm1").css("display") != "none") {
+			post = $("#post").val();						//포스트 insert후 추가 위한 변수
+			$("#post").val("");	
+			param = $("#frm1").serialize();					//포스트 입력값 파라미터로 전환
+		} else {
+			console.log("image업로드시 frm1값 : " + $("#frm1").val());
+			param =	"post=" + post; 
+		}
 		param += "&plantablenum=" + arr[0] + "&plannum=" + arr[1] + "&day=" + arr[2] + "&tr=" + arr[3];
+		console.log(param);
 		dialog.dialog( "close" );
 		$.getJSON("../postAjax/insert", param, function(data,status){
 			if(status =="success" ) {
@@ -55,6 +83,26 @@ $(function() {
 		});
 	}
 
+	function imageAdd(){
+		console.log("이미지버튼 클릭");
+		$("#frm2").ajaxForm({
+			dataType:"json",
+			data : {plantablenum: arr[0]},
+			url:'../postAjax/insertImage.do',
+			success: function(result, textStatus){
+				if(result.code == 'success') {
+					alert("등록되었습니다.");
+					post = "<img src='<c:url value='/'/>resources/images/" + result.imageName + "' width='800px'>";
+					postAdd();
+				}
+			},
+			error: function(){
+				alert("파일업로드 중 오류가 발생하였습니다.");
+				return;
+			}
+		}).submit();
+	}
+	
 	// Modal
 	dialog = $( "#dialog-form" ).dialog({
 	      autoOpen: false,
@@ -62,26 +110,20 @@ $(function() {
 	      width: 350,
 	      modal: true,
 	      buttons: {
-	        "저장": postAdd,
+	        "저장": firstFunc,
 	        "취소": function() {
 	          dialog.dialog( "close" );
 	        }
-	      },
-	      close: function() {
-	        form[ 0 ].reset();
 	      }
-	    });
-	 
-	    form = dialog.find( "form" ).on( "submit", function( event ) {
-	      event.preventDefault();
-	      postAdd();
 	    });
 	 
 	// Modal 띄우기 위한 버튼
 	$( ".postbtn" ).button().on( "click", function() {
 	   p_all = $(this).attr("id");
+	   arr = p_all.split(",");					//클릭한 위치 알기 위한 버튼 id String split
 	   dialog.dialog( "open" );
 	});
+	
 });
 </script>
 </head>
@@ -106,13 +148,21 @@ $(function() {
 
 <!-- Modal Start -->
 <div id="dialog-form" title="포스트 쓰기">
-  <p class="validateTips">내용을 입력하세요.</p>
+  <p class="validateTips"><span style="cursor: pointer;" onclick="onPost();">포스트</span> | <span style="cursor: pointer;" onclick="onImage();">이미지</span></p>
  
-  <form>
+  <form id="frm1">
     <fieldset>
       <label for="post">포스트 내용</label>
       <input type="text" name="post" id="post" value="" class="text ui-widget-content ui-corner-all">
       <!-- Allow form submission with keyboard without duplicating the dialog button -->
+      <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+    </fieldset>
+  </form>
+
+  <form id="frm2" method="post" enctype="multipart/form-data">
+    <fieldset>
+      <label for="uploadFile">이미지 업로드</label>
+      <input type="file" id="uploadFile" name="uploadFile"><br />
       <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
     </fieldset>
   </form>
