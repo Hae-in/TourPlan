@@ -1,4 +1,4 @@
-package com.yedam.tourplan.member.service.impl;
+package com.yedam.tourplan.member.service.impl;//실질적 기능
 
 import java.util.List;
 import java.util.Map;
@@ -6,98 +6,31 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.yedam.tourplan.member.MemberMapper;
+import com.yedam.tourplan.member.service.MemberSearchVO;
 import com.yedam.tourplan.member.service.MemberService;
 import com.yedam.tourplan.member.service.MemberVO;
 
 
-//@Service("memberService") 
+@Service 
+
 public class MemberServiceImpl implements MemberService{
-	
-	
-	//DAO를 호출하는 부분
+
 	@Autowired
-	private MemberMapper MemberDAO;
-
+	MemberDAO memberDAO;
 	@Override
-	public void insertMember(MemberVO vo) {
-		MemberDAO.insertMember(vo);
+	public List<MemberVO> selectAll(MemberSearchVO vo) {
+		return memberDAO.selectAll(vo);
 	}
-
 	@Override
-	public void updateMember(MemberVO vo) {
-		MemberDAO.updateMember(vo);
-	}
-
-	@Override
-	public void deleteMember(MemberVO vo) {
-		MemberDAO.deleteMember(vo);
-	}
-
-	@Override
-	public MemberVO getMember(MemberVO vo) {
-		return MemberDAO.getMember(vo);
-	}
-
-	@Override 
-	public List<Map<String, Object>> getMemberList() {
-		return MemberDAO.getMemberList();
+	public boolean insert(MemberVO vo) {
+		int r=memberDAO.insert(vo);
+		if(r>0) {
+			return true;//성공
+		}
+		else {
+			return false;
+		}
 	}
 	
-	@Override
-	public List<Map<String, Object>> getNewMemberList() {
-		return MemberDAO.getNewMemberList();
-	}
-	
-	@Override
-	public List<Map<String, Object>> getBestMemberList(MemberVO vo) {
-		return MemberDAO.getBestMemberList(vo);
-	}
-	
-
-	@Override
-	public List<MemberVO> getMemberListVO(MemberVO vo) {
-		return MemberDAO.getMemberListVO(vo);
-	}
-
-	@Override
-	public MemberVO login(MemberVO vo) {
-		//1. id로 단건조회
-				MemberVO result = MemberDAO.getMember(vo);
-				//2. ID 체크하고 
-				if( result != null) {
-				//3. 패스워드 검사해서 일치하면 UsersVO
-					if( result.getMember_password().equals(vo.getMember_password()) ) {
-						return result;
-					}
-				}
-				//4. 아니면 null 리턴
-		return null;
-	}
-
-	@Override
-	public void updateLastConnection(MemberVO vo) {
-		MemberDAO.updateLastConnection(vo);
-	}
-
-	@Override
-	public void updateRejectMember(MemberVO vo) {
-		MemberDAO.updateRejectMember(vo);
-	}
-
-	@Override
-	public void memberProfileUpdate(MemberVO vo) {
-		MemberDAO.memberProfileUpdate(vo);
-	}
-
-	@Override
-	public List<Map<String,Object>> getMemberId() {
-		return MemberDAO.getMemberId();
-	}
-
-
-
-	
-	
-
 }
+// sp(view) controller가 호출되면 service 호출, service에서 dao호출하여 db랑 연동(mapper이용해서) 출력은 역순
