@@ -51,17 +51,12 @@
 		
     </div>
     <!-- /.container -->
-<<<<<<< HEAD
     
     <script>
    		$('[href="'+document.location.pathname+'"]').addClass('active');
    		var title = $('[href="'+document.location.pathname+'"]').text();
    		$('.container > h1').append(title);
    		$('.breadcrumb').append('<li class="breadcrumb-item active">'+title+'</li>');
-=======
-   	<script>
-   		
->>>>>>> branch 'master' of https://github.com/JeonHyeJu/TourPlan.git
    	</script>
 
 </body>

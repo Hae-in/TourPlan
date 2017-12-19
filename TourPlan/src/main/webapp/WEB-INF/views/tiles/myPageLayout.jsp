@@ -53,8 +53,11 @@
 		
     </div>
     <!-- /.container -->
-   	<script>
-   		
+      <script>
+   		$('[href="'+document.location.pathname+'"]').addClass('active');
+   		var title = $('[href="'+document.location.pathname+'"]').text();
+   		$('.container > h1').append(title);
+   		$('.breadcrumb').append('<li class="breadcrumb-item active">'+title+'</li>');
    	</script>
 
 </body>
