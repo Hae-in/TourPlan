@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>일정만들기 상세</title>
+<title>투어플랜(TourPlan)-일정만들기 상세</title>
 <link rel="stylesheet" type="text/css" href="../resources/css/plantable.css">
 <script src="../resources/js/jquery-3.2.1.min.js"></script>
 <script src="../resources/js/jquery-ui.js"></script>

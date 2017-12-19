@@ -34,5 +34,4 @@ public class PlanTableController {
 		
 		return "planTable/planTableView_dragdrop2";
 	}
-	
 }

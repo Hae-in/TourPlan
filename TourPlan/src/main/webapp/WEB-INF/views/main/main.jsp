@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>투어 플랜(Tour Plan)</title>
+    <title>투어플랜(TourPlan)</title>
     <!-- Bootstrap core CSS -->
     <link href="../resources/thema/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom styles for this template -->
