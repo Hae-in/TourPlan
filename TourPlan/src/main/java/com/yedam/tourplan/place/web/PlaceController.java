@@ -34,7 +34,7 @@ public class PlaceController {
 	@Autowired FilesService filesService;
 	
 	//등록처리
-	@RequestMapping(value="insert.do", method=RequestMethod.POST)
+/*	@RequestMapping(value="insert.do", method=RequestMethod.POST)
 	public String insert(PlaceVO vo
 			, HttpSession session
 			, HttpServletRequest request
@@ -73,17 +73,16 @@ public class PlaceController {
 
 		session.setAttribute("placenum", vo.getPlacenum());		
 		return "place/select";
-	}	
-	
-	
-	
-	
+	}	*/	
 	
 /*	//등록폼
 	@RequestMapping(value="insert.do", method=RequestMethod.GET)
 	public String insertForm() {
 		return "place/insert";
 	}	*/
+	
+	
+	
 	
 	//등록&수정 폼
 	@RequestMapping(value="form.do", method=RequestMethod.GET)
