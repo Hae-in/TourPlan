@@ -34,4 +34,9 @@ public class PlanTableController {
 		
 		return "planTable/planTableView_dragdrop3";
 	}
+	
+	@RequestMapping("/planTable/shareView.do")
+	public String shareView() {
+		return "plan/shareView";
+	}
 }
