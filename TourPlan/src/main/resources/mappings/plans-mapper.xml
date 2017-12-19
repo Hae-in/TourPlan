@@ -17,7 +17,7 @@
 				#{period2}
 			</if>
 			<if test="city != null and city != ''">
-				P.PLANNUM IN (SELECT DISTINCT T.PLANNUM FROM PLANTABLE T
+				AND P.PLANNUM IN (SELECT DISTINCT T.PLANNUM FROM PLANTABLE T
 				JOIN PLACE W
 				ON T.PLACENUM = W.PLACENUM
 				WHERE W.CITY LIKE '%대구%')
