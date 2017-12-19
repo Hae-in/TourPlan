@@ -13,7 +13,6 @@
     <link href="../resources/thema/css/modern-business.css" rel="stylesheet">
   </head>
   <body>
-    
     <header>
       <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
         <ol class="carousel-indicators">
