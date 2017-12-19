@@ -19,7 +19,7 @@ public class ReportController {
 	@Autowired
 	ReportService reportService;
 	
-	@RequestMapping("view")
+	@RequestMapping("view.do")
 	public String view() {
 		return "admin/reportView";
 	}
