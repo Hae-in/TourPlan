@@ -49,10 +49,10 @@
 		</div>
 	</div>
 </nav>
-
 <!-- body -->
+<div style="padding-left: 310px; padding-right: 10px; padding-top: 10px; padding-bottom: 10px;">	
 <tiles:insertAttribute name="body" />
-
+</div>
 </body>
 </html>
 
