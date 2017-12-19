@@ -16,15 +16,7 @@
 </head>
 <body>
 <!-- Navigation -->
-<<<<<<< HEAD
-<<<<<<< HEAD
 <tiles:insertAttribute name="header" />
-=======
-=======
-<<<<<<< HEAD
-<tiles:insertAttribute name="header" />
-=======
->>>>>>> branch 'master' of https://github.com/JeonHyeJu/TourPlan.git
 <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark fixed-top">
 	<div class="container">
 		<a class="navbar-brand" href="../main/main.do">
@@ -60,11 +52,6 @@
 		</div>
 	</div>
 </nav>
-<<<<<<< HEAD
->>>>>>> branch 'master' of https://github.com/JeonHyeJu/TourPlan.git
-=======
->>>>>>> branch 'master' of https://github.com/JeonHyeJu/TourPlan.git
->>>>>>> branch 'master' of https://github.com/JeonHyeJu/TourPlan.git
 
 <!-- body -->
 <tiles:insertAttribute name="body" />

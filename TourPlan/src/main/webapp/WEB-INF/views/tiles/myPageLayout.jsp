@@ -38,16 +38,16 @@
         <!-- Sidebar Column -->
         <div class="col-lg-3 mb-4">
           <div class="list-group">
-            <a href="" class="list-group-item">회원관리</a>
-            <a href="" class="list-group-item active">일정관리</a>
-            <a href="" class="list-group-item">명소관리</a>
+            <a href="" class="list-group-item">회원정보수정</a>
+            <a href="" class="list-group-item active">좋아요일정</a>
+            <a href="" class="list-group-item">좋아요명소</a>
             <a href="<c:url value='/'/>report/view" class="list-group-item">신고관리</a>
-            <a href="" class="list-group-item">고객센터</a>
-            <a href="" class="list-group-item">카테고리관리</a>
           </div>
         </div>
         <!-- Content Column -->
+        <div class="col-lg-9 mb-8">
         <tiles:insertAttribute name="body" />
+        </div>
       </div>
       <!-- /.row -->
 		
