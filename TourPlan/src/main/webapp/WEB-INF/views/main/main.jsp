@@ -23,26 +23,35 @@
         </ol>
         <div class="carousel-inner" role="listbox">
           <!-- Slide One - Set the background image for this slide in the line below -->
-          <div class="carousel-item active" style="background-image: url('http://placehold.it/1900x1080')">
+          <div class="carousel-item active" style="background-image: url('https://img-wishbeen.akamaized.net/plan/1414143429451_15471568586_bb8dd52b2a_k.jpg')">
             <div class="carousel-caption d-none d-md-block">
               <h3>First Slide</h3>
               <p>This is a description for the first slide.</p>
             </div>
           </div>
           <!-- Slide Two - Set the background image for this slide in the line below -->
-          <div class="carousel-item" style="background-image: url('http://placehold.it/1900x1080')">
+          <div class="carousel-item" style="background-image: url('https://img.travel.rakuten.co.jp/mytrip/content/gourmet/tabimeshi-hyogo/images/key.jpg')">
             <div class="carousel-caption d-none d-md-block">
               <h3>Second Slide</h3>
               <p>This is a description for the second slide.</p>
             </div>
           </div>
           <!-- Slide Three - Set the background image for this slide in the line below -->
-          <div class="carousel-item" style="background-image: url('http://placehold.it/1900x1080')">
+          <div class="carousel-item" style="background-image: url('https://i0.wp.com/cistoday.com/wp-content/uploads/2017/04/%EB%9F%AC%EC%8B%9C%EC%95%84-%EC%97%AC%ED%96%89-%EB%B0%8F-%EB%8B%A8%EA%B8%B0%EC%B2%B4%EB%A5%98-%EC%9C%A0%EC%9D%98-%EC%82%AC%ED%95%AD.jpg?resize=660%2C330')">
             <div class="carousel-caption d-none d-md-block">
               <h3>Third Slide</h3>
               <p>This is a description for the third slide.</p>
             </div>
           </div>
+          <!-- Slide Three - Set the background image for this slide in the line below -->
+          <!-- 
+          <div class="carousel-item" style="background-image: url('http://placehold.it/1900x1080')">
+            <div class="carousel-caption d-none d-md-block">
+              <h3>Third Slide</h3>
+              <p>This is a description for the third slide.</p>
+            </div>
+          </div> 
+          -->
         </div>
         <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
           <span class="carousel-control-prev-icon" aria-hidden="true"></span>

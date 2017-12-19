@@ -35,7 +35,7 @@ public class PlanTableController {
 		
 		model.addAttribute("serverTime", formattedDate );
 		
-		return "planTable/planTableView";
+		return "planTable/planTableView_dragdrop2";
 	}
 	
 }
