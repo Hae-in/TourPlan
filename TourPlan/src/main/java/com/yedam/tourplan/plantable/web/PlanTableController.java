@@ -4,6 +4,10 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -36,7 +40,12 @@ public class PlanTableController {
 	}
 	
 	@RequestMapping("/planTable/shareView.do")
-	public String shareView() {
+	public String shareView(HttpSession session
+			, HttpServletRequest request
+			, HttpServletResponse response) {
+		PlanTableVO vo = new PlanTableVO();
+		vo.setPlannum("1");
+		request.setAttribute("vo", vo);
 		return "plan/shareView";
 	}
 }

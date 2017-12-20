@@ -20,24 +20,32 @@
  * 1369번째줄★★★★★
  */
  var plannum = <%=vo.getPlannum()%>; 
- 
+	 
 	$(function(){
 		// Get the element with id="defaultOpen" and click on it
 		document.getElementById("defaultOpen").click();
 		
-		$.ajax({
-			url : "<%=request.getContextPath()%>/placeAjax/selectAll.do",
-			dataType : "json",
-			success : function(data) {
-				//받아온 json을 테이블에 출력
-				
-				for (i = 0; i < data.length; i++) {
-					console.log(data[i].imagename);
-					/* $("#tbody").append("<tr><td>"+data[i].imagename+"</td><td><div>"+data[i].placename+"</div><div>"+data[i].city+", "+data[i].country+"</div></td></tr>") */
-					$("#tbody").append("<tr><td><img width='100px;' src='../resources/images/"+(data[i].imagename == null ? "null.jpg" : data[i].imagename) +"'></td><td class='dark'><div id='place_" + data[i].placenum + "_"+i+"' class='redips-drag redips-clone'>"+data[i].placename+"<br>"+data[i].city+", " +data[i].country+"</div></td></tr>");
-				}
-			}
+		$("#place-item0").dblclick(function() {
+			//$("td").eq(1).empty();
 		});
+		
+		/* var td_arr = new Array();
+		var td_arr2 = new Array();
+		
+		$("#submit").on('click','',function(){
+			td_arr = $(".go");
+
+			for(i=0; i<td_arr.length; i++) {
+				 = $(td_arr[i]).has().attr("id");
+			}
+			var param = "id=" + $("#id").val();
+			$.getJSON("../memberAjax/select", param, function(data,status){
+				if(status =="success" ) {
+				} else {
+					alert(status);
+				}
+			});
+		}); */
 	});
 	
 	function openTab(evt, tabName) {
@@ -53,67 +61,56 @@
 		document.getElementById(tabName).style.display = "block";
 		evt.currentTarget.className += " active";
 	}
-	
-	function searchRegionFunction() {
-		var input, filter, table, tr, td, i;
-		input = document.getElementById("searchInput-region");
-		filter = input.value.toUpperCase();
-		table = document.getElementById("table1");
-		tr = table.getElementsByTagName("tr");
-		for (i = 0; i < tr.length; i++) {
-			td = tr[i].getElementsByTagName("td")[0];
-			if (td) {
-				if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
-					tr[i].style.display = "";
-				} else {
-					tr[i].style.display = "none";
-				}
-			}       
-		}
-	}
-	
 </script>
 <style>
+body {
+	margin-top: 20px; 
+}
 * {
     box-sizing: border-box;
+    color: black;
 }
 
-body {
-    margin: 0;
+div {
+	/* border: 0.1px solid black; */
 }
 
-/* Style the header */
+.sidenav {
+    height: 100%;
+    width: 300px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #ffffff;
+    overflow-x: hidden;
+    margin-top: 50px;
+}
+
+.sidenav a {
+    color: black;
+    padding: 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.sidenav a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
 .header {
     background-color: #f1f1f1;
     padding: 50px;
     /* text-align: center; */
-    /* margin-left: 300px; */
+    margin-left: 300px;
 }
 
-/* Container for flexboxes */
 .footer {
-    display: -webkit-flex;
-    display: flex;
-}
-
-/* Create three unequal columns that sits next to each other */
-.column {
-    padding: 10px;
-    /* height: 200px; /* Should be removed. Only for demonstration */ */
-}
-
-/* Left column */
-.column.divNav {
-   -webkit-flex: 1;
-   -ms-flex: 1;
-   flex: 1;
-}
-
-/* Middle column */
-.column.divMain {
-    -webkit-flex: 2;
-    -ms-flex: 4;
-    flex: 4;
+    background-color: #555;
+    padding: 50px;
+    text-align: center;
+    margin-left: 300px;
 }
 
 #planName {
@@ -231,7 +228,11 @@ input:checked+.slider:before {
 	height: 100%;
 }
 
-.redips-drag {	
+#table2 tr {
+	height: 100px;
+}
+
+.redips-drag {
 	cursor: move;
 	margin: auto;
 	z-index: 10;
@@ -240,8 +241,8 @@ input:checked+.slider:before {
 	font-size: 10pt;
 	opacity: 0.7;
 	filter: alpha(opacity=70);
-	width: 180px;	/* table1 td item size */
-	height: 50px;
+	width: 87px;
+	height: 20px;
 	line-height: 20px;
 	border: 1px solid #555;
 	border-radius: 3px;
@@ -249,16 +250,15 @@ input:checked+.slider:before {
 }
 
 div#redips-drag table {
-	background-color: #eee; /* table2 background-color */
+	background-color: #eee;
 	border-collapse: collapse;
 }
 
 div#redips-drag td {
 	border-style: solid;
 	border-width: 1px;
-	border-color: white;	/* 모든 table td border-color */
-	width: 200px;
-	height: 60px;
+	border-color: white;
+	height: 32px;
 	text-align: center;
 	font-size: 10pt;
 	padding: 2px;
@@ -272,10 +272,26 @@ div#redips-drag #table1 div {
 	margin-left: 5px;
 	float: left;
 }
+/* 
+div#redips-drag #table1 input {
+	float: right;
+	width: 15px;
+	height: 23px;
+	margin-right: 5px;
+	border-width: 1px;
+	border-radius: 3px;
+	visibility: hidden;
+} */
 
 .ar { background-color: #AAC8E2; }
 .bi { background-color: #E7D783; }
 .ch { background-color: #E99AE6; }
+
+/* trash cell */
+.redips-trash {
+	color: white;
+	background-color: #6386BD;
+}
 
 .dark{
 	color: #444;
@@ -287,117 +303,137 @@ div#redips-drag #table1 div {
 	text-align: right;
 }
 
-/* "Save" button */
-.button_container input{
-	background-color: #6A93D4;
-	color: white; 
-	border-width: 1px;
-	width: 40px;
-	padding: 0px;
-}
-
-#searchTable td{
-	width: 200px;
-}
-
-.searchInput {
-  background-image: url('/css/searchicon.png');
-  background-position: 10px 10px;
-  background-repeat: no-repeat;
-  width: 100%;
-  font-size: 16px;
-  padding: 12px 20px 12px 40px;
-  border: 1px solid #ddd;
-  margin-bottom: 12px;
-}
+		/* "Save" button */
+		.button_container input{
+			background-color: #6A93D4;
+			color: white; 
+			border-width: 1px;
+			width: 40px;
+			padding: 0px;
+		}
 </style>
 </head>
 <body>
-	<div class="header">
-		<input type="text" id="planName" placeholder="아까 적은 여행제목 (수정가능)"/>
-		<div class="divContents">
-			<div>
-				<table border="1">
-					<tr>
-						<td>출발일</td><td>일수</td><td>인원</td><td>여행테마</td><td>공개여부</td>
-					</tr>
-					<tr>
-						<td><input type="text"></td>
-						<td><input type="text"></td>
-						<td><input type="text"></td>
-						<td>
-							<input class="planCate" type="button" value="나홀로여행">
-							<input class="planCate" type="button" value="친구와여행">
-							<input class="planCate" type="button" value="가족여행"> 
-							<input class="planCate" type="button" value="단체여행"> 
-							<input class="planCate" type="button" value="커플여행"> 
-							<input class="planCate" type="button" value="기타">
-						</td>
-						<td>
-							<div id="isopen">
-								<label class="switch"> 
-									<input type="checkbox"><span class="slider round"></span>
-								</label>
-							</div>
-						</td>
-					</tr>
-				</table>
-			</div>
-		</div>
-	</div>
-	<div id="redips-drag">
-		<div class="footer">
-			<div class="column divNav" style="background-color:#aaa;">
+	<div id="main_container">
+		<div id="redips-drag">
+			<div class="sidenav">
+				<!-- 
+				<a href="#">Link</a>
+				<a href="#">Link</a>
+				<a href="#">Link</a>
+				-->
 				<div id="left">
-					<input type="text" class="searchInput" id="searchInput-region" onkeyup="searchRegionFunction()" placeholder="Search.." title="Type in a name">
-					<!-- <input type="text" class="searchInput" id="searchInput-place" onkeyup="searchPlaceFunction()" placeholder="Search for place.." title="Type in a name"> -->
-					<table id="table1" border="1">
-						<colgroup id="colgroup">
-							<col width="180px"/>
+					<table id="table1" border="1" style="width: 100%;">
+						<colgroup>
+							<col width="190"/>
 						</colgroup>
-						<tbody id="tbody">
-							
+						<tbody>
+							<tr>
+								<td class="dark">
+									<div id="place_1_" class="redips-drag redips-clone ar">그랜드캐니언</div>
+								</td>
+							</tr>
+	
+							<tr>
+								<td class="dark">
+									<div id="place_2_" class="redips-drag redips-clone bi">쭈꾸미집</div>
+								</td>
+							</tr>
+							<tr>
+								<td class="dark">
+									<div id="place_3_" class="redips-drag redips-clone ch">고척돔</div>
+								</td>
+							</tr>
+							<tr>
+								<td class="dark">
+									<div id="place_4_" class="redips-drag redips-clone ar">올림픽공원</div>
+								</td>
+							</tr>
+							<tr>
+								<td class="dark">
+									<div id="place_5_" class="redips-drag redips-clone ar">올림픽홀</div>
+								</td>
+							</tr>
+							<tr>
+								<td class="dark">
+									<div id="place_6_" class="redips-drag redips-clone ar">야구경기장</div>
+								</td>
+							</tr>
 						</tbody>
 					</table>
-					<button id="newPlaceBtn">새장소등록</button>
 				</div>
 			</div>
-			<div class="column divMain" style="background-color:#bbb;">
-				<div class="tab">
-					<button class="tablinks" onclick="openTab(event, 'storyTab')">스토리</button>
-					<button class="tablinks" onclick="openTab(event, 'planTab')" id="defaultOpen">지도/일정표</button>
+			
+			<div class="header">
+				<input type="text" id="planName" placeholder="아까 적은 여행제목 (수정가능)">
+				<div class="divContents">
+					<div>
+						<table border="1">
+							<tr>
+								<td>출발일</td><td>일수</td><td>인원</td><td>여행테마</td><td>공개여부</td>
+							</tr>
+							<tr>
+								<td><input type="text"></td>
+								<td><input type="text"></td>
+								<td><input type="text"></td>
+								<td><div id="message"></div>
+									<input class="planCate" type="button" value="나홀로여행">
+									<input class="planCate" type="button" value="친구와여행">
+									<input class="planCate" type="button" value="가족여행"> 
+									<input class="planCate" type="button" value="단체여행"> 
+									<input class="planCate" type="button" value="커플여행"> 
+									<input class="planCate" type="button" value="기타">
+								</td>
+								<td>
+									<div id="isopen">
+										<label class="switch"> 
+											<input type="checkbox"> <span class="slider round"></span>
+										</label>
+									</div>
+								</td>
+							</tr>
+						</table>
+					</div>
 				</div>
-				<div id="storyTab" class="tabcontent">
-					<h3>storyTab</h3>
-					<p>storyTab is the capital city of England.</p>
-				</div>
-				<div id="planTab" class="tabcontent">
-					<div id="googleMap" style="width: 100%; height: 400px;"></div>
-					<script>
-						function myMap() {
-							var mapProp = {
-								center : new google.maps.LatLng(51.508742, -0.120850),
-								zoom : 5,
-							};
-							var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
-						}
-					</script>
-					<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC6-5na3Y2gJSt31kHSeSWZqp3VM1hvgJg&callback=myMap"></script>
-					<div id="planList">
-						<div id="right">
-							<table id="table2" border="1">
-								<colgroup>
-									<col width="100"/>
-									<col width="100"/>
-									<col width="100"/>
-								</colgroup>
-								<tbody>
-									<tr>
-										<td class="redips-mark dark">Day1</td>
-										<td class="redips-mark dark">Day2</td>
-										<td class="redips-mark dark">Day3</td>
-									</tr>
-									<tr>
+			</div>
+			
+			<div class="footer">
+				<div id="divMain">
+					<div class="tab">
+						<button class="tablinks" onclick="openTab(event, 'storyTab')">스토리</button>
+						<button class="tablinks" onclick="openTab(event, 'planTab')" id="defaultOpen">지도/일정표</button>
+					</div>
+					<div id="storyTab" class="tabcontent">
+						<h3>storyTab</h3>
+						<p>storyTab is the capital city of England.</p>
+					</div>
+					<div id="planTab" class="tabcontent">
+						<div id="googleMap" style="width: 100%; height: 400px;"></div>
+						<script>
+							function myMap() {
+								var mapProp = {
+									center : new google.maps.LatLng(51.508742, -0.120850),
+									zoom : 5,
+								};
+								var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+							}
+						</script>
+						<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC6-5na3Y2gJSt31kHSeSWZqp3VM1hvgJg&callback=myMap"></script>
+						<div id="planList">
+							<div id="right">
+								<table id="table2" border="1">
+									<colgroup>
+										<col width="100"/>
+										<col width="100"/>
+										<col width="100"/>
+									</colgroup>
+									<tbody>
+										<tr>
+											<td class="redips-mark dark">Day1</td>
+											<td class="redips-mark dark">Day2</td>
+											<td class="redips-mark dark">Day3</td>
+										</tr>
+										<tr>
 											<td id="1a0"></td>
 											<td id="2a0"></td>
 											<td id="3a0"></td>
@@ -442,20 +478,27 @@ div#redips-drag #table1 div {
 											<td id="2a8"></td>
 											<td id="3a8"></td>
 										</tr>
-								</tbody>
-							</table>
+										<tr>
+											<td></td>
+											<td></td>
+											<td></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
 						</div>
 					</div>
-				</div>
-				<div id="divBtns">
-					<button type="submit">저장</button>
-					<button type="button">공유하기</button>
-					<button type="button">취소</button>
+					<div id="divBtns">
+						<button type="button" id="submit">저장</button>
+						<button type="button">공유하기</button>
+						<button type="button">취소</button>
+						<button type="button" onclick='send("insert", "", 1, 1, 30, 5, 0, 5, 4);'>테스트 day1, tr5번째넣기</button>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	
+
 <!-- WebSocket Start -->
 <script type="text/javascript">
 	var textarea = document.getElementById("textarea");
@@ -468,38 +511,20 @@ div#redips-drag #table1 div {
 	};
 	webSocket.onopen = function(event) {
 		var param = "plannum=1";
-		
-		$.ajax({
-			url : "../placeAjax/selectAll.do",
-			dataType : "json",
-			success : function(data_place) {
-				
-				$.getJSON("../planTableAjax/selectPT", param, function(data,status){
-					if(status =="success" ) {
-						if( data.length > 0) {
-							
-							for(i=0; i<data.length; i++) {
-								
-								for(j=0; j<data_place.length; j++) {
-									if(data[i].placenum == data_place[j].placenum) {
-										break;
-									}
-								}
-								
-								//var div = "<div>" + data[i].placenum + "</div>";
-								var div = "<div id='place_" + data[i].placenum + "_" + "' class='redips-drag redips-clone'>" + data_place[j].placename + "<br>" + data_place[j].city + ", " + data_place[j].country+ "</div>";
-								console.log("id값 : " + "#"  + data[i].day + "a" + data[i].tr);
-								 $(div).appendTo($("#" + data[i].day + "a" + data[i].tr));
-							}
-						}
-					} else {
-						alert(status);
+		$.getJSON("../planTableAjax/selectPT", param, function(data,status){
+			if(status =="success" ) {
+				if( data.length > 0) {
+					console.log("for문 시작");
+					for(i=0; i<data.length; i++) {
+						var div = "<div>" + data[i].placenum + "</div>";
+						console.log("id값 : " + "#"  + data[i].day + "a" + data[i].tr);
+						 $(div).appendTo($("#" + data[i].day + "a" + data[i].tr));
 					}
-				});
-				
+				}
+			} else {
+				alert(status);
 			}
-		});
-		
+		})
 		onOpen(event)
 	};
 	webSocket.onmessage = function(event) {
@@ -507,8 +532,7 @@ div#redips-drag #table1 div {
 		
 		switch (msg.type) {
 		case "insert":
-			var div = "<div>" + msg.placenum + "</div>"; //★★★밑에고쳐야함
-			//var div = "<div id='place_" + msg.placenum + "_" + "' class='redips-drag redips-clone'>" + data.placename+"<br>"+data[i].city+", " +data[i].country+ "</div>";
+			var div = "<div>" + msg.placenum + "</div>";
 			$(div).appendTo($("#"+ msg.day + "a" + msg.tr));
 			break;
 		case "delete":
@@ -549,6 +573,5 @@ div#redips-drag #table1 div {
 
 </script>
 <!-- WebSocket End -->
-	
 </body>
 </html>

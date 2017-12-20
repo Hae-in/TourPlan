@@ -14,7 +14,6 @@ Apr 16, 2017.
 /* enable strict mode */
 "use strict";
 
-
 /**
  * @name REDIPS
  * @description create REDIPS namespace (if is not already defined in another REDIPS package)
@@ -1367,12 +1366,20 @@ REDIPS.drag = (function () {
 		}
 		
 		var arr = new Array();
+		var arr2 = new Array();
 		
-		send("insert", "", 1, 1, 30, 5, 0, 5, 4);
 		
-		console.log(td.target.getAttribute("id"));
-		arr = obj.getAttribute("id").split("_");
-		console.log(arr);
+		var tr = td.target.getAttribute("id");
+		arr = tr.split("a");
+		var day = arr[0];
+		tr = arr[1];
+		
+		arr2 = obj.getAttribute("id").split("_");
+		var placenum = arr2[1];
+		
+		console.log("day : " + day + " tr : " + tr + " placenum : " + placenum);
+		
+		send("insert", "", plannum, day, 30, 5, 0, tr, placenum);
 	};
 
 
