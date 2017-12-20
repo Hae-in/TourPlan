@@ -11,6 +11,11 @@
 
 	<select id="selectAll" parameterType="category" resultType="category">
 		select *
-		 from category 			 
+		 from category 		
+		<where> 
+		<if test="categorygroup != null">
+			categorygroup= #{categorygroup}
+		</if>
+		</where>		 	 
 	</select>
 </mapper>

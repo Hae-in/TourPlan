@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yedam.tourplan.category.service.CategoryService;
@@ -20,7 +21,9 @@ public class CategoryAjaxController {
 	//목록
 	@RequestMapping("selectAll.do")
 	@ResponseBody
-	public List<CategoryVO> selectAll() {
-		return categoryService.selectAll(null);
+	public List<CategoryVO> selectAll(@RequestParam(value="group", required=false) String group) {		
+		CategoryVO category = new CategoryVO();
+		category.setCategorygroup(group);		
+		return categoryService.selectAll(category);
 	}
 }
