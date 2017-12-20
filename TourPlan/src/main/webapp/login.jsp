@@ -5,7 +5,6 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>로그인페이지</title>
-<%@ include file="../include/header.jsp" %>
 <script>
     $(document).ready(function(){
         $("#btnLogin").click(function(){
@@ -32,7 +31,6 @@
 </script>
 </head>
 <body>
-<%@ include file="../include/menu.jsp" %>
 <h2>로그인</h2>
     <form name="form1" method="post">
         <table border="1" width="400px">

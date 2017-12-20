@@ -32,6 +32,11 @@ public class PlanTableController {
 		
 		model.addAttribute("serverTime", formattedDate );
 		
-		return "planTable/planTableView_dragdrop2";
+		return "planTable/planTableView_dragdrop3";
+	}
+	
+	@RequestMapping("/planTable/shareView.do")
+	public String shareView() {
+		return "plan/shareView";
 	}
 }
