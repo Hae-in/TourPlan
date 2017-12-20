@@ -9,10 +9,17 @@
 	</select>
 	
 	<select id="select" parameterType="memberSearch" resultType="member">
-		select membernum from member
-		where id = #{id}
+		select membernum, id from member
+		<where>
+			<if test="id != null and id != ''">
+				id = #{id}
+			</if>
+			<if test="password != null and password != ''">
+				and password = #{password}
+			</if>
+		</where>
 	</select>
-
+	
 	<insert id="insert" parameterType="member" ><!-- memberVO형태로 받아서 DB에 입력한다 -->
 		insert into member(membernum,id,password,regdate,state,nickname)
 		values (member_seq.nextval,#{id},#{password},sysdate,#{state},#{nickname}) 			 

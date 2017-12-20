@@ -6,11 +6,6 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>일정 조회</title>
-<link rel="stylesheet"
-	href='<c:url value='/'/>resources/js/jquery-ui.min.css'>
-<link rel="stylesheet" href="/resources/demos/style.css">
-<script src='<c:url value='/'/>resources/js/jquery-3.2.1.min.js'></script>
-<script src='<c:url value='/'/>resources/js/jquery-ui.min.js'></script>
 <script>
 	$(function() {
 		$("#slider-range").slider({

@@ -17,19 +17,15 @@ public class MemberServiceImpl implements MemberService{
 
 	@Autowired
 	MemberDAO memberDAO;
+	
 	@Override
 	public List<MemberVO> selectAll(MemberSearchVO vo) {
 		return memberDAO.selectAll(vo);
 	}
 	
 	@Override
-	public boolean select(MemberSearchVO vo) {
-		MemberVO r_vo = memberDAO.select(vo);
-		if(r_vo != null) {
-			return true;
-		} else 
-			return false;
-		
+	public MemberVO select(MemberSearchVO vo) {
+		return memberDAO.select(vo);
 	}
 	
 	@Override
@@ -42,7 +38,6 @@ public class MemberServiceImpl implements MemberService{
 			return false;
 		}
 	}
-	
-	
+
 }
 // sp(view) controller가 호출되면 service 호출, service에서 dao호출하여 db랑 연동(mapper이용해서) 출력은 역순
