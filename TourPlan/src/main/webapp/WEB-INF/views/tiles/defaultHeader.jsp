@@ -14,7 +14,7 @@
 			<ul class="navbar-nav ml-auto">
 				<li class="nav-item"><a class="nav-link"
 					href="../plan/selectAll.do">여행일정</a></li>
-				<li class="nav-item"><a class="nav-link" href="services.html">명소</a>
+				<li class="nav-item"><a class="nav-link" href="../place/selectAll.do">명소</a>
 				</li>
 				<li class="nav-item"><a class="nav-link" href="contact.html">고객센터</a>
 				</li>
