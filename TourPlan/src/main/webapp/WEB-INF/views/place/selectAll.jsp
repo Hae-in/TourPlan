@@ -97,7 +97,6 @@
 				</div>
 			</div>	
 
-
 					목록<br>
 					<c:forEach items="${placeList}" var="i">
 						<c:if test="${not empty i.imagename}">
