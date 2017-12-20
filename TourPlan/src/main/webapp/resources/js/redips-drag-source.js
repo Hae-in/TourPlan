@@ -1368,6 +1368,8 @@ REDIPS.drag = (function () {
 		
 		var arr = new Array();
 		
+		send("insert", "", 1, 1, 30, 5, 0, 5, 4);
+		
 		console.log(td.target.getAttribute("id"));
 		arr = obj.getAttribute("id").split("_");
 		console.log(arr);

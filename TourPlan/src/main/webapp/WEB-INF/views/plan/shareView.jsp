@@ -428,49 +428,49 @@ div#redips-drag #table1 input {
 											<td class="redips-mark dark">Day3</td>
 										</tr>
 										<tr>
-											<td id="1,1" class="go"></td>
-											<td id="2,1" class="go"></td>
-											<td id="3,1" class="go"></td>
+											<td id="1a0"></td>
+											<td id="2a0"></td>
+											<td id="3a0"></td>
 										</tr>
 										<tr>
-											<td id="1,2" class="go"></td>
-											<td id="2,2" class="go"></td>
-											<td id="3,2" class="go"></td>
+											<td id="1a1"></td>
+											<td id="2a1"></td>
+											<td id="3a1"></td>
 										</tr>
 										<tr>
-											<td id="1,3" class="go"></td>
-											<td id="2,3" class="go"></td>
-											<td id="3,3" class="go"></td>
+											<td id="1a2"></td>
+											<td id="2a2"></td>
+											<td id="3a2"></td>
 										</tr>
 										<tr>
-											<td id="1,4" class="go"></td>
-											<td id="2,4" class="go"></td>
-											<td id="3,4" class="go"></td>
+											<td id="1a3"></td>
+											<td id="2a3"></td>
+											<td id="3a3"></td>
 										</tr>
 										<tr>
-											<td id="1,5" class="go"></td>
-											<td id="2,5" class="go"></td>
-											<td id="3,5" class="go"></td>
+											<td id="1a4"></td>
+											<td id="2a4"></td>
+											<td id="3a4"></td>
 										</tr>
 										<tr>
-											<td id="1,6" class="go"></td>
-											<td id="2,6" class="go"></td>
-											<td id="3,6" class="go"></td>
+											<td id="1a5"></td>
+											<td id="2a5"></td>
+											<td id="3a5"></td>
 										</tr>
 										<tr>
-											<td id="1,7" class="go"></td>
-											<td id="2,7" class="go"></td>
-											<td id="3,7" class="go"></td>
+											<td id="1a6"></td>
+											<td id="2a6"></td>
+											<td id="3a6"></td>
 										</tr>
 										<tr>
-											<td id="1,8" class="go"></td>
-											<td id="2,8" class="go"></td>
-											<td id="3,8" class="go"></td>
+											<td id="1a7"></td>
+											<td id="2a7"></td>
+											<td id="3a7"></td>
 										</tr>
 										<tr>
-											<td id="1,9" class="go"></td>
-											<td id="2,9" class="go"></td>
-											<td id="3,9" class="go"></td>
+											<td id="1a8"></td>
+											<td id="2a8"></td>
+											<td id="3a8"></td>
 										</tr>
 										<tr>
 											<td></td>
@@ -486,10 +486,86 @@ div#redips-drag #table1 input {
 						<button type="button" id="submit">저장</button>
 						<button type="button">공유하기</button>
 						<button type="button">취소</button>
+						<button type="button" onclick='send("insert", "", 1, 1, 30, 5, 0, 5, 4);'>테스트 day1, tr5번째넣기</button>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+
+<!-- WebSocket Start -->
+<script type="text/javascript">
+	var textarea = document.getElementById("textarea");
+	var xhttp = new XMLHttpRequest();
+	
+	var webSocket = new WebSocket(
+			'ws://localhost:80/tourplan/websocket/sharePlan.do');
+	webSocket.onerror = function(event) {
+		onError(event)
+	};
+	webSocket.onopen = function(event) {
+		var param = "plannum=1";
+		$.getJSON("../planTableAjax/selectPT", param, function(data,status){
+			if(status =="success" ) {
+				if( data.length > 0) {
+					console.log("for문 시작");
+					for(i=0; i<data.length; i++) {
+						var div = "<div>" + data[i].placenum + "</div>";
+						console.log("id값 : " + "#"  + data[i].day + "a" + data[i].tr);
+						 $(div).appendTo($("#" + data[i].day + "a" + data[i].tr));
+					}
+				}
+			} else {
+				alert(status);
+			}
+		})
+		onOpen(event)
+	};
+	webSocket.onmessage = function(event) {
+		var msg = JSON.parse(event.data);
+		
+		switch (msg.type) {
+		case "insert":
+			var div = "<div>" + msg.placenum + "</div>";
+			$(div).appendTo($("#"+ msg.day + "a" + msg.tr));
+			break;
+		case "delete":
+			$("#"+ msg.day + "a" + msg.tr).empty();
+			break;
+		}
+
+		//onMessage(event)
+	};
+	function onMessage(event) {
+		console.log("onMessage");
+	}
+	
+	function onOpen(event) {
+		console.log("연결 성공");
+	}
+	function onError(event) {
+		console.log(event);
+		alert(event.data);
+	}
+	function send(v_type, v_plantablenum, v_plannum, v_day, v_staytime, v_sortnum, v_fix, v_tr, v_placenum) {
+		console.log("send실행!");
+		// 서버로 전송할 데이터를 담을 msg 객체 생성.
+		var msg = {
+			type : v_type,
+			plantablenum : v_plantablenum,
+			plannum : v_plannum, 
+			day : v_day, 
+			staytime : v_staytime, 
+			sortnum : v_sortnum, 
+			fix : v_fix, 
+			tr : v_tr,
+			placenum : v_placenum
+		};
+		//  Send  the msg  object  as  a  JSON-formatted  string.
+		webSocket.send(JSON.stringify(msg));
+	}
+
+</script>
+<!-- WebSocket End -->
 </body>
 </html>

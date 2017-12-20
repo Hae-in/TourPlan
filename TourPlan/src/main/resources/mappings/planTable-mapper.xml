@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="PlanTableDAO">		
+
+	<insert id="insert" parameterType="planTable">
+		INSERT INTO PLANTABLE (PLANTABLENUM, PLANNUM, DAY, STAYTIME, SORTNUM, FIX, TR, PLACENUM)
+		VALUES (planTable_seq.nextVal, #{plannum}, #{day}, #{staytime}, #{sortnum}, #{fix}, #{tr}, #{placenum})
+	</insert>
+	
+	<delete id="delete" parameterType="planTable">
+		DELETE FROM PLANTABLE
+		WHERE PLANTABLENUM = #{planTablenum}
+	</delete>
+	
+	<select id="selectPT" parameterType="planTable" resultType="planTable">
+		SELECT * 
+		FROM PLANTABLE
+		WHERE PLANNUM = #{plannum}
+	</select>	
+	
+
+</mapper>
