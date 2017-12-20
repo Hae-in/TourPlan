@@ -25,7 +25,7 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public boolean select(MemberSearchVO vo) {
 		MemberVO r_vo = memberDAO.select(vo);
-		if(r_vo.getMembernum() != null) {
+		if(r_vo != null) {
 			return true;
 		} else 
 			return false;
