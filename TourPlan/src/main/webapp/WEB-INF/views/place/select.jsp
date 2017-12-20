@@ -18,10 +18,9 @@ ${place}<br>
 	${i.filesize}<br/>	
 </c:forEach>
 <br>
-.
+
 <a href="form.do?num=${place.placenum}">수정</a>
 <a href="delete.do?num=${place.placenum}">삭제</a>
-<a href="form.do">신규</a>
 <a href="selectAll.do">목록</a>
 </body>
 </html>

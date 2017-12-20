@@ -17,5 +17,6 @@
 	${i.country}
 	<br>
 </c:forEach>
+<a href="form.do">신규</a>
 </body>
 </html>
