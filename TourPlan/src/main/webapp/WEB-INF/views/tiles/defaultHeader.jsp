@@ -62,11 +62,19 @@
         </div>
         <div class="modal-body">
          <form id="frmModal">
-          id : <input type="text" name="id">
-          pw : <input type="text" name="password">
+          아이디 : <input type="text" name="id">
+          비밀번호 : <input type="password" name="password">
           <button type="button" id="log">로그인</button>
          </form>
+        
+         <form id="frmModal2">
+          	아이디 : <input type="text" name="id">
+          	비밀번호 : <input type="password" name="password">
+          	닉네임 : <input type="text" name="nickname">
+          <button type="button" id="reg">회원가입</button>
+         </form>
         </div>
+        
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
@@ -82,13 +90,29 @@
 <script>
 $("#log").click(function() {
 	console.log("함수실행");
-	var param = $("#frmModal").serialize();
-	$.getJSON("../memberAjax/select", param, function(data,status){
+	var param = $("#frmModal").serialize();//frmModal안의 값을 가져온다
+	$.getJSON("../memberAjax/select", param, function(data,status){ //form안 값 = param안의 값,  
 		if(status =="success" ) {
 			if(data == true) {
 				alert("로그인성공");
 			} else {
 				alert("아이디와 비밀번호를 확인해 주세요");
+			}
+		} else {
+			alert(status);
+		}
+	});
+});
+
+$("#reg").click(function() {
+	console.log("함수실행");
+	var param = $("#frmModal2").serialize();
+	$.getJSON("../memberAjax/insert", param, function(data,status){ //뷰페이지 상에서 제이슨 형태로 데이터를 가져온다
+		if(status =="success" ) {
+			if(data == true) {
+				alert("회원가입 완료");
+			} else {
+				alert("오류");
 			}
 		} else {
 			alert(status);
