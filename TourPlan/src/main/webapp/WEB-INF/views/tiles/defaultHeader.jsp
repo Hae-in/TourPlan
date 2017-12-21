@@ -151,7 +151,7 @@
 <script src='<c:url value='/'/>resources/js/jquery-3.2.1.min.js'></script>
 <script src='<c:url value='/'/>resources/js/jquery-ui.min.js'></script>
 <script src="../resources/thema/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
+  
 <script>
 $("#log").click(function() {
 	console.log("함수실행");
