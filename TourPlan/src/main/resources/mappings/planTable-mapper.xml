@@ -4,14 +4,23 @@
 
 <mapper namespace="PlanTableDAO">		
 
-	<insert id="insert" parameterType="planTable">
-		INSERT INTO PLANTABLE (PLANTABLENUM, PLANNUM, DAY, STAYTIME, SORTNUM, FIX, TR, PLACENUM)
-		VALUES (planTable_seq.nextVal, #{plannum}, #{day}, #{staytime}, #{sortnum}, #{fix}, #{tr}, #{placenum})
+	<insert id="insert" statementType="CALLABLE" parameterType="planTableSearch">
+		{ 	call plantable_ins_proc(
+				#{plannum},
+				#{day},
+				#{staytime},
+				#{sortnum},
+				#{fix},
+				#{tr},
+				#{placenum},
+				#{plantablenum, mode=OUT, jdbcType=VARCHAR, javaType=string}
+			)
+		}
 	</insert>
 	
-	<delete id="delete" parameterType="planTable">
+	<delete id="delete" parameterType="planTableSearch">
 		DELETE FROM PLANTABLE
-		WHERE PLANTABLENUM = #{planTablenum}
+		WHERE PLANTABLENUM = #{plantablenum}
 	</delete>
 	
 	<select id="selectPT" parameterType="planTable" resultType="planTable">

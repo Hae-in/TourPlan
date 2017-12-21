@@ -11,14 +11,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>투어플랜(TourPlan)-일정만들기 상세</title>
 <!-- <link rel="stylesheet" href="../resources/css/dragdrop.css" type="text/css" media="screen"/> -->
-<script src='<c:url value='/'/>resources/js/jquery-3.2.1.min.js'></script>
-<script src='<c:url value='/'/>resources/js/jquery-ui.min.js'></script>
-<script type="text/javascript" src="<c:url value='/'/>resources/js/drag.js"></script>
-<script type="text/javascript" src="<c:url value='/'/>resources/js/redips-drag-source.js??v=<%=System.currentTimeMillis()%>"></script>
+<script type="text/javascript" src="<c:url value='/'/>resources/js/header.js"></script>
+<script type="text/javascript" src="<c:url value='/'/>resources/js/redips-drag-min.js?v=<%=System.currentTimeMillis()%>"></script>
+<script type="text/javascript" src="<c:url value='/'/>resources/js/script.js?v=<%=System.currentTimeMillis()%>"></script>
 <script>
-/*
- * 1369번째줄★★★★★
- */
  var plannum = <%=vo.getPlannum()%>; 
  
 	$(function(){
@@ -32,9 +28,7 @@
 				//받아온 json을 테이블에 출력
 				
 				for (i = 0; i < data.length; i++) {
-					console.log(data[i].imagename);
-					/* $("#tbody").append("<tr><td>"+data[i].imagename+"</td><td><div>"+data[i].placename+"</div><div>"+data[i].city+", "+data[i].country+"</div></td></tr>") */
-					$("#tbody").append("<tr><td><img width='100px;' src='../resources/images/"+(data[i].imagename == null ? "null.jpg" : data[i].imagename) +"'></td><td class='dark'><div id='place_" + data[i].placenum + "_"+i+"' class='redips-drag redips-clone'>"+data[i].placename+"<br>"+data[i].city+", " +data[i].country+"</div></td></tr>");
+					$("#tbody").append("<tr><td><img width='100px;' src='../resources/images/"+(data[i].imagename == null ? "null.jpg" : data[i].imagename) +"'></td><td class='dark'><div id='place_" + data[i].placenum + "_" + "' class='redips-drag redips-clone'>"+data[i].placename+"<br>"+data[i].city+", " +data[i].country+"</div></td></tr>");
 				}
 			}
 		});
@@ -461,13 +455,14 @@ div#redips-drag #table1 div {
 	var textarea = document.getElementById("textarea");
 	var xhttp = new XMLHttpRequest();
 	
+	//★★★포트바꿔야!
 	var webSocket = new WebSocket(
 			'ws://localhost:80/tourplan/websocket/sharePlan.do');
 	webSocket.onerror = function(event) {
 		onError(event)
 	};
 	webSocket.onopen = function(event) {
-		var param = "plannum=1";
+		var param = "plannum=2";
 		
 		$.ajax({
 			url : "../placeAjax/selectAll.do",
@@ -487,7 +482,7 @@ div#redips-drag #table1 div {
 								}
 								
 								//var div = "<div>" + data[i].placenum + "</div>";
-								var div = "<div id='place_" + data[i].placenum + "_" + "' class='redips-drag redips-clone'>" + data_place[j].placename + "<br>" + data_place[j].city + ", " + data_place[j].country+ "</div>";
+								var div = "<div id='place_" + data[i].placenum + "_" + data[i].plantablenum + "' class='redips-drag'>" + data_place[j].placename + "<br>" + data_place[j].city + ", " + data_place[j].country+ "</div>";
 								console.log("id값 : " + "#"  + data[i].day + "a" + data[i].tr);
 								 $(div).appendTo($("#" + data[i].day + "a" + data[i].tr));
 							}
@@ -507,11 +502,15 @@ div#redips-drag #table1 div {
 		
 		switch (msg.type) {
 		case "insert":
-			var div = "<div>" + msg.placenum + "</div>"; //★★★밑에고쳐야함
-			//var div = "<div id='place_" + msg.placenum + "_" + "' class='redips-drag redips-clone'>" + data.placename+"<br>"+data[i].city+", " +data[i].country+ "</div>";
+			console.log("insert의 plantablenum : " + msg.plantablenum);
+			$("#"+ msg.day + "a" + msg.tr).empty();
+			var div = "<div id='place_" + msg.placenum + "_" + msg.plantablenum + "' class='redips-drag'>" + msg.child1 +"<br>"+ msg.child2 + "</div>";
+			//★★★add drag event해줘야..
+			REDIPS.drag.enableDrag(true, "place_" + msg.placenum + "_" + msg.plantablenum);
 			$(div).appendTo($("#"+ msg.day + "a" + msg.tr));
 			break;
 		case "delete":
+			console.log("delete의 plantablenum : " + msg.plantablenum);
 			$("#"+ msg.day + "a" + msg.tr).empty();
 			break;
 		}
@@ -529,8 +528,7 @@ div#redips-drag #table1 div {
 		console.log(event);
 		alert(event.data);
 	}
-	function send(v_type, v_plantablenum, v_plannum, v_day, v_staytime, v_sortnum, v_fix, v_tr, v_placenum) {
-		console.log("send실행!");
+	function send(v_type, v_plantablenum, v_plannum, v_day, v_staytime, v_sortnum, v_fix, v_tr, v_placenum, v_child1, v_child2) {
 		// 서버로 전송할 데이터를 담을 msg 객체 생성.
 		var msg = {
 			type : v_type,
@@ -541,7 +539,9 @@ div#redips-drag #table1 div {
 			sortnum : v_sortnum, 
 			fix : v_fix, 
 			tr : v_tr,
-			placenum : v_placenum
+			placenum : v_placenum,
+			child1 : v_child1,
+			child2 : v_child2
 		};
 		//  Send  the msg  object  as  a  JSON-formatted  string.
 		webSocket.send(JSON.stringify(msg));

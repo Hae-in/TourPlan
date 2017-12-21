@@ -6,6 +6,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.yedam.tourplan.plantable.service.PlanTableSearchVO;
 import com.yedam.tourplan.plantable.service.PlanTableVO;
 
 @Repository
@@ -14,11 +15,11 @@ public class PlanTableDAO {
 	@Autowired
 	private SqlSessionTemplate mybatis;
 	
-	public int insert(PlanTableVO vo) {
+	public int insert(PlanTableSearchVO vo) {
 		return mybatis.insert("PlanTableDAO.insert", vo);
 	}
 	
-	public int delete(PlanTableVO vo) {
+	public int delete(PlanTableSearchVO vo) {
 		return mybatis.delete("PlanTableDAO.delete", vo);
 	}
 	
