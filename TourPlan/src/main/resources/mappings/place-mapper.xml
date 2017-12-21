@@ -50,8 +50,11 @@
 		, (select realfilename from files where tablenum = place.placenum and state=1 and rownum=1) as imagename				
 		from place
 		<where> 
+		<if test="categorynum != null">
+			categorynum = #{categorynum}
+		</if>		
 		<if test="keyword != null">
-			placename like '%' || #{keyword} || '%'
+			and placename like '%' || #{keyword} || '%'
 		</if>
 		</where>
 		order by place.placenum desc 			 

@@ -50,7 +50,7 @@ ${place}
 	<table>		
 			<tr>
 				<th>명소이름	</th>
-				<td><input type="text" name="placename" value="${place.placename}"></td>
+				<td><input type="text" name="placename" id="placeName" value="${place.placename}"></td>
 				<th>분류
 				<td>
 					<select name="categorynum" id="categorynum">
@@ -60,7 +60,7 @@ ${place}
 			</tr>
 			<tr>	
 				<th>설명</th>
-				<td colspan="3"><input type="text" name="content" value="${place.content}"></td>
+				<td colspan="3"><input type="text" name="content" id="placeContent" value="${place.content}"></td>
 			</tr>
 			<tr>	
 				<th>
