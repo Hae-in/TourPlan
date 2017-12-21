@@ -57,21 +57,86 @@
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
+          <h4 class="modal-title">회원가입</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Modal Header</h4>
         </div>
         <div class="modal-body">
          <form id="frmModal">
-          아이디 : <input type="text" name="id">
-          비밀번호 : <input type="password" name="password">
-          <button type="button" id="log">로그인</button>
+         
+         
+         
+         <table border="1" width="400px">
+            <tr>
+                <td>아이디</td>
+                <td><input type="text" name="id"></td>
+            </tr>
+            <tr>
+                <td>비밀번호</td>
+                <td><input type="password" name="password"></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">
+                    <button type="button" id="log">로그인</button>
+                <c:if test="${msg == 'failure'}">
+                    <div style="color: red">
+                        아이디 또는 비밀번호가 일치하지 않습니다.
+                    </div>
+                </c:if>
+                <c:if test="${msg == 'logout'}">
+                    <div style="color: red">
+                        로그아웃되었습니다.
+                    </div>
+                </c:if>
+                </td>
+            </tr>
+        </table>
+         
+         <!-- 
+         
+          	아이디 : <input type="text" name="id"><br>
+         	비밀번호 : <input type="password" name="password"><br>
+          <button type="button" id="log">로그인</button> -->
          </form>
         
          <form id="frmModal2">
-          	아이디 : <input type="text" name="id">
-          	비밀번호 : <input type="password" name="password">
-          	닉네임 : <input type="text" name="nickname">
-          <button type="button" id="reg">회원가입</button>
+         
+         <table border="1" width="400px">
+            <tr>
+                <td>아이디</td>
+                <td><input type="text" name="id"></td>
+            </tr>
+            <tr>
+                <td>비밀번호</td>
+                <td><input type="password" name="password"></td>
+            </tr>
+            
+            <tr>
+                <td>닉네임</td>
+                <td><input type="text" name="nickname"></td>
+            </tr>
+            
+            <tr>
+                <td colspan="2" align="center">
+                    <button type="button" id="reg">회원가입</button>
+                <c:if test="${msg == 'failure'}">
+                    <div style="color: red">
+                        아이디 또는 비밀번호가 일치하지 않습니다.
+                    </div>
+                </c:if>
+                <c:if test="${msg == 'logout'}">
+                    <div style="color: red">
+                        로그아웃되었습니다.
+                    </div>
+                </c:if>
+                </td>
+            </tr>
+        </table>
+         
+         
+ <!--          	아이디 : <input type="text" name="id"><br>
+          	비밀번호 : <input type="password" name="password"><br>
+          	닉네임 : <input type="text" name="nickname"><br>
+          <button type="button" id="reg">회원가입</button> -->
          </form>
         </div>
         

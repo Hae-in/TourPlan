@@ -25,7 +25,7 @@
 		values (member_seq.nextval,#{id},#{password},sysdate,'1',#{nickname}) 			 
 	</insert>
 	
-		<update id="update" parameterType="member">
+	<update id="update" parameterType="member">
 		update member
 		<set>
 			<if test="password != null and password != ''">
@@ -44,8 +44,8 @@
 
 	<delete id="delete" parameterType="member">
 		<![CDATA[
-		DELETE FROM member
-		WHERE memberNum = #{membernum}
+		delete from member
+		where memberNum = #{membernum}
 		]]>
 	</delete>
 </mapper>

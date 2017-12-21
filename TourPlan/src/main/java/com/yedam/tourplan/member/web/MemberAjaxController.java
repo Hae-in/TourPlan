@@ -42,4 +42,15 @@ public class MemberAjaxController {
 		return memberService.insert(vo); 
 	}
 
+	@RequestMapping("update")//jsp에서 폼에서 입력받은 것을 파라미터 형태로 전송, 이 파라미터가 MemberVO필드 명과 동일하므로 MemberVO에 담긴다(자동으로 변환)
+	@ResponseBody//아작스로 받아온 것을 제이슨 형태로 변환해줌
+	public boolean update(MemberVO vo, Model model) {
+		return memberService.update(vo); 
+	}
+	
+	@RequestMapping("delete")//jsp에서 폼에서 입력받은 것을 파라미터 형태로 전송, 이 파라미터가 MemberVO필드 명과 동일하므로 MemberVO에 담긴다(자동으로 변환)
+	@ResponseBody//아작스로 받아온 것을 제이슨 형태로 변환해줌
+	public boolean delete(MemberVO vo, Model model) {
+		return memberService.delete(vo); 
+	}
 }
