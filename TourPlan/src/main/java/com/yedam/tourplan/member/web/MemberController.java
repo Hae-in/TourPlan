@@ -23,11 +23,7 @@ public class MemberController {
 		return "member/test";
 	}
 	
-	@RequestMapping("insert.do")//jsp에서 폼에서 입력받은 것을 파라미터 형태로 전송, 이 파라미터가 MemberVO필드 명과 동일하므로 MemberVO에 담긴다(자동으로 변환)
-	public String insert(MemberVO vo, Model model) {
-		memberService.insert(vo); 
-		return "member/test";
-	}
+	
 	
 	
 	

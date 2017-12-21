@@ -39,5 +39,21 @@ public class MemberServiceImpl implements MemberService{
 		}
 	}
 
+	@Override
+	public boolean update(MemberVO vo) {
+		int r=memberDAO.insert(vo);
+		if(r>0) {
+			return true;//성공
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean delete(MemberVO vo) {
+		return false;
+	}
+
 }
 // sp(view) controller가 호출되면 service 호출, service에서 dao호출하여 db랑 연동(mapper이용해서) 출력은 역순

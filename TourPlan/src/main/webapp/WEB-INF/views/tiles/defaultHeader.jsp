@@ -57,16 +57,89 @@
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
+          <h4 class="modal-title">회원가입</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Modal Header</h4>
         </div>
         <div class="modal-body">
          <form id="frmModal">
-          id : <input type="text" name="id">
-          pw : <input type="text" name="password">
-          <button type="button" id="log">로그인</button>
+         
+         
+         
+         <table border="1" width="400px">
+            <tr>
+                <td>아이디</td>
+                <td><input type="text" name="id"></td>
+            </tr>
+            <tr>
+                <td>비밀번호</td>
+                <td><input type="password" name="password"></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">
+                    <button type="button" id="log">로그인</button>
+                <c:if test="${msg == 'failure'}">
+                    <div style="color: red">
+                        아이디 또는 비밀번호가 일치하지 않습니다.
+                    </div>
+                </c:if>
+                <c:if test="${msg == 'logout'}">
+                    <div style="color: red">
+                        로그아웃되었습니다.
+                    </div>
+                </c:if>
+                </td>
+            </tr>
+        </table>
+         
+         <!-- 
+         
+          	아이디 : <input type="text" name="id"><br>
+         	비밀번호 : <input type="password" name="password"><br>
+          <button type="button" id="log">로그인</button> -->
+         </form>
+        
+         <form id="frmModal2">
+         
+         <table border="1" width="400px">
+            <tr>
+                <td>아이디</td>
+                <td><input type="text" name="id"></td>
+            </tr>
+            <tr>
+                <td>비밀번호</td>
+                <td><input type="password" name="password"></td>
+            </tr>
+            
+            <tr>
+                <td>닉네임</td>
+                <td><input type="text" name="nickname"></td>
+            </tr>
+            
+            <tr>
+                <td colspan="2" align="center">
+                    <button type="button" id="reg">회원가입</button>
+                <c:if test="${msg == 'failure'}">
+                    <div style="color: red">
+                        아이디 또는 비밀번호가 일치하지 않습니다.
+                    </div>
+                </c:if>
+                <c:if test="${msg == 'logout'}">
+                    <div style="color: red">
+                        로그아웃되었습니다.
+                    </div>
+                </c:if>
+                </td>
+            </tr>
+        </table>
+         
+         
+ <!--          	아이디 : <input type="text" name="id"><br>
+          	비밀번호 : <input type="password" name="password"><br>
+          	닉네임 : <input type="text" name="nickname"><br>
+          <button type="button" id="reg">회원가입</button> -->
          </form>
         </div>
+        
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
@@ -78,17 +151,33 @@
 <script src='<c:url value='/'/>resources/js/jquery-3.2.1.min.js'></script>
 <script src='<c:url value='/'/>resources/js/jquery-ui.min.js'></script>
 <script src="../resources/thema/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
+  
 <script>
 $("#log").click(function() {
 	console.log("함수실행");
-	var param = $("#frmModal").serialize();
-	$.getJSON("../memberAjax/select", param, function(data,status){
+	var param = $("#frmModal").serialize();//frmModal안의 값을 가져온다
+	$.getJSON("../memberAjax/select", param, function(data,status){ //form안 값 = param안의 값,  
 		if(status =="success" ) {
 			if(data == true) {
 				alert("로그인성공");
 			} else {
 				alert("아이디와 비밀번호를 확인해 주세요");
+			}
+		} else {
+			alert(status);
+		}
+	});
+});
+
+$("#reg").click(function() {
+	console.log("함수실행");
+	var param = $("#frmModal2").serialize();
+	$.getJSON("../memberAjax/insert", param, function(data,status){ //뷰페이지 상에서 제이슨 형태로 데이터를 가져온다
+		if(status =="success" ) {
+			if(data == true) {
+				alert("회원가입 완료");
+			} else {
+				alert("오류");
 			}
 		} else {
 			alert(status);

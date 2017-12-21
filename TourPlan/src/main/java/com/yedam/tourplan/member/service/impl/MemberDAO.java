@@ -28,5 +28,12 @@ public class MemberDAO {
 			return mybatis.insert("MemberDAO.insert", vo);//insert는 mybatis에서 정해진 명령어
 		}	
 		
+		public MemberVO update(MemberVO vo) {
+			return mybatis.selectOne("MemberDAO.update", vo);
+		}
+		
+		public MemberVO delete(MemberSearchVO vo) {
+			return mybatis.selectOne("MemberDAO.delete", vo);
+		}
 
 }

@@ -9,7 +9,7 @@
 	</select>
 	
 	<select id="select" parameterType="memberSearch" resultType="member">
-		select membernum, id from member
+		select membernum, id, nickname, state from member
 		<where>
 			<if test="id != null and id != ''">
 				id = #{id}
@@ -22,6 +22,30 @@
 	
 	<insert id="insert" parameterType="member" ><!-- memberVO형태로 받아서 DB에 입력한다 -->
 		insert into member(membernum,id,password,regdate,state,nickname)
-		values (member_seq.nextval,#{id},#{password},sysdate,#{state},#{nickname}) 			 
+		values (member_seq.nextval,#{id},#{password},sysdate,'1',#{nickname}) 			 
 	</insert>
+	
+	<update id="update" parameterType="member">
+		update member
+		<set>
+			<if test="password != null and password != ''">
+				password = #{password},
+			</if>
+			<if test="state != null and state != ''">
+				state = #{state},
+			</if>
+			<if test="nickname != null and nickname != ''">
+				nickname = #{nickname},
+			</if>
+			
+		</set>
+		where memberNum = #{membernum}
+	</update>
+
+	<delete id="delete" parameterType="member">
+		<![CDATA[
+		delete from member
+		where memberNum = #{membernum}
+		]]>
+	</delete>
 </mapper>

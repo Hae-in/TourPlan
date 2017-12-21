@@ -8,6 +8,8 @@ package com.yedam.tourplan.member.service;//제한
 		public List<MemberVO> selectAll(MemberSearchVO vo);
 		public boolean insert(MemberVO vo);
 		public MemberVO select(MemberSearchVO vo);
+		public boolean update(MemberVO vo);
+		public boolean delete(MemberVO vo);
 		
 		
 		/*public void seleceAll(MemberSearchVO vo);
