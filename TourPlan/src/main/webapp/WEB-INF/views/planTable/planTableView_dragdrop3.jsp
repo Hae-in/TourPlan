@@ -8,6 +8,8 @@
 <!-- <link rel="stylesheet" href="../resources/css/dragdrop.css" type="text/css" media="screen"/> -->
 <script type="text/javascript" src="../resources/js/redips-drag-min.js"></script>
 <script type="text/javascript" src="../resources/js/drag.js"></script>
+<script src='<c:url value='/'/>resources/js/jquery-3.2.1.min.js'></script>
+<script src='<c:url value='/'/>resources/js/jquery-ui.min.js'></script>
 <script>
 	$(function(){
 		// Get the element with id="defaultOpen" and click on it
@@ -22,10 +24,21 @@
 				for (i = 0; i < data.length; i++) {
 					console.log(data[i].imagename);
 					/* $("#tbody").append("<tr><td>"+data[i].imagename+"</td><td><div>"+data[i].placename+"</div><div>"+data[i].city+", "+data[i].country+"</div></td></tr>") */
-					$("#tbody").append("<tr><td><img width='100px;' src='../resources/images/"+(data[i].imagename == null ? "null.jpg" : data[i].imagename) +"'></td><td class='dark'><div id='place_" + data[i].placenum + "_"+i+"' class='redips-drag redips-clone'>"+data[i].placename+"<br>"+data[i].city+", " +data[i].country+"</div></td></tr>");
+					$("#tbody").append("<tr><td class='redips-mark lunch'><img width='100px;' height='65px;' src='../resources/images/"+(data[i].imagename == null ? "null.jpg" : data[i].imagename) +"'></td><td class='dark'><div id='place_" + data[i].placenum + "_"+i+"' class='redips-drag redips-clone'>"+data[i].placename+"<br>"+data[i].city+", " +data[i].country+"</div></td></tr>");
 				}
 			}
 		});
+		
+		/* 
+		$(".place-item").dblclick(function(){
+	        $(this).empty();
+	    });
+		 */
+		
+		$('#table2').find('div').each(function(i, e){
+			console.log($(this).text());
+		});
+		
 	});
 	
 	function openTab(evt, tabName) {
@@ -95,6 +108,9 @@ body {
    -webkit-flex: 1;
    -ms-flex: 1;
    flex: 1;
+   /* position: fixed;
+   left: 0px;
+   bottom: 0px; */
 }
 
 /* Middle column */
@@ -237,11 +253,11 @@ input:checked+.slider:before {
 }
 
 div#redips-drag table {
-	background-color: #eee; /* table2 background-color */
+	/* background-color: #eee; /* table2 background-color */ */
 	border-collapse: collapse;
 }
 
-div#redips-drag td {
+#table1 td, #table2 td {
 	border-style: solid;
 	border-width: 1px;
 	border-color: white;	/* 모든 table td border-color */
@@ -298,6 +314,16 @@ div#redips-drag #table1 div {
   border: 1px solid #ddd;
   margin-bottom: 12px;
 }
+
+#trashTb {
+	width: 100%;
+	height: 50px;
+	margin-bottom: 10px;
+	text-align: center;
+	background-color: #DC4C46;
+	color: #fff;
+}
+
 </style>
 </head>
 <body>
@@ -337,17 +363,23 @@ div#redips-drag #table1 div {
 		<div class="footer">
 			<div class="column divNav" style="background-color:#aaa;">
 				<div id="left">
-					<input type="text" class="searchInput" id="searchInput-region" onkeyup="searchRegionFunction()" placeholder="Search.." title="Type in a name">
-					<!-- <input type="text" class="searchInput" id="searchInput-place" onkeyup="searchPlaceFunction()" placeholder="Search for place.." title="Type in a name"> -->
-					<table id="table1" border="1">
-						<colgroup id="colgroup">
-							<col width="180px"/>
-						</colgroup>
-						<tbody id="tbody">
-							
-						</tbody>
-					</table>
-					<button id="newPlaceBtn">새장소등록</button>
+					<div id="innerLeft">
+						<input type="text" class="searchInput" id="searchInput-region" onkeyup="searchRegionFunction()" placeholder="Search.." title="Type in a name">
+						<!-- <input type="text" class="searchInput" id="searchInput-place" onkeyup="searchPlaceFunction()" placeholder="Search for place.." title="Type in a name"> -->
+						<!-- <div class="redips-trash" title="Trash">Trash</div> -->
+						<table id="trashTb">
+							<tr><td class="redips-trash" title="Trash" id="trashTD"><h3><strong>Trash</strong></h3></td></tr>
+						</table>
+						<table id="table1" border="1">
+							<colgroup id="colgroup">
+								<col width="180px"/>
+							</colgroup>
+							<tbody id="tbody">
+								
+							</tbody>
+						</table>
+						<button id="newPlaceBtn">새장소등록</button>
+					</div>
 				</div>
 			</div>
 			<div class="column divMain" style="background-color:#bbb;">
