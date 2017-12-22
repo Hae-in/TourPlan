@@ -44,7 +44,7 @@ public class PlanTableController {
 			, HttpServletRequest request
 			, HttpServletResponse response) {
 		PlanTableVO vo = new PlanTableVO();
-		vo.setPlannum("1");
+		vo.setPlannum("2");
 		request.setAttribute("vo", vo);
 		return "plan/shareView";
 	}

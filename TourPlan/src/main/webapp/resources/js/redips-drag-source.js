@@ -1364,22 +1364,6 @@ REDIPS.drag = (function () {
 		else if (cloned && obj.parentNode) {
 			obj.parentNode.removeChild(obj);
 		}
-		
-		var arr = new Array();
-		var arr2 = new Array();
-		
-		
-		var tr = td.target.getAttribute("id");
-		arr = tr.split("a");
-		var day = arr[0];
-		tr = arr[1];
-		
-		arr2 = obj.getAttribute("id").split("_");
-		var placenum = arr2[1];
-		
-		console.log("day : " + day + " tr : " + tr + " placenum : " + placenum);
-		
-		send("insert", "", plannum, day, 30, 5, 0, tr, placenum);
 	};
 
 
@@ -1752,6 +1736,7 @@ REDIPS.drag = (function () {
 			}
 			// set color for the current table cell and remembers previous position and color
 			setPosition();
+			
 		}		
 	};
 
@@ -3640,7 +3625,7 @@ REDIPS.drag = (function () {
 				else {
 					j++;
 				}
-			}	
+			}
 		}
 	};
 

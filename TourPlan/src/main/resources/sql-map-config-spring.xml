@@ -23,6 +23,7 @@
 		<typeAlias type="com.yedam.tourplan.member.service.MemberVO" alias="member"></typeAlias>
 		<typeAlias type="com.yedam.tourplan.member.service.MemberSearchVO" alias="memberSearch"></typeAlias>
 		<typeAlias type="com.yedam.tourplan.plantable.service.PlanTableVO" alias="planTable"></typeAlias>
+		<typeAlias type="com.yedam.tourplan.plantable.service.PlanTableSearchVO" alias="planTableSearch"></typeAlias>
 	</typeAliases>
 
 </configuration>

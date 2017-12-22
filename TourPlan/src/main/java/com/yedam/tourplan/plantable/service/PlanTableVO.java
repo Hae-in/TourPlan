@@ -9,7 +9,6 @@ public class PlanTableVO {
 	private String fix;
 	private String tr;
 	private String placenum;
-	private String type;
 	
 	public String getPlantablenum() {
 		return plantablenum;
@@ -59,10 +58,5 @@ public class PlanTableVO {
 	public void setPlacenum(String placenum) {
 		this.placenum = placenum;
 	}
-	public String getType() {
-		return type;
-	}
-	public void setType(String type) {
-		this.type = type;
-	}
+
 }

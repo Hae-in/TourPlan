@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yedam.tourplan.plantable.service.PlanTableSearchVO;
 import com.yedam.tourplan.plantable.service.PlanTableService;
 import com.yedam.tourplan.plantable.service.PlanTableVO;
 
@@ -19,13 +20,13 @@ public class PlanTableAjaxController {
 	
 	@RequestMapping("insert")
 	@ResponseBody
-	public boolean insert(PlanTableVO vo) {
+	public boolean insert(PlanTableSearchVO vo) {
 		return planTableService.insert(vo);
 	}
 	
 	@RequestMapping("delete")
 	@ResponseBody
-	public boolean delete(PlanTableVO vo) {
+	public boolean delete(PlanTableSearchVO vo) {
 		return planTableService.delete(vo);
 	}
 	
