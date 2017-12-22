@@ -22,9 +22,15 @@
 		</where>
 	</select>
 	
-	<insert id="insert" parameterType="likeplace">
-		insert into likeplace(likeplacenum, placenum, membernum)
-		values(likeplace_seq.nextval, #{placenum}, #{membernum})
+	<insert id="insert" statementType="CALLABLE" parameterType="likeplace">
+<!-- 		insert into likeplace(likeplacenum, placenum, membernum)
+		values(likeplace_seq.nextval, #{placenum}, #{membernum}) -->
+		{ 	call likeplace_ins_proc(
+				#{placenum},
+				#{membernum},	
+				#{likeplacenum, mode=OUT, jdbcType=VARCHAR, javaType=string}		
+			)
+		}			
 	</insert>
 	
 	<delete id="delete">

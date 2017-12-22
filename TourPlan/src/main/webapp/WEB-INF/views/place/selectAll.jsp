@@ -25,7 +25,29 @@
 			}
 		});
 			
-
+		$(".likemy").click(function(){		
+			var placenum = $(this).attr('placenum');
+			var likeplacenum = $(this).attr('likeplacenum');
+			var thisSave = $(this);			
+			$.ajax("../likeplaceAjax/insert.do",{
+				method: 'post',
+				data: { placenum: placenum, likeplacenum: likeplacenum },
+				dataType:'json',
+				success : function(data, status){
+					if(status=="success") {
+						thisSave.attr('likeplacenum',data.likeplacenum);	
+						if(data.likeplacenum == null || data.likeplacenum == "") {
+							thisSave.text("♡");
+						} else {
+							thisSave.text("♥");
+						}
+					} else {
+						alert(status);	
+					}	
+				}				
+			});
+		});
+		
 	});
 </script>
 </head>
@@ -79,15 +101,17 @@
 										</c:if>
 									</a>
 									<div class="card-body">
-										<h4 class="card-title">
-											<span id="likemy_${i.placenum}" class="likemy">
-											<c:if test="${i.likemy != null}">
-												♥
-											</c:if>
-											<c:if test="${i.likemy == null}">
-												♡
-											</c:if>
-											</span>
+										<h4 class="card-title">										
+											<c:if test="${sessionScope.membernum != null}">
+												<span class="likemy" placenum="${i.placenum}" likeplacenum="${i.likemy}">
+												<c:if test="${i.likemy != null}">
+													♥
+												</c:if>
+												<c:if test="${i.likemy == null}">
+													♡
+												</c:if>
+												</span>
+											</c:if>	
 											<a href="select.do?num=${i.placenum}">${i.placename}</a>
 										</h4>
 										<p class="card-text">

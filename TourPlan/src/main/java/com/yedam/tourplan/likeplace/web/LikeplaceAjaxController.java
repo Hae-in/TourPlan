@@ -2,6 +2,8 @@ package com.yedam.tourplan.likeplace.web;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,12 +25,18 @@ public class LikeplaceAjaxController {
 		return likeplaceService.selectAll(vo);
 	}
 	
-/*	@RequestMapping("insert.do")
+	@RequestMapping("insert.do")
 	@ResponseBody
-	public LikeplaceVO insert(LikeplaceVO vo) {
-		likeplaceService.insert(vo);
+	public LikeplaceVO insert(LikeplaceVO vo, HttpSession session) {
+		vo.setMembernum((String)session.getAttribute("membernum"));
+		System.out.println("파라미터 값 : " + vo);		
+		if(vo.getLikeplacenum() == null || vo.getLikeplacenum().equals("")) {
+			likeplaceService.insert(vo);
+		} else {
+			likeplaceService.delete(vo);
+			vo.setLikeplacenum("");
+		}		
 		return vo;
-	}*/
-	
+	}	
 	
 }

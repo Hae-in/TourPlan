@@ -25,6 +25,8 @@
 		<typeAlias type="com.yedam.tourplan.plantable.service.PlanTableVO" alias="planTable"></typeAlias>
 		<typeAlias type="com.yedam.tourplan.plantable.service.PlanTableSearchVO" alias="planTableSearch"></typeAlias>
 		<typeAlias type="com.yedam.tourplan.likeplace.service.LikeplaceVO" alias="likeplace"></typeAlias>
+		<typeAlias type="com.yedam.tourplan.helpdesk.service.HelpdeskVO" alias="helpdesk"></typeAlias>
+		<typeAlias type="com.yedam.tourplan.helpdesk.service.HelpdeskSearchVO" alias="helpdeskSearch"></typeAlias>
 	</typeAliases>
 
 </configuration>

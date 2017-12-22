@@ -88,6 +88,23 @@
 			
 		</div>
 		
+		<div class="jumbotron">
+	${place}
+
+	<c:forEach items="${files}" var="i">	
+	${i.tablename}
+	${i.tablenum}
+	${i.filenum}
+	${i.filename}
+	${i.realfilename}
+	${i.filesize}<br />
+	</c:forEach>
+	<br>
+
+	<a href="form.do?num=${place.placenum}">수정</a>
+	<a href="delete.do?num=${place.placenum}">삭제</a>
+	<a href="selectAll.do">목록</a>		
+		</div>
 
 		<!-- Marketing Icons Section -->
 		<div class="row">
@@ -167,25 +184,6 @@
 
 	</div>
 	<!-- /.container -->
-
-
-
-
-	${place}
-
-	<c:forEach items="${files}" var="i">	
-	${i.tablename}
-	${i.tablenum}
-	${i.filenum}
-	${i.filename}
-	${i.realfilename}
-	${i.filesize}<br />
-	</c:forEach>
-	<br>
-
-	<a href="form.do?num=${place.placenum}">수정</a>
-	<a href="delete.do?num=${place.placenum}">삭제</a>
-	<a href="selectAll.do">목록</a>
 
     
     <script src='<c:url value='/'/>resources/js/google_map_place.js'></script>
