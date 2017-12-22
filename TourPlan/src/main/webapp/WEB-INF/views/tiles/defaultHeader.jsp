@@ -34,6 +34,7 @@
 				</li>
 				<li class="nav-item"><a class="nav-link" href="../planTable/planTableView.do">일정만들기</a></li>
 				<li class="nav-item"><a class="nav-link" style="cursor: pointer;" data-toggle="modal" data-target="#myModal">로그인</a></li>
+				<li class="nav-item"><a class="nav-link" href="../admin/plan.do">관리자</a></li>
 				<!-- <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPortfolio" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">로그인</a>
 						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownPortfolio"> 
 						<a class="dropdown-item" href="portfolio-1-col.html">로그인</a> 
@@ -61,10 +62,8 @@
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         <div class="modal-body">
+        
          <form id="frmModal">
-         
-         
-         
          <table border="1" width="400px">
             <tr>
                 <td>아이디</td>
@@ -90,16 +89,9 @@
                 </td>
             </tr>
         </table>
-         
-         <!-- 
-         
-          	아이디 : <input type="text" name="id"><br>
-         	비밀번호 : <input type="password" name="password"><br>
-          <button type="button" id="log">로그인</button> -->
          </form>
         
          <form id="frmModal2">
-         
          <table border="1" width="400px">
             <tr>
                 <td>아이디</td>
@@ -132,14 +124,11 @@
             </tr>
         </table>
          
-         
- <!--          	아이디 : <input type="text" name="id"><br>
-          	비밀번호 : <input type="password" name="password"><br>
-          	닉네임 : <input type="text" name="nickname"><br>
-          <button type="button" id="reg">회원가입</button> -->
          </form>
         </div>
         
+        <button id="logBtn" style="width: 200px;">로그인</button> 
+        <button id="regBtn" style="width: 200px;">회원가입</button>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
@@ -153,6 +142,17 @@
 <script src="../resources/thema/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   
 <script>
+$("#frmModal2").hide();
+
+$("#logBtn").click(function () {
+	$("#frmModal2").hide();
+	$("#frmModal").show();
+});
+$("#regBtn").click(function () {
+	$("#frmModal").hide();
+	$("#frmModal2").show();
+});
+
 $("#log").click(function() {
 	console.log("함수실행");
 	var param = $("#frmModal").serialize();//frmModal안의 값을 가져온다
@@ -184,7 +184,6 @@ $("#reg").click(function() {
 		}
 	});
 });
-
 </script>
 
 </body>
