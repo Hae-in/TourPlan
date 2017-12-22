@@ -106,7 +106,7 @@
 
 
 
-					<a href="form.do">신규</a>
+					<a href="form.do">신규..</a>
 
 
 				</div>
