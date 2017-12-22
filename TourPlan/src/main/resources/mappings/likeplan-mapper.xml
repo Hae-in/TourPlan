@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="LikeplanDAO">
+	<select id="select" resultType="likeplan">
+		select * 
+		from likeplan
+		where likeplannum = #{likeplannum}
+	</select>
+	
+	<select id="selectAll" parameterType="likeplan" resultType="likeplan">
+		select * 
+		from likeplan
+		<where>
+			<if test="plannum != null and plannum != ''">
+				plannum = #{plannum}
+			</if>		
+			<if test="membernum != null and membernum != ''">
+				and membernum = #{membernum}
+			</if>
+		</where>
+	</select>
+	
+	<insert id="insert" statementType="CALLABLE" parameterType="likeplan">
+		{ 	call likeplan_ins_proc(
+				#{plannum},
+				#{membernum},	
+				#{likeplannum, mode=OUT, jdbcType=VARCHAR, javaType=string}		
+			)
+		}			
+	</insert>
+	
+	<delete id="delete">
+		delete from likeplan
+		where likeplannum = #{likeplannum}
+	</delete>
+</mapper>

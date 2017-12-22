@@ -15,6 +15,9 @@ public class PlanVO {
 	private String likecount;
 	private String userid;
 	private String id;
+	private String imagename;
+	private String likecnt;
+	private String likemy;
 	
 	public String getPlannum() {
 		return plannum;
@@ -87,5 +90,23 @@ public class PlanVO {
 	}
 	public void setUserid(String userid) {
 		this.userid = userid;
+	}
+	public String getImagename() {
+		return imagename;
+	}
+	public void setImagename(String imagename) {
+		this.imagename = imagename;
+	}
+	public String getLikecnt() {
+		return likecnt;
+	}
+	public void setLikecnt(String likecnt) {
+		this.likecnt = likecnt;
+	}
+	public String getLikemy() {
+		return likemy;
+	}
+	public void setLikemy(String likemy) {
+		this.likemy = likemy;
 	}
 }

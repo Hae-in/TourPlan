@@ -15,17 +15,21 @@
 			<if test="period1 != null and period1 != ''">
 				ARRIVALDATE-DEPARTUREDATE+1 BETWEEN #{period1} AND
 				#{period2}
+				AND ISOPEN = '1'
+				AND STATE = '1'
 			</if>
 			<if test="city != null and city != ''">
 				AND P.PLANNUM IN (SELECT DISTINCT T.PLANNUM FROM PLANTABLE T
 				JOIN PLACE W
 				ON T.PLACENUM = W.PLACENUM
-				WHERE W.CITY LIKE '%대구%')
+				WHERE W.CITY LIKE '%' || #{city} || '%')
 			</if>
-			<!-- ★★★CITY랑 MEMBERNUM고쳐야 -->
 			<if test="membernum != null and membernum != ''">
 				AND P.PLANNUM IN (SELECT PLANNUM FROM LIKEPLAN
-				WHERE MEMBERNUM = 1)
+				WHERE MEMBERNUM = #{membernum})
+			</if>
+			<if test="categorynum != null and categorynum != ''">
+				AND CATEGORYNUM = #{categorynum}
 			</if>
 		</where>
 		<choose>

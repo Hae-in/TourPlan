@@ -8,6 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yedam.tourplan.likeplan.service.LikeplanService;
+import com.yedam.tourplan.likeplan.service.LikeplanVO;
 import com.yedam.tourplan.plan.service.PlanSearchVO;
 import com.yedam.tourplan.plan.service.PlanService;
 import com.yedam.tourplan.plan.service.PlanVO;
@@ -18,6 +20,8 @@ public class PlanController {
 	
 	@Autowired
 	PlanService planService;
+	@Autowired
+	LikeplanService likeplanService;
 	
 	@RequestMapping("select.do")
 	public String select(PlanVO vo, Model model) {
@@ -42,6 +46,13 @@ public class PlanController {
 	@RequestMapping("insert.do")
 	public String insert(PlanVO vo) {
 		planService.insert(vo);
+		
+		//likecount가 0이되면 들어가지 않아 기본값 1을 줌
+		LikeplanVO lp_vo = new LikeplanVO();
+		lp_vo.setplannum(vo.getPlannum());
+		lp_vo.setMembernum("1");
+		likeplanService.insert(lp_vo);
+		
 		return "forward:selectAll.do";
 	}
 	
