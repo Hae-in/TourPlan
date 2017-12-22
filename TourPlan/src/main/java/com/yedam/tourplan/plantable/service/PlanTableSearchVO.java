@@ -4,6 +4,7 @@ public class PlanTableSearchVO extends PlanTableVO {
 	private String child1;
 	private String child2;
 	private String type;
+	private String willmove;
 	
 	public String getChild1() {
 		return child1;
@@ -22,5 +23,11 @@ public class PlanTableSearchVO extends PlanTableVO {
 	}
 	public void setType(String type) {
 		this.type = type;
+	}
+	public String getWillmove() {
+		return willmove;
+	}
+	public void setWillmove(String willmove) {
+		this.willmove = willmove;
 	}
 }

@@ -30,6 +30,12 @@ public class PlanTableAjaxController {
 		return planTableService.delete(vo);
 	}
 	
+	@RequestMapping("update")
+	@ResponseBody
+	public boolean update(PlanTableSearchVO vo) {
+		return planTableService.update(vo);
+	}
+	
 	@RequestMapping("selectPT")
 	@ResponseBody
 	public List<PlanTableVO> selectPT(PlanTableVO vo) {

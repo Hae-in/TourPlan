@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -498,7 +499,7 @@ div#redips-drag #table1 div {
 				</div>
 				<div id="divBtns">
 					<button type="submit">저장</button>
-					<button type="button">공유하기</button>
+					<button type="button" onclick="window.open('<c:url value='/'/>planTable/shareView.do')">공유하기</button>
 					<button type="button">취소</button>
 				</div>
 			</div>

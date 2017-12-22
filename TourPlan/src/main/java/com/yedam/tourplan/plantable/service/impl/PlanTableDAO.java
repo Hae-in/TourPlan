@@ -23,6 +23,10 @@ public class PlanTableDAO {
 		return mybatis.delete("PlanTableDAO.delete", vo);
 	}
 	
+	public int update(PlanTableSearchVO vo) {
+		return mybatis.update("PlanTableDAO.update", vo);
+	}
+	
 	public List<PlanTableVO> selectPT(PlanTableVO vo) {
 		return mybatis.selectList("PlanTableDAO.selectPT", vo);
 	}

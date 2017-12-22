@@ -502,12 +502,57 @@ div#redips-drag #table1 div {
 		
 		switch (msg.type) {
 		case "insert":
-			console.log("insert의 plantablenum : " + msg.plantablenum);
-			$("#"+ msg.day + "a" + msg.tr).empty();
+			if($("#"+ msg.day + "a" + msg.tr + " div").length == 0) {
+				console.log("노자식");
+				
+				//복제
+				var div = $("#place_" + msg.placenum + "_").get(0);
+				var copy_div = REDIPS.drag.cloneObject(div, true);
+				
+				//복제품 속성부여
+				$(copy_div).attr("class", 'redips-drag');
+				$(copy_div).attr("id", $(div).attr("id") + msg.plantablenum);
+				
+				//복제품 변수에 담기
+				var idid = $(copy_div).attr("id"); 
+				var parent = $("#"+ msg.day + "a" + msg.tr).get(0);
+				
+				//복제품 부모에게 이동
+				REDIPS.drag.moveObject({
+				    id: idid,
+				    target: parent
+				});
+				
+			} else {
+				var div = $("#"+ msg.day + "a" + msg.tr + " div");
+				var arr = new Array();
+				arr = div.attr("id").split("_");
+				var id = arr[0] + "_" + arr[1] + "_" + msg.plantablenum;
+				
+				div.attr("id", id)
+				console.log("자식있는 아이디값 : " + id);
+			}
+			break;
+			
+			
+			/* $("#"+ msg.day + "a" + msg.tr).empty();
 			var div = "<div id='place_" + msg.placenum + "_" + msg.plantablenum + "' class='redips-drag'>" + msg.child1 +"<br>"+ msg.child2 + "</div>";
 			//★★★add drag event해줘야..
 			REDIPS.drag.enableDrag(true, "place_" + msg.placenum + "_" + msg.plantablenum);
-			$(div).appendTo($("#"+ msg.day + "a" + msg.tr));
+			$(div).appendTo($("#"+ msg.day + "a" + msg.tr)); */
+			
+			break;
+		case "update":
+			if($("#"+ msg.day + "a" + msg.tr + " div").length == 0) {
+			
+				var div = $("#" + msg.willmove + " div");
+				$(div).appendTo($("#"+ msg.day + "a" + msg.tr));
+				$("#" + msg.willmove).empty();
+				
+			} else {
+				console.log($("#"+ msg.day + "a" + msg.tr + " div"));
+				console.log("밑에 if실행");
+			}
 			break;
 		case "delete":
 			console.log("delete의 plantablenum : " + msg.plantablenum);
@@ -528,7 +573,7 @@ div#redips-drag #table1 div {
 		console.log(event);
 		alert(event.data);
 	}
-	function send(v_type, v_plantablenum, v_plannum, v_day, v_staytime, v_sortnum, v_fix, v_tr, v_placenum, v_child1, v_child2) {
+	function send(v_type, v_plantablenum, v_plannum, v_day, v_staytime, v_sortnum, v_fix, v_tr, v_placenum, v_child1, v_child2, v_willMove) {
 		// 서버로 전송할 데이터를 담을 msg 객체 생성.
 		var msg = {
 			type : v_type,
@@ -541,7 +586,8 @@ div#redips-drag #table1 div {
 			tr : v_tr,
 			placenum : v_placenum,
 			child1 : v_child1,
-			child2 : v_child2
+			child2 : v_child2,
+			willmove : v_willMove
 		};
 		//  Send  the msg  object  as  a  JSON-formatted  string.
 		webSocket.send(JSON.stringify(msg));
