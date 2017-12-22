@@ -54,6 +54,12 @@ public class WebsockHandler extends TextWebSocketHandler implements Initializing
 			planTableService.insert(msgVO);
 			String jsonString = mapper.writeValueAsString(msgVO);
 			sendMessage(session, jsonString);
+		} else if (msgVO.getType().equals("update")) {
+			msgVO.setPlacenum("");
+			msgVO.setPlannum("");
+			planTableService.update(msgVO);
+			System.out.println(msgVO.toString());
+			sendMessage(session, (String) message.getPayload());
 		} else {
 			planTableService.delete(msgVO);
 			sendMessage(session, (String) message.getPayload());

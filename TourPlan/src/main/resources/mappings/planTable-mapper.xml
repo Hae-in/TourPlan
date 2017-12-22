@@ -18,6 +18,31 @@
 		}
 	</insert>
 	
+	<update id="update" parameterType="planTableSearch">
+		UPDATE PLANTABLE
+		<set>
+			<if test="day != null and day != ''">
+				DAY = #{day},
+			</if>
+			<if test="tr != null and tr != ''">
+				TR = #{tr},
+			</if>
+			<if test="fix != null and fix != ''">
+				FIX = #{fix},
+			</if>
+			<if test="staytime != null and staytime != ''">
+				STAYTIME = #{staytime},
+			</if>
+			<if test="sortnum != null and sortnum != ''">
+				SORTNUM = #{sortnum},
+			</if>
+			<if test="placenum != null and placenum != ''">
+				PLACENUM = #{placenum},
+			</if>
+		</set>
+		WHERE PLANTABLENUM = #{plantablenum}
+	</update>
+	
 	<delete id="delete" parameterType="planTableSearch">
 		DELETE FROM PLANTABLE
 		WHERE PLANTABLENUM = #{plantablenum}

@@ -37,4 +37,16 @@ public class PlanTableServiceImpl implements PlanTableService {
 	public List<PlanTableVO> selectPT(PlanTableVO vo) {
 		return planTableDAO.selectPT(vo);
 	}
+
+	@Override
+	public boolean update(PlanTableSearchVO vo) {
+		int r = planTableDAO.update(vo);
+		if(r>0)
+			return true;
+		else
+			return false;
+	}
+	
+	
+	
 }

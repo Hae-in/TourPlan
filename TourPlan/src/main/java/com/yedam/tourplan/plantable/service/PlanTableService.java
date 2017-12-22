@@ -5,5 +5,6 @@ import java.util.List;
 public interface PlanTableService {
 	public boolean insert(PlanTableSearchVO vo);
 	public boolean delete(PlanTableSearchVO vo);
+	public boolean update(PlanTableSearchVO vo);
 	public List<PlanTableVO> selectPT(PlanTableVO vo);
 }
