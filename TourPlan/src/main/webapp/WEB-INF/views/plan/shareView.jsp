@@ -1,6 +1,7 @@
 <%@page import="com.yedam.tourplan.plantable.service.PlanTableVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <% 
 	PlanTableVO vo = (PlanTableVO) request.getAttribute("vo");
 %>
@@ -14,9 +15,10 @@
 <script type="text/javascript" src="<c:url value='/'/>resources/js/header.js"></script>
 <script type="text/javascript" src="<c:url value='/'/>resources/js/redips-drag-min.js?v=<%=System.currentTimeMillis()%>"></script>
 <script type="text/javascript" src="<c:url value='/'/>resources/js/script.js?v=<%=System.currentTimeMillis()%>"></script>
+<script src='<c:url value='/'/>resources/js/jquery.form.min.js'></script>
 <script>
- var plannum = <%=vo.getPlannum()%>; 
- 
+var plannum = <%=vo.getPlannum()%>; 
+
 	$(function(){
 		// Get the element with id="defaultOpen" and click on it
 		document.getElementById("defaultOpen").click();
@@ -338,6 +340,16 @@ div#redips-drag #table1 div {
 				</table>
 			</div>
 		</div>
+		
+		<!-- ★★★여기서부터 -->
+		<!-- 이미지업로드
+		<div>
+			<form id="frm_img" method="post" enctype="multipart/form-data">
+      			<label for="uploadFile">이미지 업로드</label>
+      			<input type="file" id="uploadFile" name="uploadFile"><br />
+      			<input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+  			</form>
+		</div> -->
 	</div>
 	<div id="redips-drag">
 		<div class="footer">
@@ -362,8 +374,7 @@ div#redips-drag #table1 div {
 					<button class="tablinks" onclick="openTab(event, 'planTab')" id="defaultOpen">지도/일정표</button>
 				</div>
 				<div id="storyTab" class="tabcontent">
-					<h3>storyTab</h3>
-					<p>storyTab is the capital city of England.</p>
+				<iframe src="<c:url value='/'/>post/select.do?plannum=2" width="1000px" height="800px;" border="0"></iframe>
 				</div>
 				<div id="planTab" class="tabcontent">
 					<div id="googleMap" style="width: 100%; height: 400px;"></div>

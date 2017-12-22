@@ -42,4 +42,10 @@ public class PlaceServiceImpl implements PlaceService {
 		return placeDAO.selectAll(place);
 	}
 
+	@Override
+	public List<PlaceVO> selectPlace(PlaceSearchVO place) {
+		return placeDAO.selectPlace(place);
+	}
+	
+	
 }

@@ -71,5 +71,11 @@
 		<if test="sort == null">
 		order by place.placenum desc
 		</if> 			 
-	</select>
+	</select>	
+	
+	<select id="selectPlace" resultType="place">
+		select placenum, placename from place
+		where placenum in (${placenum})
+	</select>	
+	
 </mapper>

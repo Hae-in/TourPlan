@@ -42,6 +42,12 @@ public class PostAjaxController {
 		return postService.selectPost(vo);
 	}
 	
+	@RequestMapping("view")
+	@ResponseBody
+	public List<PlanTableVO> View(PlanTableVO vo, Model model) {
+		return postService.select(vo);
+	}
+	
 	@RequestMapping("insert")
 	@ResponseBody
 	public boolean insert(PostVO vo) {
