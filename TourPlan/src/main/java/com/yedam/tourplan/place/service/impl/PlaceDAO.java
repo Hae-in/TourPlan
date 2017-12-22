@@ -34,4 +34,8 @@ public class PlaceDAO {
 	public List<PlaceVO> selectAll(PlaceSearchVO place) {
 		return mybatis.selectList("PlaceDAO.selectAll", place);
 	}	
+	
+	public List<PlaceVO> selectPlace(PlaceSearchVO place) {
+		return mybatis.selectList("PlaceDAO.selectPlace", place);
+	}	
 }

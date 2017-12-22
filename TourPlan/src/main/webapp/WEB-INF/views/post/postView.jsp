@@ -17,7 +17,7 @@
     h1 { font-size: 1.2em; margin: .6em 0; }
     .ui-dialog .ui-state-error { padding: .3em; }
     .validateTips { border: 1px solid transparent; padding: 0.3em; }
-  </style>
+</style>
 <script>
 function onImage() {
 	$("#frm1").hide();
@@ -65,9 +65,8 @@ $(function() {
 		if($("#frm1").css("display") != "none") {
 			post = $("#post").val();						//포스트 insert후 추가 위한 변수
 			$("#post").val("");	
-			param = $("#frm1").serialize();					//포스트 입력값 파라미터로 전환
-		} else {
-			console.log("image업로드시 frm1값 : " + $("#frm1").val());
+			param = "post=" + post;						//포스트 입력값 파라미터로 전환
+		} else {	
 			param =	"post=" + post; 
 		}
 		param += "&plantablenum=" + arr[0] + "&plannum=" + arr[1] + "&day=" + arr[2] + "&tr=" + arr[3];
@@ -124,10 +123,16 @@ $(function() {
 	   dialog.dialog( "open" );
 	});
 	
+	$("#reload").click(function () {
+		location.reload();
+	});
+	
 });
 </script>
 </head>
 <body>
+
+<button id="reload" type="button">새로고침</button>
 
 <!-- Story Start -->
 <c:set value="${fn:length(ptList)-1}" var="end" />
@@ -136,10 +141,14 @@ $(function() {
 	<div style="border: 1px solid red;"><font size="5"><b>${status.index} Day</b></font></div>
 	<c:forEach items="${ptList}" var="list">
 		<c:if test="${list.day == status.index}">
-		  <ol>
-			<ui><div id="${status.index}_${list.tr}">${list.tr}, ${list.placenum}</div></ui>
-			<ui><button id="${list.plantablenum},${list.plannum},${status.index},${list.tr}" class="postbtn"> Post 쓰기 </button></ui>
-		  </ol>
+			<c:forEach items="${placeList}" var="listplace">
+				<c:if test="${list.placenum == listplace.placenum}">
+					<ol>
+						<ui><div id="${status.index}_${list.tr}"><div style="border: solid 1px orange;">${list.tr}, ${listplace.placename}</div></ui>
+						<ui><button id="${list.plantablenum},${list.plannum},${status.index},${list.tr}" class="postbtn"> Post 쓰기 </button></ui>
+		  			</ol>				
+				</c:if>		
+			</c:forEach>
 		</c:if>
 	</c:forEach>
 	<br>
