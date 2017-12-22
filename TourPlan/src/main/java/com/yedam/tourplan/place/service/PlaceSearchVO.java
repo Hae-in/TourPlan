@@ -4,7 +4,14 @@ public class PlaceSearchVO extends PlaceVO {
 	int first;
 	int last;
 	String keyword;
+	String sort;	
 	
+	public String getSort() {
+		return sort;
+	}
+	public void setSort(String sort) {
+		this.sort = sort;
+	}
 	public int getFirst() {
 		return first;
 	}

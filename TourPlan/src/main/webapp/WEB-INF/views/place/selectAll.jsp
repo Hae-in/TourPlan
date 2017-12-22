@@ -8,7 +8,7 @@
 <style>
 .list-group-item span {
 	display: inline-block;
-	margin-right: 10px;	
+	margin-right: 10px;
 }
 </style>
 <script>
@@ -25,6 +25,7 @@
 			}
 		});
 
+			
 
 	});
 </script>
@@ -48,9 +49,9 @@
 				<div class="col-lg-3 mb-4">
 					<div class="list-group">
 						<div class="list-group-item">
-							정렬<br /> 
-							<span><input type="radio" name="sort" value=""> 인기순 </span>
-							<span><input type="radio" name="sort" value=""> 정렬순</span>
+							정렬<br /> <span><input type="radio" name="sort"
+								value="likecnt"> 인기순 </span> <span><input type="radio"
+								name="sort" value="writedate"> 정렬순</span>
 						</div>
 						<div class="list-group-item">
 							카테고리<br />
@@ -68,45 +69,41 @@
 						<c:forEach items="${placeList}" var="i">
 							<div class="col-lg-6 portfolio-item">
 								<div class="card h-100">
-									<a href="select.do?num=${i.placenum}"> 
-										<c:if test="${not empty i.imagename}">
+									<a href="select.do?num=${i.placenum}"> <c:if
+											test="${not empty i.imagename}">
 											<img class="card-img-top"
 												src="<c:url value='/'/>resources/images/${i.imagename}"
 												alt="">
-										</c:if> 
-										<c:if test="${empty i.imagename}">
+										</c:if> <c:if test="${empty i.imagename}">
 											<img class="card-img-top" src="http://placehold.it/700x400"
 												alt="">
 										</c:if>
 									</a>
 									<div class="card-body">
 										<h4 class="card-title">
-											<c:if test="">
+											<span id="likemy_${i.placenum}" class="likemy">
+											<c:if test="${i.likemy != null}">
 												♥
 											</c:if>
-											<c:if test="">
+											<c:if test="${i.likemy == null}">
 												♡
 											</c:if>
+											</span>
 											<a href="select.do?num=${i.placenum}">${i.placename}</a>
 										</h4>
-										<p class="card-text"><%-- ${i.lat}${i.lon}${i.addr}${i.city}${i.country} --%>
+										<p class="card-text">
+											<%-- ${i.lat}${i.lon}${i.addr}${i.city}${i.country} --%>											
 											${i.content}
 										</p>
+									</div>
+									<div class="card-footer text-muted">
+										Like Count : ${i.likecnt}
 									</div>
 								</div>
 							</div>
 						</c:forEach>
 					</div>
-.
-
-
-
-
-
-
-
-
-					<a href="form.do">신규..</a>
+					. <a href="form.do">신규..</a>
 
 
 				</div>

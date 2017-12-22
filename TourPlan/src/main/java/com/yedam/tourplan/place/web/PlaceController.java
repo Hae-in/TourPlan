@@ -191,7 +191,9 @@ public class PlaceController {
 	
 	//조회
 	@RequestMapping("selectAll.do")
-	public String selectAll(PlaceSearchVO vo, Model model) {
+	public String selectAll(PlaceSearchVO vo, Model model, HttpSession session) {
+		//System.out.println("membernum" + session.getAttribute("membernum"));
+		vo.setMembernum((String)session.getAttribute("membernum"));
 		model.addAttribute("placeList", placeService.selectAll(vo));
 		return "place/selectAll";
 	}	

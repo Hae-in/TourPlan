@@ -15,7 +15,21 @@ public class PlaceVO {
 	private String country;	
 	private String out_msg;
 	private String imagename;
+	private String likecnt;
+	private String likemy;
 	
+	public String getLikecnt() {
+		return likecnt;
+	}
+	public void setLikecnt(String likecnt) {
+		this.likecnt = likecnt;
+	}
+	public String getLikemy() {
+		return likemy;
+	}
+	public void setLikemy(String likemy) {
+		this.likemy = likemy;
+	}
 	public String getImagename() {
 		return imagename;
 	}
@@ -100,11 +114,14 @@ public class PlaceVO {
 	public void setCountry(String country) {
 		this.country = country;
 	}
-	
 	@Override
 	public String toString() {
 		return "PlaceVO [placenum=" + placenum + ", placename=" + placename + ", content=" + content + ", state="
 				+ state + ", writedate=" + writedate + ", membernum=" + membernum + ", categorynum=" + categorynum
-				+ ", lat=" + lat + ", lon=" + lon + ", addr=" + addr + ", city=" + city + ", country=" + country + "]";
-	}		
+				+ ", lat=" + lat + ", lon=" + lon + ", addr=" + addr + ", city=" + city + ", country=" + country
+				+ ", out_msg=" + out_msg + ", imagename=" + imagename + ", likecnt=" + likecnt + ", likemy=" + likemy
+				+ "]";
+	}
+	
+		
 }

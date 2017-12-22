@@ -40,14 +40,22 @@
 	
 	<select id="select" resultType="place">
 		select place.*
-		, (select realfilename from files where tablenum = place.placenum and state=1 and rownum=1) as imagename
+		, (select realfilename from files where tablename='place' and tablenum = place.placenum and state=1 and rownum=1) as imagename
+        , (select count(*) as likecnt from likeplace where placenum = place.placenum) as likecnt
+        <if test="membernum != null">
+        , (select likeplacenum from likeplace where placenum = place.placenum and membernum = #{membernum}) as likemy		
+        </if>	
 		from place
 		where placenum = #{placenum}
 	</select>	
 
 	<select id="selectAll" parameterType="placeSearch" resultType="place">
 		select place.*		
-		, (select realfilename from files where tablenum = place.placenum and state=1 and rownum=1) as imagename				
+		, (select realfilename from files where tablename='place' and tablenum = place.placenum and state=1 and rownum=1) as imagename
+        , (select count(*) as likecnt from likeplace where placenum = place.placenum) as likecnt
+        <if test="membernum != null">
+        , (select likeplacenum from likeplace where placenum = place.placenum and membernum = #{membernum}) as likemy	
+        </if>					
 		from place
 		<where> 
 		<if test="categorynum != null">
@@ -56,7 +64,12 @@
 		<if test="keyword != null">
 			and placename like '%' || #{keyword} || '%'
 		</if>
-		</where>
-		order by place.placenum desc 			 
+		</where>		
+		<if test="sort != null">
+		order by #{sort} desc
+		</if>
+		<if test="sort == null">
+		order by place.placenum desc
+		</if> 			 
 	</select>
 </mapper>

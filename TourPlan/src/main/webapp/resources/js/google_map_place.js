@@ -104,8 +104,8 @@ function initAutocomplete() {
 		markers = [];
 		
 		// marker, infowindow 창닫기
-		marker.setMap(null);
-		infowindow.close();		
+		//marker.setMap(null);
+		//infowindow.close();		
 
 		// For each place, get the icon, name and location.
 		var bounds = new google.maps.LatLngBounds();
@@ -137,7 +137,7 @@ function initAutocomplete() {
 			infowindow.open(map, marker);
 			
 		    markers.push(marker);
-		    infoWindows.push(infoWindow);
+		    infowindows.push(infowindow);
 
 			if (place.geometry.viewport) {
 				// Only geocodes have viewport.

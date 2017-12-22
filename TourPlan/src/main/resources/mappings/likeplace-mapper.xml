@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="LikeplaceDAO">
+	<select id="select" resultType="likeplace">
+		select * 
+		from likeplace
+		where likeplacenum = #{likeplacenum}
+	</select>
+	
+	<select id="selectAll" parameterType="likeplace" resultType="likeplace">
+		select * 
+		from likeplace
+		<where>
+			<if test="placenum != null">
+				placenum = #{placenum}
+			</if>		
+			<if test="membernum != null">
+				and membernum = #{membernum}
+			</if>
+		</where>
+	</select>
+	
+	<insert id="insert" parameterType="likeplace">
+		insert into likeplace(likeplacenum, placenum, membernum)
+		values(likeplace_seq.nextval, #{placenum}, #{membernum})
+	</insert>
+	
+	<delete id="delete">
+		delete from likeplace
+		where likeplacenum = #{likeplacenum}
+	</delete>
+</mapper>
