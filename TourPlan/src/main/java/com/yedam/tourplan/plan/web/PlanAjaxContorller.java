@@ -43,7 +43,7 @@ public class PlanAjaxContorller {
 	}
 	
 	// 이미지 등록
-		@RequestMapping(value = "insertImage.do", method = RequestMethod.POST)
+		@RequestMapping(value = "insertImage", method = RequestMethod.POST)
 		@ResponseBody
 		public Map<String, String> insert(PlanVO vo, HttpSession session, HttpServletRequest request,
 				HttpServletResponse response) throws IllegalStateException, IOException {
@@ -69,8 +69,13 @@ public class PlanAjaxContorller {
 						fileVo.setFilename(uploadFile.getOriginalFilename());
 						fileVo.setRealfilename(realFileName);
 						fileVo.setFilesize(Long.toString(uploadFile.getSize()));
-						filesService.insert(fileVo);
-
+						
+						if(vo.getPlanname() == null) {
+							filesService.insert(fileVo);
+						} else {
+							filesService.updateName(fileVo);
+						}
+						
 						map.put("code", "success");
 						map.put("imageName", realFileName);
 					}

@@ -9,6 +9,7 @@ public class PlanTableVO {
 	private String fix;
 	private String tr;
 	private String placenum;
+	private String imagename;
 	
 	public String getPlantablenum() {
 		return plantablenum;
@@ -58,5 +59,10 @@ public class PlanTableVO {
 	public void setPlacenum(String placenum) {
 		this.placenum = placenum;
 	}
-
+	public String getImagename() {
+		return imagename;
+	}
+	public void setImagename(String imagename) {
+		this.imagename = imagename;
+	}
 }

@@ -1,7 +1,11 @@
+<%@page import="com.yedam.tourplan.plantable.service.PlanTableVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>    
-<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>    
+<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<% 
+	PlanTableVO vo = (PlanTableVO) session.getAttribute("vo");
+%>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,6 +23,8 @@
     .validateTips { border: 1px solid transparent; padding: 0.3em; }
 </style>
 <script>
+var plannum = <%=vo.getPlannum()%>;
+
 function onImage() {
 	$("#frm1").hide();
 	$("#frm2").show();
@@ -70,7 +76,7 @@ $(function() {
 			param =	"post=" + post; 
 		}
 		param += "&plantablenum=" + arr[0] + "&plannum=" + arr[1] + "&day=" + arr[2] + "&tr=" + arr[3];
-		console.log(param);
+		
 		dialog.dialog( "close" );
 		$.getJSON("../postAjax/insert", param, function(data,status){
 			if(status =="success" ) {

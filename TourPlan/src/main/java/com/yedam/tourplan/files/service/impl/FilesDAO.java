@@ -22,6 +22,10 @@ public class FilesDAO {
 		return mybatis.update("FilesDAO.update", place);
 	}
 	
+	public int updateName(FilesVO place) {
+		return mybatis.update("FilesDAO.updateName", place);
+	}
+	
 	public int delete(FilesVO place) {
 		return mybatis.delete("FilesDAO.delete", place);
 	}	

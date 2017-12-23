@@ -1,6 +1,7 @@
 package com.yedam.tourplan.plan.web;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import com.yedam.tourplan.likeplan.service.LikeplanVO;
 import com.yedam.tourplan.plan.service.PlanSearchVO;
 import com.yedam.tourplan.plan.service.PlanService;
 import com.yedam.tourplan.plan.service.PlanVO;
+import com.yedam.tourplan.plantable.service.PlanTableVO;
 
 @Controller
 @RequestMapping("/plan/")
@@ -24,8 +26,11 @@ public class PlanController {
 	LikeplanService likeplanService;
 	
 	@RequestMapping("select.do")
-	public String select(PlanVO vo, Model model) {
-		model.addAttribute("plan", planService.select(vo));
+	public String select(PlanVO vo, Model model, HttpSession session) {
+		//model.addAttribute("plan", planService.select(vo));
+		PlanTableVO vo2 = new PlanTableVO();
+		vo2.setPlannum("2");
+		session.setAttribute("vo", vo2);
 		return "plan/plan";
 	}
 	

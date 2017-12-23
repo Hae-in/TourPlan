@@ -45,7 +45,9 @@ public class PlanTableController {
 	public String shareView(PlanTableVO vo, Model model, HttpSession session
 			, HttpServletRequest request
 			, HttpServletResponse response) {
-		request.setAttribute("vo", vo);
+		//★★★추후 없애야
+		vo.setPlannum("2");
+		session.setAttribute("vo", vo);
 		
 		return "plan/shareView";
 	}

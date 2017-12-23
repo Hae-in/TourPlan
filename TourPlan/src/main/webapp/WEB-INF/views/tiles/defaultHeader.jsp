@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%
+	String membernum = "";
+	membernum = (String) session.getAttribute("membernum");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,6 +15,9 @@
 <link href="<c:url value='/'/>resources/thema/css/modern-business.css" rel="stylesheet">
 <link rel="stylesheet"
 	href='<c:url value='/'/>resources/js/jquery-ui.min.css'>
+<script src='<c:url value='/'/>resources/js/jquery-3.2.1.min.js'></script>
+<script src='<c:url value='/'/>resources/js/jquery-ui.min.js'></script>
+<script src="../resources/thema/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
 <nav
@@ -33,7 +40,9 @@
 				<li class="nav-item"><a class="nav-link" href="contact.html">고객센터</a>
 				</li>
 				<li class="nav-item"><a class="nav-link" href="../planTable/planTableView.do">일정만들기</a></li>
-				<li class="nav-item"><a class="nav-link" style="cursor: pointer;" data-toggle="modal" data-target="#myModal">로그인</a></li>
+				<li class="nav-item">
+				<a class="nav-link" id="menuLogin" style="cursor: pointer;" data-toggle="modal" data-target="#myModal">로그인</a>
+				<a class="nav-link" id="menuMy" href="../planTable/planTableView.do">Mypage</a></li>
 				<li class="nav-item"><a class="nav-link" href="../admin/plan.do">관리자</a></li>
 				<!-- <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPortfolio" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">로그인</a>
 						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownPortfolio"> 
@@ -136,12 +145,17 @@
       
     </div>
   </div>
-  
-<script src='<c:url value='/'/>resources/js/jquery-3.2.1.min.js'></script>
-<script src='<c:url value='/'/>resources/js/jquery-ui.min.js'></script>
-<script src="../resources/thema/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  
 <script>
+var membernum = <%=membernum%>;
+if(membernum == null || membernum == "") {
+
+	$("#menuMy").hide();
+	$("#menuLogin").show();
+} else {
+	$("#menuLogin").hide();
+	$("#menuMy").show();
+}
+
 $("#frmModal2").hide();
 
 $("#logBtn").click(function () {
@@ -160,6 +174,7 @@ $("#log").click(function() {
 		if(status =="success" ) {
 			if(data == true) {
 				alert("로그인성공");
+				$('#myModal').modal('hide');
 			} else {
 				alert("아이디와 비밀번호를 확인해 주세요");
 			}
@@ -176,6 +191,8 @@ $("#reg").click(function() {
 		if(status =="success" ) {
 			if(data == true) {
 				alert("회원가입 완료");
+				$("#frmModal2").hide();
+				$("#frmModal").show();
 			} else {
 				alert("오류");
 			}

@@ -3,7 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <% 
-	PlanTableVO vo = (PlanTableVO) request.getAttribute("vo");
+	response.setHeader("P3P","CP='CAO PSA CONi OTR OUR DEM ONL'"); 
+	PlanTableVO vo = (PlanTableVO) session.getAttribute("vo");
 %>
 <!DOCTYPE html> 
 <html>
@@ -11,7 +12,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>투어플랜(TourPlan)-일정만들기 상세</title>
-<!-- <link rel="stylesheet" href="../resources/css/dragdrop.css" type="text/css" media="screen"/> -->
 <script type="text/javascript" src="<c:url value='/'/>resources/js/header.js"></script>
 <script type="text/javascript" src="<c:url value='/'/>resources/js/redips-drag-min.js?v=<%=System.currentTimeMillis()%>"></script>
 <script type="text/javascript" src="<c:url value='/'/>resources/js/script.js?v=<%=System.currentTimeMillis()%>"></script>
@@ -315,7 +315,7 @@ div#redips-drag #table1 div {
 			<div>
 				<table border="1">
 					<tr>
-						<td>출발일</td><td>일수</td><td>인원</td><td>여행테마</td><td>공개여부</td>
+						<td>출발일</td><td>일수</td><td>인원</td><td>여행테마</td><td>공개여부</td> <td>이미지</td>
 					</tr>
 					<tr>
 						<td><input type="text"></td>
@@ -336,20 +336,20 @@ div#redips-drag #table1 div {
 								</label>
 							</div>
 						</td>
+						<td>
+							<!-- 이미지 업로드 -->
+							<div id="upload"></div>
+							<form id="frm_img" method="post" enctype="multipart/form-data">
+      							<input type="file" id="uploadFile" name="uploadFile" style="border: 1px solid grey"><br />
+      							<button type="button" onclick="imageAdd();">업로드</button>
+  							</form>
+							<!-- 이미지 업로드 -->						
+						</td>
 					</tr>
 				</table>
 			</div>
 		</div>
 		
-		<!-- ★★★여기서부터 -->
-		<!-- 이미지업로드
-		<div>
-			<form id="frm_img" method="post" enctype="multipart/form-data">
-      			<label for="uploadFile">이미지 업로드</label>
-      			<input type="file" id="uploadFile" name="uploadFile"><br />
-      			<input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
-  			</form>
-		</div> -->
 	</div>
 	<div id="redips-drag">
 		<div class="footer">
@@ -374,7 +374,7 @@ div#redips-drag #table1 div {
 					<button class="tablinks" onclick="openTab(event, 'planTab')" id="defaultOpen">지도/일정표</button>
 				</div>
 				<div id="storyTab" class="tabcontent">
-				<iframe src="<c:url value='/'/>post/select.do?plannum=2" width="1000px" height="800px;" border="0"></iframe>
+				<iframe src="<c:url value='/'/>post/select.do?plannum=<%=vo.getPlannum()%>" width="1000px" height="800px;" border="0"></iframe>
 				</div>
 				<div id="planTab" class="tabcontent">
 					<div id="googleMap" style="width: 100%; height: 400px;"></div>
@@ -461,9 +461,25 @@ div#redips-drag #table1 div {
 		</div>
 	</div>
 	
-<!-- WebSocket Start -->
+<!-- Modal -->
+  <div class="modal fade" id="imageModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">썸네일 이미지</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div id="imageBody" class="modal-body">
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- Modal End -->
+
 <script type="text/javascript">
-	var textarea = document.getElementById("textarea");
+//WebSocket start -----------------------------------
 	var xhttp = new XMLHttpRequest();
 	
 	//★★★포트바꿔야!
@@ -473,7 +489,7 @@ div#redips-drag #table1 div {
 		onError(event)
 	};
 	webSocket.onopen = function(event) {
-		var param = "plannum=2";
+		var param = "plannum=" + plannum;
 		
 		$.ajax({
 			url : "../placeAjax/selectAll.do",
@@ -483,18 +499,19 @@ div#redips-drag #table1 div {
 				$.getJSON("../planTableAjax/selectPT", param, function(data,status){
 					if(status =="success" ) {
 						if( data.length > 0) {
-							
+							if(data[0].imagename != null) {
+								var img = "<img id='topimg' src='<c:url value='/'/>resources/images/" + data[0].imagename + "' width='100px' style='cursor: pointer;' data-toggle='modal' data-target='#imageModal'>";
+								$(img).appendTo($("#upload"));
+								img = "<img id='topimg' src='<c:url value='/'/>resources/images/" + data[0].imagename + "' width='100%'>";
+								$(img).appendTo($("#imageBody"));
+							}
 							for(i=0; i<data.length; i++) {
-								
 								for(j=0; j<data_place.length; j++) {
 									if(data[i].placenum == data_place[j].placenum) {
 										break;
 									}
 								}
-								
-								//var div = "<div>" + data[i].placenum + "</div>";
 								var div = "<div id='place_" + data[i].placenum + "_" + data[i].plantablenum + "' class='redips-drag'>" + data_place[j].placename + "<br>" + data_place[j].city + ", " + data_place[j].country+ "</div>";
-								console.log("id값 : " + "#"  + data[i].day + "a" + data[i].tr);
 								 $(div).appendTo($("#" + data[i].day + "a" + data[i].tr));
 							}
 						}
@@ -545,14 +562,6 @@ div#redips-drag #table1 div {
 			}
 			break;
 			
-			
-			/* $("#"+ msg.day + "a" + msg.tr).empty();
-			var div = "<div id='place_" + msg.placenum + "_" + msg.plantablenum + "' class='redips-drag'>" + msg.child1 +"<br>"+ msg.child2 + "</div>";
-			//★★★add drag event해줘야..
-			REDIPS.drag.enableDrag(true, "place_" + msg.placenum + "_" + msg.plantablenum);
-			$(div).appendTo($("#"+ msg.day + "a" + msg.tr)); */
-			
-			break;
 		case "update":
 			if($("#"+ msg.day + "a" + msg.tr + " div").length == 0) {
 			
@@ -581,8 +590,7 @@ div#redips-drag #table1 div {
 		console.log("연결 성공");
 	}
 	function onError(event) {
-		console.log(event);
-		alert(event.data);
+		alert("에러발생 관리자에게 문의하세요");
 	}
 	function send(v_type, v_plantablenum, v_plannum, v_day, v_staytime, v_sortnum, v_fix, v_tr, v_placenum, v_child1, v_child2, v_willMove) {
 		// 서버로 전송할 데이터를 담을 msg 객체 생성.
@@ -604,8 +612,48 @@ div#redips-drag #table1 div {
 		webSocket.send(JSON.stringify(msg));
 	}
 
+// WebSocket End -----------------------------------
+
+function imageAdd(){
+	if($("#upload img").length == 0) {
+		$("#frm_img").ajaxForm({
+			dataType:"json",
+			data : {plannum: plannum},
+			url:'../planAjax/insertImage',
+			success: function(result, textStatus){
+				if(result.code == 'success') {
+					alert("등록되었습니다.");
+					var post = "<img src='<c:url value='/'/>resources/images/" + result.imageName + "' width='100px'>";
+					$(post).appendTo($("#upload"));
+				}
+			},
+			error: function(){
+				alert("파일업로드 중 오류가 발생하였습니다.");
+				return;
+			}
+		}).submit();
+	} else {
+		$("#frm_img").ajaxForm({
+			dataType:"json",
+			data : {plannum: plannum,
+					planname: "update"},
+			url:'../planAjax/insertImage',
+			success: function(result, textStatus){
+				if(result.code == 'success') {
+					alert("등록되었습니다.");
+					var post = "<img src='<c:url value='/'/>resources/images/" + result.imageName + "' width='100px'>";
+					$("#upload").empty();
+					$(post).appendTo($("#upload"));
+				}
+			},
+			error: function(){
+				alert("파일업로드 중 오류가 발생하였습니다.");
+				return;
+			}
+		}).submit();
+	}
+}
+
 </script>
-<!-- WebSocket End -->
-	
 </body>
 </html>

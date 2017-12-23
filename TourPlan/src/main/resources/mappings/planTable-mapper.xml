@@ -49,10 +49,9 @@
 	</delete>
 	
 	<select id="selectPT" parameterType="planTable" resultType="planTable">
-		SELECT * 
+		SELECT PLANTABLE.*
+		, (SELECT REALFILENAME FROM FILES WHERE TABLENAME='plan' AND TABLENUM = PLANTABLE.PLANNUM AND STATE=1 AND ROWNUM=1) AS imagename
 		FROM PLANTABLE
 		WHERE PLANNUM = #{plannum}
 	</select>	
-	
-
 </mapper>

@@ -24,7 +24,13 @@
 			realfilename = #{realfilename},
 			filesize = #{filesize}
 		where filenum = #{filenum}			
-	</update>	
+	</update>
+	
+	<update id="updateName" parameterType="files">
+		update files set realfilename = #{realfilename} 
+		where tablename = #{tablename}
+		and tablenum = #{tablenum}
+	</update>		
 	
 	<delete id="delete">
 		update files set

@@ -122,7 +122,7 @@
 								<div class="card h-100">
 									<a href="../planTable/shareView.do?plannum=${plan.plannum}"> 
 									<c:if test="${not empty plan.imagename}">
-										<img class="card-img-top" src="<c:url value='/'/>resources/images/${plan.imagename}" alt=""> 
+										<img class="card-img-top" src="<c:url value='/'/>resources/images/${plan.imagename}" alt="" width="348" height="250"> 
 									</c:if> 
 									<c:if test="${empty plan.imagename}">
 										<img class="card-img-top" src="http://placehold.it/700x400" alt="">

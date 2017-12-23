@@ -27,6 +27,11 @@ public class FilesServiceImpl implements FilesService {
 	}
 
 	@Override
+	public int updateName(FilesVO vo) {
+		return filesDAO.updateName(vo);
+	}
+
+	@Override
 	public int delete(FilesVO vo) {
 		return filesDAO.delete(vo);
 	}
