@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="HelpdeskDAO">
+	<select id="select" resultType="helpdesk">
+		select * 
+		from helpdesk
+		where num = #{num}
+	</select>
+	
+	<select id="selectAll" parameterType="helpdeskSearch" resultType="helpdesk">
+		select * 
+		from helpdesk
+		<where>
+			<if test="title != null">
+				title like '%' || #{title} || '%'
+			</if>		
+			<if test="content != null">
+				content like '%' || #{content} || '%'
+			</if>		
+		</where>
+	</select>
+	
+	<insert id="insert" parameterType="helpdesk">
+ 		insert into helpdesk(num, title, content, writedate, membernum)
+		values(helpdesk_seq.nextval, #{title}, #{content}, sysdate, #{membernum})		
+	</insert>
+	
+	<update id="update" parameterType="helpdesk">
+		update helpdesk set title=#{title}, content=#{content}
+		where num = #{num}
+	</update>
+	
+	<delete id="delete">
+		delete from helpdesk
+		where num = #{num}
+	</delete>
+</mapper>

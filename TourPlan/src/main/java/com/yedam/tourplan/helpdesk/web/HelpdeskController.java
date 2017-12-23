@@ -17,6 +17,7 @@ public class HelpdeskController {
 	
 	@RequestMapping("selectAll.do")
 	public String selectAll(HelpdeskSearchVO vo, Model model) {
+		model.addAttribute("helpdesk", helpdeskService.selectAll(vo));
 		return "helpdesk/selectAll";
 	}
 
