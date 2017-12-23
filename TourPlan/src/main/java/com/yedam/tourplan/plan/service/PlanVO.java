@@ -5,8 +5,8 @@ import java.util.Date;
 public class PlanVO {
 	private String plannum;
 	private String planname;
-	private Date departuredate;
-	private Date arrivaldate;
+	private String departuredate;
+	private String arrivaldate;
 	private String people;
 	private String categorynum;
 	private String isopen;
@@ -18,6 +18,7 @@ public class PlanVO {
 	private String imagename;
 	private String likecnt;
 	private String likemy;
+	private String isupdate;
 	
 	public String getPlannum() {
 		return plannum;
@@ -31,16 +32,16 @@ public class PlanVO {
 	public void setPlanname(String planname) {
 		this.planname = planname;
 	}
-	public Date getDeparturedate() {
+	public String getDeparturedate() {
 		return departuredate;
 	}
-	public void setDeparturedate(Date departuredate) {
+	public void setDeparturedate(String departuredate) {
 		this.departuredate = departuredate;
 	}
-	public Date getArrivaldate() {
+	public String getArrivaldate() {
 		return arrivaldate;
 	}
-	public void setArrivaldate(Date arrivaldate) {
+	public void setArrivaldate(String arrivaldate) {
 		this.arrivaldate = arrivaldate;
 	}
 	public String getPeople() {
@@ -109,4 +110,11 @@ public class PlanVO {
 	public void setLikemy(String likemy) {
 		this.likemy = likemy;
 	}
+	public String getIsupdate() {
+		return isupdate;
+	}
+	public void setIsupdate(String isupdate) {
+		this.isupdate = isupdate;
+	}
 }
+

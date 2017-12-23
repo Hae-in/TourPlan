@@ -9,10 +9,13 @@
 	</select>
 	
 	<select id="select" parameterType="memberSearch" resultType="member">
-		select membernum, id, nickname, state from member
+		select * from member
 		<where>
+			<if test="membernum != null and membernum != ''">
+				membernum = #{membernum}
+			</if>
 			<if test="id != null and id != ''">
-				id = #{id}
+				and id = #{id}
 			</if>
 			<if test="password != null and password != ''">
 				and password = #{password}

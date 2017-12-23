@@ -36,6 +36,16 @@ public class MemberAjaxController {
 		}
 	}
 	
+	@RequestMapping("logout")
+	@ResponseBody
+	public boolean logout(MemberSearchVO vo, HttpSession session, HttpServletRequest request, HttpServletResponse response) {
+		session.removeAttribute("memberid");
+		session.removeAttribute("membernum");
+		session.removeAttribute("nickname");
+		session.removeAttribute("state");
+		return true;
+	}
+	
 	@RequestMapping("insert")//jsp에서 폼에서 입력받은 것을 파라미터 형태로 전송, 이 파라미터가 MemberVO필드 명과 동일하므로 MemberVO에 담긴다(자동으로 변환)
 	@ResponseBody//아작스로 받아온 것을 제이슨 형태로 변환해줌
 	public boolean insert(MemberVO vo, Model model) {

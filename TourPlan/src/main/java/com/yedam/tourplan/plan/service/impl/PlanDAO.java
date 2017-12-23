@@ -17,7 +17,7 @@ public class PlanDAO {
 	private SqlSessionTemplate mybatis;
 	
 	//단건조회
-	public PlanVO select(PlanVO vo) {
+	public PlanVO select(PlanSearchVO vo) {
 		return mybatis.selectOne("PlanDAO.select", vo);
 	}
 	
@@ -28,7 +28,12 @@ public class PlanDAO {
 	
 	//등록
 	public int insert(PlanVO vo) {
-		return mybatis.insert("PlanDAO.insert", vo);
+		int r = mybatis.insert("PlanDAO.insert", vo);
+		if (r>0)
+			System.out.println("dao : " + vo.getPlannum());
+		else
+			System.out.println("insret실패");
+		return r;
 	}
 	
 	//수정
@@ -39,5 +44,10 @@ public class PlanDAO {
 	//삭제
 	public int delete(PlanVO vo) {
 		return mybatis.delete("PlanDAO.delete", vo);
+	}
+	
+	/* 임시------------------------------------------------------*/
+	public PlanVO selectSeq(PlanVO vo) {
+		return mybatis.selectOne("PlanDAO.selectSeq", vo);
 	}
 }

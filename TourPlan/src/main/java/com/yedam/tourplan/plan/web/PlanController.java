@@ -26,11 +26,9 @@ public class PlanController {
 	LikeplanService likeplanService;
 	
 	@RequestMapping("select.do")
-	public String select(PlanVO vo, Model model, HttpSession session) {
+	public String select(PlanSearchVO vo, HttpSession session) {
 		//model.addAttribute("plan", planService.select(vo));
-		PlanTableVO vo2 = new PlanTableVO();
-		vo2.setPlannum("2");
-		session.setAttribute("vo", vo2);
+		session.setAttribute("vo", vo);
 		return "plan/plan";
 	}
 	
@@ -38,6 +36,17 @@ public class PlanController {
 	public String selectAll(PlanSearchVO vo, Model model) {
 		model.addAttribute("planList", planService.selectAll(vo));
 		return "plan/planList";
+	}
+	
+	@RequestMapping("makePlan.do")
+	public String makePlan(PlanVO vo, HttpSession session) {
+		return "plan/makePlan";
+	}
+	
+	@RequestMapping("selectMade.do")
+	public String selectMade(PlanSearchVO vo, Model model) {
+		model.addAttribute("planList", planService.selectAll(vo));
+		return "member/myPage/myPlan";
 	}
 	
 	@RequestMapping("selectLike.do")
@@ -49,16 +58,29 @@ public class PlanController {
 	}
 	
 	@RequestMapping("insert.do")
-	public String insert(PlanVO vo) {
+	public String insert(PlanVO vo, Model model, HttpSession session) {
+		String isupdate = vo.getIsupdate();
 		planService.insert(vo);
+		System.out.println(vo.getPlannum());
+
+		PlanVO seq_vo = planService.selectSeq(null);
+		System.out.println(seq_vo.getPlannum());
 		
 		//likecount가 0이되면 들어가지 않아 기본값 1을 줌
 		LikeplanVO lp_vo = new LikeplanVO();
-		lp_vo.setplannum(vo.getPlannum());
+		lp_vo.setplannum(seq_vo.getPlannum());
+		//lp_vo.setplannum(vo.getPlannum());
 		lp_vo.setMembernum("1");
 		likeplanService.insert(lp_vo);
 		
-		return "forward:selectAll.do";
+		if(isupdate == null) {
+			session.setAttribute("vo", seq_vo);
+			model.addAttribute("plan", seq_vo);
+		} else {
+			model.addAttribute("plan", seq_vo);
+		}
+		
+		return "plan/makePlan";
 	}
 	
 	@RequestMapping("update.do")

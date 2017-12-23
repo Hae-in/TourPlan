@@ -21,6 +21,13 @@ li {
 </style>  
 </head>
 <body>
-..
+<form>
+<ol>
+	<li>${member.id}님</li>
+	<li>아이디 : <input type="text" name="nickname" value="${member.nickname}"/></li>
+	<li>비밀번호 : <input type="password" name="password" value=""/></li>
+	<li>가입일 : ${member.regdate}</li>
+</ol>
+</form>
 </body>
 </html>

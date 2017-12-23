@@ -17,7 +17,7 @@ public class PlanServiceImpl implements PlanService {
 	PlanDAO planDAO;
 
 	@Override
-	public PlanVO select(PlanVO vo) {
+	public PlanVO select(PlanSearchVO vo) {
 		return planDAO.select(vo);
 	}
 	
@@ -52,5 +52,13 @@ public class PlanServiceImpl implements PlanService {
 	public int delete(PlanVO vo) {
 		return planDAO.delete(vo);
 	}
+
+	@Override
+	public PlanVO selectSeq(PlanVO vo) {
+		return planDAO.selectSeq(vo);
+	}
+	
+	//임시
+	
 	
 }
