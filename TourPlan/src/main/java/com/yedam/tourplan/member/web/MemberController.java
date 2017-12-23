@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.yedam.tourplan.member.service.MemberSearchVO;
 import com.yedam.tourplan.member.service.MemberService;
 import com.yedam.tourplan.member.service.MemberVO;
+
 @Controller
 @RequestMapping("/member/")
-
 public class MemberController {
 	@Autowired
 	MemberService memberService;
@@ -21,6 +21,12 @@ public class MemberController {
 	public String selectAll(MemberSearchVO vo, Model model) {
 		model.addAttribute("list", memberService.selectAll(vo));
 		return "member/test";
+	}
+	
+	@RequestMapping("select.do")
+	public String Mypage(MemberSearchVO vo, Model model) {
+		model.addAttribute("member", memberService.select(vo));
+		return "member/myPage/myPage";
 	}
 	
 	

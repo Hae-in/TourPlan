@@ -120,7 +120,7 @@
 						<c:forEach items="${planList}" var="plan">
 							<div class="col-lg-6 portfolio-item">
 								<div class="card h-100">
-									<a href="../planTable/shareView.do?plannum=${plan.plannum}"> 
+									<a href="../plan/select.do?plannum=${plan.plannum}"> 
 									<c:if test="${not empty plan.imagename}">
 										<img class="card-img-top" src="<c:url value='/'/>resources/images/${plan.imagename}" alt="" width="348" height="250"> 
 									</c:if> 
@@ -137,7 +137,7 @@
 												 	<c:if test="${plan.likemy == null}">♡</c:if>
 												</span>
 											</c:if>
-											<a href="../planTable/shareView.do?plannum=${plan.plannum}">${plan.planname}</a>
+											<a href="../plan/select.do?plannum=${plan.plannum}">${plan.planname}</a>
 										</h4>
 										<p class="card-text">
 											<%-- ${i.lat}${i.lon}${i.addr}${i.city}${i.country} --%>
@@ -149,9 +149,6 @@
 							</div>
 						</c:forEach>
 					</div>
-					. <a href="form.do">신규..</a>
-
-
 				</div>
 			</div>
 			<!-- /.row -->

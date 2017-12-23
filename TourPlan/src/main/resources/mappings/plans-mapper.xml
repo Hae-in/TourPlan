@@ -29,6 +29,9 @@
 				AND P.PLANNUM IN (SELECT PLANNUM FROM LIKEPLAN
 				WHERE MEMBERNUM = #{membernum})
 			</if>
+			<if test="id != null and id != ''">
+				AND P.ID = #{id}
+			</if>
 			<if test="categorynum != null and categorynum != ''">
 				AND CATEGORYNUM = #{categorynum}
 			</if>
@@ -43,22 +46,32 @@
 		</choose>
 	</select>
 
-	<select id="select" parameterType="plan" resultType="plan">
+	<select id="select" parameterType="planSearch" resultType="plan">
 		<![CDATA[
 			SELECT *
 			FROM PLAN
 			WHERE PLANNUM = #{plannum}
 		]]>
 	</select>
+	
+	<!-- 임시 -->
+	<select id="selectSeq" parameterType="plan" resultType="plan">
+		select * from plan
+		where plannum in (select max(plannum) from plan)
+	</select>
 
-	<insert id="insert" parameterType="plan">
-		insert into plan
-		(plannum,planname, departuredate, arrivaldate, people, categorynum,
-		isopen,state)
-		values (seq_plan.nextVal, #{planname}, #{departuredate},
-		#{arrivaldate},
-		#{people}, #{categorynum}, #{isopen}, #{state},
-		#{writedate})
+	<insert id="insert" statementType="CALLABLE" parameterType="plan">
+		insert into plan (plannum, planname, departuredate, arrivaldate, people, categorynum, isopen, state)
+		values (plan_seq.nextval, #{planname}, to_date(#{departuredate}, 'yy/mm/dd'), to_date(#{arrivaldate}, 'yy/mm/dd'), #{people}, #{categorynum}, #{isopen}, #{state})
+		<!-- { 	CALL PLAN_INS_PROC(
+			#{planname},
+			#{people},
+			#{categorynum},
+			#{isopen},
+			#{state},
+			#{plannum, mode=OUT, jdbcType=VARCHAR, javaType=string}
+			)
+		} -->
 	</insert>
 
 	<update id="update" parameterType="plan">

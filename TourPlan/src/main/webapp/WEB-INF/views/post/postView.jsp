@@ -1,10 +1,10 @@
-<%@page import="com.yedam.tourplan.plantable.service.PlanTableVO"%>
+<%@page import="com.yedam.tourplan.plan.service.PlanSearchVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>    
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <% 
-	PlanTableVO vo = (PlanTableVO) session.getAttribute("vo");
+	PlanSearchVO vo = (PlanSearchVO) session.getAttribute("vo");
 %>    
 <!DOCTYPE html>
 <html>
