@@ -23,6 +23,21 @@
 		</where>
 	</select>
 	
+	<select id="selectShare" parameterType="map" resultType="member">
+		select * from member
+		<where>
+			<if test="id1 != null and id1 != ''">
+				id = #{id1}
+			</if>
+			<if test="id2 != null and id2 != ''">
+				or id = #{id2}
+			</if>
+			<if test="id3 != null and id3 != ''">
+				or id = #{id3}
+			</if>
+		</where>
+	</select>
+	
 	<insert id="insert" parameterType="member" ><!-- memberVO형태로 받아서 DB에 입력한다 -->
 		insert into member(membernum,id,password,regdate,state,nickname)
 		values (member_seq.nextval,#{id},#{password},sysdate,'1',#{nickname}) 			 

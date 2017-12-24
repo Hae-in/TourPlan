@@ -6,6 +6,7 @@ package com.yedam.tourplan.member.service;//제한
 	public interface MemberService {
 		
 		public List<MemberVO> selectAll(MemberSearchVO vo);
+		public List<MemberVO> selectShare(Map<String, String> map);
 		public boolean insert(MemberVO vo);
 		public MemberVO select(MemberSearchVO vo);
 		public boolean update(MemberVO vo);

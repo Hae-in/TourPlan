@@ -6,6 +6,7 @@ public class PlanSearchVO extends PlanVO {
 	private String plan_sort;
 	private String city;
 	private String membernum;
+	private String plannum_list;
 	
 	public String getPeriod1() {
 		return period1;
@@ -36,5 +37,11 @@ public class PlanSearchVO extends PlanVO {
 	}
 	public void setMembernum(String membernum) {
 		this.membernum = membernum;
+	}
+	public String getPlannum_list() {
+		return plannum_list;
+	}
+	public void setPlannum_list(String plannum_list) {
+		this.plannum_list = plannum_list;
 	}
 }

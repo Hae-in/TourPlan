@@ -24,6 +24,11 @@ public class MemberServiceImpl implements MemberService{
 	}
 	
 	@Override
+	public List<MemberVO> selectShare(Map<String, String> map) {
+		return memberDAO.selectShare(map);
+	}
+
+	@Override
 	public MemberVO select(MemberSearchVO vo) {
 		return memberDAO.select(vo);
 	}

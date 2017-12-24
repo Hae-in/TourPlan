@@ -18,7 +18,7 @@
 		}
 	</insert>
 	
-	<update id="update" parameterType="planTableSearch">
+	<update id="update" parameterType="planTable">
 		UPDATE PLANTABLE
 		<set>
 			<if test="day != null and day != ''">

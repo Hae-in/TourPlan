@@ -1,10 +1,10 @@
-<%@page import="com.yedam.tourplan.plantable.service.PlanTableVO"%>
+<%@page import="com.yedam.tourplan.plan.service.PlanVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <% 
 	response.setHeader("P3P","CP='CAO PSA CONi OTR OUR DEM ONL'"); 
-	PlanTableVO vo = (PlanTableVO) session.getAttribute("vo");
+	PlanVO vo = (PlanVO) session.getAttribute("vo");
 %>
 <!DOCTYPE html> 
 <html>

@@ -12,6 +12,7 @@
 	<typeAliases>
 		<typeAlias type="com.yedam.tourplan.plan.service.PlanVO" alias="plan"></typeAlias>
 		<typeAlias type="com.yedam.tourplan.plan.service.PlanSearchVO" alias="planSearch"></typeAlias>
+		<typeAlias type="com.yedam.tourplan.plan.service.SharePlanVO" alias="sharePlan"></typeAlias>
 		<typeAlias type="com.yedam.tourplan.place.service.PlaceVO" alias="place"></typeAlias>
 		<typeAlias type="com.yedam.tourplan.place.service.PlaceSearchVO" alias="placeSearch"></typeAlias>
 		<typeAlias type="com.yedam.tourplan.category.service.CategoryVO" alias="category"></typeAlias>

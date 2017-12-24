@@ -16,7 +16,7 @@ public class PlanTableServiceImpl implements PlanTableService {
 	PlanTableDAO planTableDAO;
 	
 	@Override
-	public boolean insert(PlanTableSearchVO vo) {
+	public boolean insert(PlanTableVO vo) {
 		int r = planTableDAO.insert(vo);
 		if(r>0)
 			return true;
@@ -25,7 +25,7 @@ public class PlanTableServiceImpl implements PlanTableService {
 	}
 	
 	@Override
-	public boolean delete(PlanTableSearchVO vo) {
+	public boolean delete(PlanTableVO vo) {
 		int r = planTableDAO.delete(vo);
 		if(r>0)
 			return true;
@@ -39,7 +39,7 @@ public class PlanTableServiceImpl implements PlanTableService {
 	}
 
 	@Override
-	public boolean update(PlanTableSearchVO vo) {
+	public boolean update(PlanTableVO vo) {
 		int r = planTableDAO.update(vo);
 		if(r>0)
 			return true;

@@ -15,15 +15,15 @@ public class PlanTableDAO {
 	@Autowired
 	private SqlSessionTemplate mybatis;
 	
-	public int insert(PlanTableSearchVO vo) {
+	public int insert(PlanTableVO vo) {
 		return mybatis.insert("PlanTableDAO.insert", vo);
 	}
 	
-	public int delete(PlanTableSearchVO vo) {
+	public int delete(PlanTableVO vo) {
 		return mybatis.delete("PlanTableDAO.delete", vo);
 	}
 	
-	public int update(PlanTableSearchVO vo) {
+	public int update(PlanTableVO vo) {
 		return mybatis.update("PlanTableDAO.update", vo);
 	}
 	

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.yedam.tourplan.plan.service.PlanSearchVO;
 import com.yedam.tourplan.plan.service.PlanVO;
+import com.yedam.tourplan.plan.service.SharePlanVO;
 
 @Repository
 public class PlanDAO {
@@ -44,6 +45,16 @@ public class PlanDAO {
 	//삭제
 	public int delete(PlanVO vo) {
 		return mybatis.delete("PlanDAO.delete", vo);
+	}
+	
+	//공유상태 insert
+	public int insertShare(Map<String, String> map) {
+		return mybatis.insert("PlanDAO.insertShare", map);
+	}
+	
+	//공유상태 select
+	public List<SharePlanVO> selectShare(SharePlanVO vo) {
+		return mybatis.selectList("PlanDAO.selectShare", vo);
 	}
 	
 	/* 임시------------------------------------------------------*/

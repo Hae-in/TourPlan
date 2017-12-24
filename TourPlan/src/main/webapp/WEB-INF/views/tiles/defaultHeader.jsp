@@ -1,8 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
-	String membernum = "";
-	membernum = (String) session.getAttribute("membernum");
+	String membernum = "no";
+	if(session.getAttribute("membernum") == null) {  }
+	else {	membernum = (String) session.getAttribute("membernum"); }
+	
 %>
 <!DOCTYPE html>
 <html>
@@ -76,7 +78,7 @@ input:checked+.slider:before {
 </style>
 </head>
 <body>
-<<<<<<< HEAD
+
 <nav
 	class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark fixed-top">
 	<div class="container">
@@ -117,8 +119,6 @@ input:checked+.slider:before {
 	</div>
 </nav>
 
-=======
->>>>>>> branch 'master' of https://github.com/JeonHyeJu/TourPlan.git
 <!-- Modal -->
   <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
@@ -303,8 +303,8 @@ input:checked+.slider:before {
 </nav>
 
 <script>
-var membernum = <%=membernum%>;
-if(membernum == null || membernum == "") {
+var membernum = "<%=membernum%>";
+if(membernum == "no") {
 	$("#menuMy").hide();
 	$("#menuLogout").hide();
 	$("#menuLogin").show();
@@ -347,7 +347,6 @@ $("#log").click(function() {
 		if(status =="success" ) {
 			if(data == true) {
 				alert("로그인성공");
-				$('#myModal').modal('toggle');
 				location.reload();
 			} else {
 				alert("아이디와 비밀번호를 확인해 주세요");

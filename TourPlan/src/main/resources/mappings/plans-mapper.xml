@@ -33,7 +33,10 @@
 				AND P.ID = #{id}
 			</if>
 			<if test="categorynum != null and categorynum != ''">
-				AND CATEGORYNUM = #{categorynum}
+				AND P.CATEGORYNUM = #{categorynum}
+			</if>
+			<if test="plannum_list != null and plannum_list != ''">
+				AND P.PLANNUM IN (${plannum_list})
 			</if>
 		</where>
 		<choose>
@@ -47,11 +50,25 @@
 	</select>
 
 	<select id="select" parameterType="planSearch" resultType="plan">
-		<![CDATA[
 			SELECT *
 			FROM PLAN
 			WHERE PLANNUM = #{plannum}
-		]]>
+	</select>
+	
+	<select id="selectShare" parameterType="sharePlan" resultType="sharePlan">
+		select * from shareplan
+		<where>
+			<if test="keyword != null and keyword != ''">
+				(writer = #{keyword}
+				or member1 = #{keyword}
+				or member2 = #{keyword}
+				or member3 = #{keyword})
+			</if>
+			<if test="plannum != null and plannum != ''">
+				and plannum = #{plannum}
+			</if>
+			
+		</where>
 	</select>
 	
 	<!-- 임시 -->
@@ -72,6 +89,11 @@
 			#{plannum, mode=OUT, jdbcType=VARCHAR, javaType=string}
 			)
 		} -->
+	</insert>
+	
+	<insert id="insertShare" parameterType="map">
+		INSERT INTO SHAREPLAN (SHARENUM, PLANNUM, MEMBER1, MEMBER2, MEMBER3, WRITER)
+		VALUES (shareplan_seq.nextVal, #{plannum}, #{member1}, #{member2}, #{member3}, #{writer})
 	</insert>
 
 	<update id="update" parameterType="plan">

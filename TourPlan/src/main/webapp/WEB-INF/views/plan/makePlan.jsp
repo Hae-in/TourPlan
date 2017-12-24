@@ -3,6 +3,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
+	String membernum = "no";
+	if(session.getAttribute("membernum") == null) {}
+	else { membernum = (String) session.getAttribute("membernum"); }
 	PlanVO s_vo = (PlanVO) session.getAttribute("vo");
 	PlanVO vo = (PlanVO) request.getAttribute("plan");
 	String catenum = vo.getCategorynum();
@@ -370,6 +373,60 @@ div#redips-drag #table1 div {
 </style>
 </head>
 <body>
+
+<!-- Modal -->
+  <div class="modal fade" id="imageModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">썸네일 이미지</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div id="imageBody" class="modal-body">
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- Modal End -->
+
+<!-- Modal -->
+  <div class="modal fade" id="shareModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">공유하기</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div id="shareBody" class="modal-body">
+        	공유는 최대 3명과 가능합니다
+        	<form action="../plan/share.do" onsubmit="saveTable();">
+        		<input type="hidden" name="writer" value="<%=membernum%>"/>
+        		<input type="hidden" name="plan_num" value="<%=vo.getPlannum()%>"/>
+        		<table>
+        			<tr>
+        				<td>공유할 친구 ID : <input type="text" name="id1"></td>
+        			</tr>
+        			<tr>
+        				<td>공유할 친구 ID : <input type="text" name="id2"></td>
+        			</tr>
+        			<tr>
+        				<td>공유할 친구 ID : <input type="text" name="id3"></td>
+        			</tr>
+        			<tr>
+        				<td><button>공유하기</button></td>
+        			</tr>
+        		</table>
+        	</form>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- Modal End -->
+
 	<div class="header">
 		<input type="text" id="planname" placeholder="${plan.planname}"/>
 		<div class="divContents">
@@ -524,8 +581,8 @@ div#redips-drag #table1 div {
 					</div>
 				</div>
 				<div id="divBtns">
-					<button id="saveTable" type="button">저장(plan, platable업데이트)</button>
-					<button type="button" onclick="window.open('<c:url value='/'/>planTable/shareView.do')">공유하기</button>
+					<button type="button" onclick="saveTable();">저장(plan, platable업데이트)</button>
+					<button type="button" data-toggle='modal' data-target='#shareModal'>공유하기</button>
 					<button type="button">취소</button>
 				</div>
 			</div>
@@ -533,6 +590,9 @@ div#redips-drag #table1 div {
 	</div>
 	
 <script>
+var isSave = false;
+var planTableNum = "";
+
 function imageAdd(){
 	if($("#upload img").length == 0) {
 		$("#frm_img").ajaxForm({
@@ -573,7 +633,7 @@ function imageAdd(){
 	}
 }
 
-$("#saveTable").click(function() {
+function saveTable() {
 	var parameter = "["; 
 	//★★★day구해야!!
 	var day = 3;
@@ -586,11 +646,20 @@ $("#saveTable").click(function() {
 			if($("[day='"+i+"'][tr='"+j+"'] div").length == 0) {}
 			else {
 				var div_id = $("[day='"+i+"'][tr='"+j+"'] div").attr("id");
-				divide_place = div_id.split("_")[1];
+				var divide_place = div_id.split("_")[1];
+				var test = "day="+i+"&tr="+j+"&placenum="+divide_place+"&plannum=<%=now_plannum%>";
+				if(isSave==true) {
+					test += "&plantablenum="+planTableNum;
+				}
+				<%-- var test = "{\"day\":\""+i+"\",\"tr\":\""+j+"\",\"placenum\":\""+divide_place+"\",\"plannum\":\""+"<%=now_plannum%>"+"\"}"; --%>
+				console.log(test);
+				
+				<%-- var div_id = $("[day='"+i+"'][tr='"+j+"'] div").attr("id");
+				var divide_place = div_id.split("_")[1];
 				p += "\"day\":\""+i+"\", \"tr\":\""+j+"\", \"placenum\":\""+divide_place+"\", " + 
 				"\"plannum\":\"<%=now_plannum%>\"},";
 				console.log("param : " + p);
-				parameter += p;
+				parameter += p; --%>
 			}
 		}
 	}
@@ -600,20 +669,49 @@ $("#saveTable").click(function() {
 	parameter += "]";
 	
 	//★plan update ajax도		JSON.stringify({data:gridData})
-	$.ajax({
-	    url         : '../planTableAjax/planInsert'
-	   ,type        : 'POST'
-	   ,data        : parameter
-	   ,dataType    : 'json'
-	   ,success     : function(result) {
-	       if ( result == true ) {
-	    	   alert("성공");
-	       }
-	   }
-	   ,error: function(result) {
-	   }
-	});
-});
+	if(isSave == true) {
+		$.ajax({
+		    url         : '../planTableAjax/planUpdate'
+		   ,type        : 'POST'
+		   ,data        : test
+		   ,dataType    : 'text'
+		   ,success     : function(data,status) {
+		       if (status =="success") {
+		    	   if(data == true) {
+			    	   	alert("저장 성공"); }
+		    	   else {
+			    		alert("저장에 실패했습니다"); }
+	    		   isSave = true;
+	   		   } else { alert("에러발생 관리자에게 문의하세요") }
+	   		}
+		   	,error: function(result) {
+	   		}
+		});
+	} else {
+	
+		$.ajax({
+		    url         : '../planTableAjax/planInsert'
+		   ,type        : 'POST'
+		   ,data        : test
+		   ,dataType    : 'text'
+		   ,success     : function(data,status) {
+		       if (status =="success") {
+		    	   if(data == true) {
+			    	   	alert("저장 성공 ");
+			    	   	alert(data);
+			    	   	planTableNum = data }
+		    	   else {
+			    		alert("저장에 실패했습니다"); 
+			    		alert(data);
+			    	   	planTableNum = data }
+	    		   isSave = true;
+	   		   } else { alert("에러발생 관리자에게 문의하세요") }
+	   		}
+		   ,error: function(result) {
+	   		}
+		});
+	} //else
+}
 
 </script>
 	

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.yedam.tourplan.plan.service.PlanSearchVO;
 import com.yedam.tourplan.plan.service.PlanService;
 import com.yedam.tourplan.plan.service.PlanVO;
+import com.yedam.tourplan.plan.service.SharePlanVO;
 
 @Service
 public class PlanServiceImpl implements PlanService {
@@ -57,8 +58,17 @@ public class PlanServiceImpl implements PlanService {
 	public PlanVO selectSeq(PlanVO vo) {
 		return planDAO.selectSeq(vo);
 	}
+
+	@Override
+	public int insertShare(Map<String, String> map) {
+		return planDAO.insertShare(map);
+	}
+
+	@Override
+	public List<SharePlanVO> selectShare(SharePlanVO vo) {
+		return planDAO.selectShare(vo);
+	}
 	
 	//임시
-	
 	
 }

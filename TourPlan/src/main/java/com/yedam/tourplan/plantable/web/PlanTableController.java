@@ -16,6 +16,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.yedam.tourplan.plan.service.PlanSearchVO;
+import com.yedam.tourplan.plan.service.PlanVO;
 import com.yedam.tourplan.plantable.service.PlanTableVO;
 import com.yedam.tourplan.post.service.PostService;
 
@@ -41,13 +43,14 @@ public class PlanTableController {
 		return "planTable/planTableView_dragdrop3";
 	}
 	
-	@RequestMapping("/planTable/shareView.do")
+	@RequestMapping("/plan/shareView.do")
 	public String shareView(PlanTableVO vo, Model model, HttpSession session
 			, HttpServletRequest request
 			, HttpServletResponse response) {
-		//★★★추후 없애야
-		vo.setPlannum("2");
-		session.setAttribute("vo", vo);
+		//makePlan : PlanVO || plan, shareView, post : PlanVO로 vo받음
+		PlanVO num_vo = new PlanVO();
+		num_vo.setPlannum(vo.getPlannum());
+		session.setAttribute("vo", num_vo);
 		
 		return "plan/shareView";
 	}

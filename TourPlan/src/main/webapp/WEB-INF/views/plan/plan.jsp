@@ -1,9 +1,16 @@
-<%@page import="com.yedam.tourplan.plan.service.PlanSearchVO"%>
+<%@page import="com.yedam.tourplan.plan.service.PlanVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <% 
 	response.setHeader("P3P","CP='CAO PSA CONi OTR OUR DEM ONL'"); 
-	PlanSearchVO vo = (PlanSearchVO) session.getAttribute("vo");
+	PlanVO vo = (PlanVO) session.getAttribute("vo");
+	String memberid = (String) session.getAttribute("memberid");
+	String myPlan = "no";
+	String writer = vo.getId();
+	String state = vo.getState();
+	if(writer.equals(memberid) && state.equals("0"))	{
+		myPlan = "yes";
+	} else { }
 %>
 <!DOCTYPE html>
 <html>
@@ -16,8 +23,14 @@
 <script type="text/javascript" src="<c:url value='/'/>resources/js/script.js?v=<%=System.currentTimeMillis()%>"></script>
 <script src='<c:url value='/'/>resources/js/jquery.form.min.js'></script>
 <script>
-var plannum = <%=vo.getPlannum()%>;
+var plannum = "<%=vo.getPlannum()%>";
+var myPlan = "<%=myPlan%>";
+$("#myUpdate").hide();
 $(function(){
+	if(myPlan == "yes") {
+		$("#myUpdate").show();
+	}
+	
 	// Get the element with id="defaultOpen" and click on it
 	document.getElementById("defaultOpen").click();
 		
@@ -541,7 +554,8 @@ div#redips-drag #table1 div {
 					</div>
 				</div>
 				<div id="divBtns">
-					<span data-toggle='modal' data-target='#planModal' style="cursor: pointer; background: white;">이 일정 수정하기</span>
+					<span data-toggle='modal' data-target='#planModal' style="cursor: pointer; background: white;">이 일정 참고하기</span>
+					<span id="myUpdate">내 일정 수정하기</span>
 				</div>
 			</div>
 		</div>

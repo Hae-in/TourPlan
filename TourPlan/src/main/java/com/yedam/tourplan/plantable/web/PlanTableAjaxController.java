@@ -54,10 +54,31 @@ public class PlanTableAjaxController {
 		return true;
 	}*/
 	
-	@RequestMapping("planInsert")
+	//★★★list로 받는거 몰라서 vo로 받게 테스트
+	@RequestMapping(value="planInsert", method=RequestMethod.POST)
 	@ResponseBody
-	public boolean planInsert(@RequestParam(value="PlanTableVO") List<PlanTableVO> list) throws Exception {
-		System.out.println("list의 사이즈 : " + list.size());
-		return true;
+	public String planInsert(PlanTableVO vo) {
+		//★테스트용 안돼서 2개다 그냥 넘김
+		vo.setFix("0");
+		vo.setSortnum("5");
+		vo.setStaytime("30");
+		if(planTableService.insert(vo))
+			return vo.getPlantablenum();
+		else {
+			return vo.getPlantablenum();
+		}
+		
+	}
+	
+	//★★★list로 받는거 몰라서 vo로 받게 테스트
+	@RequestMapping(value="planUpdate", method=RequestMethod.POST)
+	@ResponseBody
+	public boolean planUpdate(PlanTableVO vo) {
+		//★테스트용
+		vo.setFix("0");
+		vo.setSortnum("5");
+		vo.setStaytime("30");
+		
+		return planTableService.update(vo);
 	}
 }

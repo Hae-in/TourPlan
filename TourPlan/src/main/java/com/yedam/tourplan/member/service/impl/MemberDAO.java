@@ -1,6 +1,7 @@
 package com.yedam.tourplan.member.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,10 @@ public class MemberDAO {
 		
 		public List<MemberVO> selectAll(MemberSearchVO vo) {
 			return mybatis.selectList("MemberDAO.selectAll", vo);
+		}
+		
+		public List<MemberVO> selectShare(Map<String, String> map) {
+			return mybatis.selectList("MemberDAO.selectShare", map);
 		}
 		
 		public MemberVO select(MemberSearchVO vo) {
