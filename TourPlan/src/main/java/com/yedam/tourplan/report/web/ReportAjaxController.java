@@ -23,4 +23,10 @@ public class ReportAjaxController {
 	public List<ReportVO> selectAll(ReportSearchVO vo) {
 		return reportService.selectAll(vo);
 	}
+	
+	@RequestMapping("insertPlan")
+	@ResponseBody
+	public boolean insertPlan(ReportVO vo) {
+		return reportService.insertPlan(vo);
+	}
 }

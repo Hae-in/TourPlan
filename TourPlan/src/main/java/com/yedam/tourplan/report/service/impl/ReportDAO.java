@@ -6,9 +6,6 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.yedam.tourplan.plan.service.PlanVO;
-import com.yedam.tourplan.plantable.service.PlanTableVO;
-import com.yedam.tourplan.post.service.PostVO;
 import com.yedam.tourplan.report.service.ReportSearchVO;
 import com.yedam.tourplan.report.service.ReportVO;
 
@@ -23,9 +20,18 @@ public class ReportDAO {
 		return mybatis.selectList("ReportDAO.selectAll", vo);
 	}
 
-	// insert
-	public boolean insert(ReportVO vo) {
-		int r = mybatis.insert("ReportDAO.insert", vo);
+	// insert Place
+	public boolean insertPlace(ReportVO vo) {
+		int r = mybatis.insert("ReportDAO.insertPlace", vo);
+		if (r>0)
+			return true;
+		else
+			return false;
+	}
+	
+	// insert Plan
+	public boolean insertPlan(ReportVO vo) {
+		int r = mybatis.insert("ReportDAO.insertPlan", vo);
 		if (r>0)
 			return true;
 		else

@@ -19,12 +19,14 @@ package com.yedam.tourplan.member.service;
 		private String member_img1;
 		private String member_img2;
 		private String member_img3;*/
+		
 		private String membernum;
 		private String id;
 		private String password;
 		private String regdate;
 		private String state;
 		private String nickname;
+		
 		public String getMembernum() {
 			return membernum;
 		}

@@ -453,14 +453,13 @@ div#redips-drag #table1 div {
 			<div class="column divNav" style="background-color:#aaa;">
 				<div id="left">
 					<div id="innerLeft">
-						<table id="table1" border="1">
-							<colgroup id="colgroup">
-								<col width="180px"/>
-							</colgroup>
-							<tbody id="tbody">
-								
-							</tbody>
-						</table>
+						<div id="profile">
+							<c:if test="${not empty m_picture}">
+								<img src="<c:url value='/'/>resources/images/${m_picture[0].realfilename}" width='100px' height='100px' style='border-radius: 20px;'>
+							</c:if>
+						</div>
+						사용자 정보 : ${writer.id}<br>
+						${writer.nickname}
 					</div>
 				</div>
 			</div>

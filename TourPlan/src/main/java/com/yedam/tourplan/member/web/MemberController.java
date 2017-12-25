@@ -1,21 +1,22 @@
 package com.yedam.tourplan.member.web;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.yedam.tourplan.files.service.FilesService;
+import com.yedam.tourplan.files.service.FilesVO;
 import com.yedam.tourplan.member.service.MemberSearchVO;
 import com.yedam.tourplan.member.service.MemberService;
-import com.yedam.tourplan.member.service.MemberVO;
 
 @Controller
 @RequestMapping("/member/")
 public class MemberController {
 	@Autowired
 	MemberService memberService;
+	@Autowired
+	FilesService filesService;
 
 	@RequestMapping("selectAll.do")
 	public String selectAll(MemberSearchVO vo, Model model) {
@@ -25,6 +26,10 @@ public class MemberController {
 	
 	@RequestMapping("select.do")
 	public String Mypage(MemberSearchVO vo, Model model) {
+		FilesVO f_vo = new FilesVO();
+		f_vo.setTablename("member");
+		f_vo.setTablenum(vo.getMembernum());
+		model.addAttribute("m_picture", filesService.selectAll(f_vo));
 		model.addAttribute("member", memberService.select(vo));
 		return "member/myPage/myPage";
 	}

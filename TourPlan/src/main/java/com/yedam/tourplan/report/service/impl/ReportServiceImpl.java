@@ -21,8 +21,13 @@ public class ReportServiceImpl implements ReportService {
 	}
 
 	@Override
-	public boolean insert(ReportVO vo) {
-		return reportDAO.insert(vo);
+	public boolean insertPlace(ReportVO vo) {
+		return reportDAO.insertPlace(vo);
+	}
+
+	@Override
+	public boolean insertPlan(ReportVO vo) {
+		return reportDAO.insertPlan(vo);
 	}
 
 	@Override

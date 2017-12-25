@@ -19,10 +19,17 @@
 			ORDER BY REPORTNUM
 	</select>
 	
-	<insert id="insert" parameterType="report">
+	<insert id="insertPlace" parameterType="report">
 		<![CDATA[
-			INSERT INTO REPORT (REPORTNUM, PLACENUM, MEMBERNUM, REPORTDATE, PLANNUM, STATE, REPORTCONTENT)
-			VALUES (rep_seq.nextVal, #{placenum}, #{membernum}, sysdate, #{plannum}, #{state}, #{reportcontent})
+			INSERT INTO REPORT (REPORTNUM, PLACENUM, MEMBERNUM, REPORTDATE, STATE, REPORTCONTENT)
+			VALUES (rep_seq.nextVal, #{placenum}, #{membernum}, sysdate, '1', #{reportcontent})
+		]]>
+	</insert>
+	
+	<insert id="insertPlan" parameterType="report">
+		<![CDATA[
+			INSERT INTO REPORT (REPORTNUM, PLANNUM, MEMBERNUM, REPORTDATE, STATE, REPORTCONTENT)
+			VALUES (rep_seq.nextVal, #{plannum}, #{membernum}, sysdate, '1', #{reportcontent})
 		]]>
 	</insert>
 	

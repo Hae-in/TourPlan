@@ -46,9 +46,9 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public boolean update(MemberVO vo) {
-		int r=memberDAO.insert(vo);
+		int r=memberDAO.update(vo);
 		if(r>0) {
-			return true;//성공
+			return true;
 		}
 		else {
 			return false;
@@ -57,7 +57,13 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public boolean delete(MemberVO vo) {
-		return false;
+		int r=memberDAO.delete(vo);
+		if(r>0) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 }

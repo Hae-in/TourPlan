@@ -47,23 +47,23 @@
 		update member
 		<set>
 			<if test="password != null and password != ''">
-				password = #{password},
+				password = #{password}
 			</if>
 			<if test="state != null and state != ''">
-				state = #{state},
+				state = #{state}
 			</if>
 			<if test="nickname != null and nickname != ''">
-				nickname = #{nickname},
+				nickname = #{nickname}
 			</if>
 			
 		</set>
-		where memberNum = #{membernum}
+		where membernum = #{membernum}
 	</update>
 
 	<delete id="delete" parameterType="member">
 		<![CDATA[
 		delete from member
-		where memberNum = #{membernum}
+		where membernum = #{membernum}
 		]]>
 	</delete>
 </mapper>

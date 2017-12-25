@@ -10,14 +10,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.yedam.tourplan.likeplan.service.LikeplanService;
-import com.yedam.tourplan.likeplan.service.LikeplanVO;
+import com.yedam.tourplan.files.service.FilesService;
+import com.yedam.tourplan.files.service.FilesVO;
+import com.yedam.tourplan.member.service.MemberSearchVO;
 import com.yedam.tourplan.member.service.MemberService;
 import com.yedam.tourplan.member.service.MemberVO;
 import com.yedam.tourplan.plan.service.PlanSearchVO;
@@ -33,11 +33,21 @@ public class PlanController {
 	PlanService planService;
 	@Autowired
 	MemberService memberService;
+	@Autowired
+	FilesService filesService;
 	
 	@RequestMapping("select.do")
 	public String select(PlanSearchVO vo, Model model) {
 		String keyword = vo.getKeyword();
 		PlanVO s_vo = planService.select(vo);
+		
+		MemberSearchVO temp = new MemberSearchVO();
+		temp.setId(s_vo.getId());
+		MemberVO m_vo = memberService.select(temp);
+		
+		FilesVO f_vo = new FilesVO();
+		f_vo.setTablename("member");
+		f_vo.setTablenum(m_vo.getMembernum());
 		
 		try {
 			SimpleDateFormat format = new SimpleDateFormat("yyyy/mm/dd");  
@@ -53,7 +63,10 @@ public class PlanController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		model.addAttribute("m_picture", filesService.selectAll(f_vo));
 		model.addAttribute("plan" , s_vo);
+		model.addAttribute("writer", m_vo);
 		
 		if(keyword == null || keyword.equals("")) {
 			return "plan/plan";

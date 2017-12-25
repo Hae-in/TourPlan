@@ -4,7 +4,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>    
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <% 
-	PlanVO vo = (PlanVO) session.getAttribute("vo");
+	PlanVO vo = (PlanVO) request.getAttribute("vo");
 %>    
 <!DOCTYPE html>
 <html>
