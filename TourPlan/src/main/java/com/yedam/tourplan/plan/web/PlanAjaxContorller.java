@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,6 +21,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.yedam.tourplan.files.service.FilesService;
 import com.yedam.tourplan.files.service.FilesVO;
+import com.yedam.tourplan.likeplan.service.LikeplanService;
+import com.yedam.tourplan.likeplan.service.LikeplanVO;
 import com.yedam.tourplan.plan.service.PlanSearchVO;
 import com.yedam.tourplan.plan.service.PlanService;
 import com.yedam.tourplan.plan.service.PlanVO;
@@ -33,6 +36,8 @@ public class PlanAjaxContorller {
 	FilesService filesService;
 	@Autowired
 	PlanService planService;
+	@Autowired
+	LikeplanService likeplanService;
 	
 	//전체조회
 	@RequestMapping("selectAll")
@@ -40,6 +45,42 @@ public class PlanAjaxContorller {
 	public List<PlanVO> selectAll(PlanSearchVO vo) {
 		List<PlanVO> planList = planService.selectAll(vo); 
 		return planList;
+	}
+	
+	//plan등록
+	@RequestMapping("insert")
+	@ResponseBody
+	public String insert(PlanVO vo) {
+		String image_num = vo.getImagename();
+		planService.insert(vo);
+
+		PlanVO seq_vo = planService.selectSeq(null);
+		
+		//likecount가 0이되면 들어가지 않아 기본값 1을 줌
+		LikeplanVO lp_vo = new LikeplanVO();
+		lp_vo.setplannum(seq_vo.getPlannum());
+		//lp_vo.setplannum(vo.getPlannum());
+		lp_vo.setMembernum("1");
+		likeplanService.insert(lp_vo);
+		
+		FilesVO f_vo = new FilesVO();
+		f_vo.setTablenum(seq_vo.getPlannum());
+		f_vo.setFilenum(image_num);
+		filesService.update(f_vo);
+		
+		return seq_vo.getPlannum();
+	}
+	
+	//plan 수정
+	@RequestMapping("update")
+	@ResponseBody
+	public String update(PlanVO vo) {
+		int r = planService.update(vo);
+		if(r>0)
+			return vo.getPlannum();
+		else
+			return null;
+		
 	}
 	
 	// 이미지 등록
@@ -62,26 +103,32 @@ public class PlanAjaxContorller {
 						String realFileName = System.currentTimeMillis() + uploadFile.getOriginalFilename();
 						uploadFile.transferTo(new File(UPLOAD_LOCATION, realFileName));
 
-						// FileVO에 업로드한 파일명과 파일크기 등을 저장
 						FilesVO fileVo = new FilesVO();
-						fileVo.setTablename("plan");
-						fileVo.setTablenum(vo.getPlannum());
-						fileVo.setFilename(uploadFile.getOriginalFilename());
-						fileVo.setRealfilename(realFileName);
-						fileVo.setFilesize(Long.toString(uploadFile.getSize()));
-						
+
 						if(vo.getPlanname() == null) {
+							fileVo.setTablename("plan");
+							fileVo.setTablenum(vo.getPlannum());
+							fileVo.setFilename(uploadFile.getOriginalFilename());
+							fileVo.setRealfilename(realFileName);
+							fileVo.setFilesize(Long.toString(uploadFile.getSize()));
 							filesService.insert(fileVo);
+						} else if(vo.getPlanname().equals("otherUp")) { 
+							fileVo.setRealfilename(realFileName);
+							fileVo.setTablenum(vo.getPlannum());
+							filesService.updateName(fileVo);
 						} else {
+							fileVo.setRealfilename(realFileName);
+							fileVo.setFilenum(vo.getPlannum());
 							filesService.updateName(fileVo);
 						}
 						
 						map.put("code", "success");
+						map.put("imageNum", fileVo.getFilenum());
 						map.put("imageName", realFileName);
 					}
 				}
 			}
 
 			return map;
-			}
+		}
 }

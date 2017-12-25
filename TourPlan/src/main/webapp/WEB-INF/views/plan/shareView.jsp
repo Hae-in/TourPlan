@@ -4,7 +4,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <% 
 	response.setHeader("P3P","CP='CAO PSA CONi OTR OUR DEM ONL'"); 
-	PlanVO vo = (PlanVO) session.getAttribute("vo");
+	PlanVO vo = (PlanVO) request.getAttribute("vo");
 %>
 <!DOCTYPE html> 
 <html>
@@ -306,6 +306,15 @@ div#redips-drag #table1 div {
   border: 1px solid #ddd;
   margin-bottom: 12px;
 }
+
+#trashTb {
+	width: 100%;
+	height: 50px;
+	margin-bottom: 10px;
+	text-align: center;
+	background-color: #DC4C46;
+	color: #fff;
+}
 </style>
 </head>
 <body>
@@ -357,6 +366,9 @@ div#redips-drag #table1 div {
 				<div id="left">
 					<input type="text" class="searchInput" id="searchInput-region" onkeyup="searchRegionFunction()" placeholder="Search.." title="Type in a name">
 					<!-- <input type="text" class="searchInput" id="searchInput-place" onkeyup="searchPlaceFunction()" placeholder="Search for place.." title="Type in a name"> -->
+					<table id="trashTb">
+						<tr><td class="redips-trash" title="Trash" id="trashTD"><h3><strong>Trash</strong></h3></td></tr>
+					</table>
 					<table id="table1" border="1">
 						<colgroup id="colgroup">
 							<col width="180px"/>
@@ -576,7 +588,8 @@ div#redips-drag #table1 div {
 			break;
 		case "delete":
 			console.log("delete의 plantablenum : " + msg.plantablenum);
-			$("#"+ msg.day + "a" + msg.tr).empty();
+			console.log("delete의 placenum : " + msg.placenum);
+			$("#place_" + msg.placenum + "_" + msg.plantablenum).parent().empty();
 			break;
 		}
 

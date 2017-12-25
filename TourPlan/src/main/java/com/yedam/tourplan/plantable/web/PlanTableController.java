@@ -43,15 +43,21 @@ public class PlanTableController {
 		return "planTable/planTableView_dragdrop3";
 	}
 	
-	@RequestMapping("/plan/shareView.do")
+	@RequestMapping("/planTable/shareView.do")
 	public String shareView(PlanTableVO vo, Model model, HttpSession session
 			, HttpServletRequest request
 			, HttpServletResponse response) {
 		//makePlan : PlanVO || plan, shareView, post : PlanVO로 vo받음
 		PlanVO num_vo = new PlanVO();
 		num_vo.setPlannum(vo.getPlannum());
-		session.setAttribute("vo", num_vo);
+		request.setAttribute("vo", num_vo);
 		
 		return "plan/shareView";
 	}
+	
+	@RequestMapping("planTable/makePlan.do")
+	public String makePlan() {
+		return "plan/makePlan";
+	}
+	
 }

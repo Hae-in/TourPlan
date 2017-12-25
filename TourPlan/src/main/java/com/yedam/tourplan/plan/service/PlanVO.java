@@ -1,7 +1,5 @@
 package com.yedam.tourplan.plan.service;
 
-import java.util.Date;
-
 public class PlanVO {
 	private String plannum;
 	private String planname;
@@ -18,7 +16,7 @@ public class PlanVO {
 	private String imagename;
 	private String likecnt;
 	private String likemy;
-	private String isupdate;
+	private String day;
 	
 	public String getPlannum() {
 		return plannum;
@@ -110,11 +108,12 @@ public class PlanVO {
 	public void setLikemy(String likemy) {
 		this.likemy = likemy;
 	}
-	public String getIsupdate() {
-		return isupdate;
+	public String getDay() {
+		return day;
 	}
-	public void setIsupdate(String isupdate) {
-		this.isupdate = isupdate;
+	public void setDay(String day) {
+		this.day = day;
 	}
 }
+
 

@@ -3,15 +3,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
-	String old_plannum = "no";
-	String catenum = "";
-	String isopen = "";
-	PlanVO old_vo = (PlanVO) request.getAttribute("vo");
-	if(old_vo != null) {
-		catenum = old_vo.getCategorynum();
-		isopen = old_vo.getIsopen();
-		old_plannum = old_vo.getPlannum();
-	}
+	PlanVO vo = (PlanVO) request.getAttribute("vo");
+	String catenum = vo.getCategorynum();
+	String isopen = vo.getIsopen();
+	String plannum = vo.getPlannum();
 %>
 <!DOCTYPE html>
 <html>
@@ -24,8 +19,7 @@
 <script type="text/javascript" src="../resources/js/drag.js"></script>
 <script src='<c:url value='/'/>resources/js/jquery.form.min.js'></script>
 <script>
-var oldPlannum = "<%=old_plannum%>";
-
+var plan_num = "<%=plannum%>";
 	$(function(){
 		document.getElementById("defaultOpen").click();
 		
@@ -42,49 +36,48 @@ var oldPlannum = "<%=old_plannum%>";
 			}
 		});
 		
-		if(oldPlannum == "no"){
-			console.log("새로만드는일정"); }
-		else {
-			console.log("이전일정참고");
-			//이미 들어가있는 일정 불러오기
-			var param = "plannum=" + oldPlannum;
-			$.ajax({
-				url : "../placeAjax/selectAll.do",
-				dataType : "json",
-				success : function(data_place) {
+		//이미 들어가있는 일정 불러오기
+		var param = "plannum=" + plan_num;
+		$.ajax({
+			url : "../placeAjax/selectAll.do",
+			dataType : "json",
+			success : function(data_place) {
 				
-				$.getJSON("../planTableAjax/selectPT", param, function(data,status){
-					if(status =="success" ) {
-						if( data.length > 0) {
-							for(i=0; i<data.length; i++) {
-								for(j=0; j<data_place.length; j++) {
-									if(data[i].placenum == data_place[j].placenum) {
-										break;
-									}
-								}
-								var div = "<div id='place_" + data[i].placenum + "_" + data[i].plantablenum + "' class='redips-drag'>" + data_place[j].placename + "<br>" + data_place[j].city + ", " + data_place[j].country+ "</div>";
-								 $(div).appendTo($("#" + data[i].day + "a" + data[i].tr));
-							}
+			$.getJSON("../planTableAjax/selectPT", param, function(data,status){
+				if(status =="success" ) {
+					if( data.length > 0) {
+						if(data[0].imagename != null) {
+							var img = "<img id='topimg' src='<c:url value='/'/>resources/images/" + data[0].imagename + "' width='100px' style='cursor: pointer;' data-toggle='modal' data-target='#imageModal'>";
+							$(img).appendTo($("#upload"));
+							img = "<img id='topimg' src='<c:url value='/'/>resources/images/" + data[0].imagename + "' width='100%'>";
+							$(img).appendTo($("#imageBody"));
 						}
-					} else {
-						alert(status);
+						for(i=0; i<data.length; i++) {
+							for(j=0; j<data_place.length; j++) {
+								if(data[i].placenum == data_place[j].placenum) {
+									break;
+								}
+							}
+							var div = "<div id='place_" + data[i].placenum + "_" + data[i].plantablenum + "' class='redips-drag'>" + data_place[j].placename + "<br>" + data_place[j].city + ", " + data_place[j].country+ "</div>";
+							 $(div).appendTo($("#" + data[i].day + "a" + data[i].tr));
+						}
 					}
-				});
-			  }
+				} else {
+					alert(status);
+				}
 			});
+		  }
+		});
 
-			$("#sel > option[value='<%=catenum%>']").attr("selected", "true");
-			var isopen = "<%=isopen%>";
-			if(isopen == "1") {
-				$("#isopen_ck").prop("checked", "true");
-			}
-			
-		}//else
+		$("#sel > option[value='<%=catenum%>']").attr("selected", "true");
+		var isopen = "<%=isopen%>";
+		if(isopen == "1") {
+			$("#isopen_ck").prop("checked", "true");
+		}
 		
 		$('#table2').find('div').each(function(i, e){
 			console.log($(this).text());
 		});
-		
 		
 	});
 	
@@ -552,11 +545,8 @@ div#redips-drag #table1 div {
 	</div>
 	
 <script>
-var isSave = false;
 var planTableNum = "";
-var plannum = "";
-var memberId = "<%=session.getAttribute("memberid")%>";
-var image_num = "";
+var planNum = "<%=vo.getPlannum()%>";
 
 //★★안됨
 function f5check() {
@@ -574,14 +564,13 @@ function imageAdd(){
 	if($("#upload img").length == 0) {
 		$("#frm_img").ajaxForm({
 			dataType:"json",
-			data : {plannum: plannum},
+			data : {plannum: planNum},
 			url:'../planAjax/insertImage',
 			success: function(result, textStatus){
 				if(result.code == 'success') {
 					alert("등록되었습니다.");
 					var post = "<img src='<c:url value='/'/>resources/images/" + result.imageName + "' width='100px'>";
 					$(post).appendTo($("#upload"));
-					image_num = result.imageNum;
 				}
 			},
 			error: function(){
@@ -590,11 +579,10 @@ function imageAdd(){
 			}
 		}).submit();
 	} else {
-		alert("이미지번호 : " + image_num);
 		$("#frm_img").ajaxForm({
 			dataType:"json",
-			data : {plannum: image_num,
-					planname: "update"},
+			data : {plannum: planNum,
+					planname: "otherUp"},
 			url:'../planAjax/insertImage',
 			success: function(result, textStatus){
 				if(result.code == 'success') {
@@ -613,60 +601,33 @@ function imageAdd(){
 }
 
 function savePlan() {
-	if(memberId == "" || memberId == null) {
-		return;
-	} else {
-	
 	if($("#isopen_ck:checked").val() == null) {} 
 	else { $("#isopen").val("1"); }
 
 	var param2 = "planname=" + $("#planname").val() + "&departuredate=" + $("#departuredate").val() + "&arrivaldate=" + $("#arrivaldate").val()
-	+ "&people=" + $("#people").val() + "&categorynum=" + $("#sel").val() + "&isopen=" + $("#isopen").val() + "&state=0&id=" + memberId + "&imagename=" + image_num;
+	+ "&people=" + $("#people").val() + "&categorynum=" + $("#sel").val() + "&isopen=" + $("#isopen").val() + "&state=0";
 	console.log("makePlan의 param값 : " + param2);
 	
-	if(isSave == true) {
-		param2 += "&plannum=" + plannum;
-		$.ajax({
-		    url         : '../planAjax/update'
-	   		,type        : 'GET'
-		   	,data        : param2
-	   		,dataType    : 'text'
-	   		,success     : function(data,status) {
-		       	if (status =="success") {
-		    	   	if(data.length > 0) {
-		    		   	alert("수정 성공");
-		    	   		alert("update한 plannum : " + data);
-		    	   		plannum = data;
-		    	   		saveTable();
-		    	   		}
-	   		   else {
-		    			alert("저장에 실패했습니다"); }
-   			   	} else { alert("에러발생 관리자에게 문의하세요") }
-   			}
-		  });
-	}
-	else {
-		$.ajax({
-		    url         : '../planAjax/insert'
-	   		,type        : 'GET'
-		   	,data        : param2
-	   		,dataType    : 'text'
-	   		,success     : function(data,status) {
-		       	if (status =="success") {
-		    	   	if(data.length > 0) {
-		    		   	alert("저장 성공");
-		    	   		alert("insert한 plannum : " + data);
-		    	   		plannum = data;
-		    	   		saveTable();
-		    	   		}
-	   		   else {
-		    			alert("저장에 실패했습니다"); }
-   			   	} else { alert("에러발생 관리자에게 문의하세요") }
-   			}
-		  });
-		}//esle
-	}//memberId check else
-}//savePlan()
+	param2 += "&plannum=" + planNum;
+	$.ajax({
+	    url         : '../planAjax/update'
+		,type        : 'GET'
+	   	,data        : param2
+	   	,dataType    : 'text'
+	   	,success     : function(data,status) {
+		   	if (status =="success") {
+		   	   	if(data.length > 0) {
+		   		   	alert("수정 성공");
+		   	   		alert("update한 plannum : " + data);
+		   	   		plannum = data;
+		   	   		saveTable();
+		   	   		}
+	   	   else {
+		   			alert("저장에 실패했습니다"); }
+   		   	} else { alert("에러발생 관리자에게 문의하세요") }
+   		}
+	 });
+}
 
 function saveTable() {
 	var parameter = "["; 
@@ -683,9 +644,6 @@ function saveTable() {
 				var div_id = $("[day='"+i+"'][tr='"+j+"'] div").attr("id");
 				var divide_place = div_id.split("_")[1];
 				var test = "day="+i+"&tr="+j+"&placenum="+divide_place+"&plannum=" + plannum;
-				if(isSave==true) {
-					test += "&plantablenum="+planTableNum;
-				}
 				<%-- var test = "{\"day\":\""+i+"\",\"tr\":\""+j+"\",\"placenum\":\""+divide_place+"\",\"plannum\":\""+"<%=now_plannum%>"+"\"}"; --%>
 				console.log(test);
 				
@@ -704,48 +662,22 @@ function saveTable() {
 	parameter += "]";
 	
 	//★plan update ajax도		JSON.stringify({data:gridData})
-	if(isSave == true) {
-		$.ajax({
-		    url         : '../planTableAjax/planUpdate'
-		   ,type        : 'POST'
-		   ,data        : test
-		   ,dataType    : 'text'
-		   ,success     : function(data,status) {
-		       if (status =="success") {
-		    	   if(data == true) {
-			    	   	alert("저장 성공"); }
-		    	   else {
-			    		alert("저장에 실패했습니다"); }
-	    		   isSave = true;
-	   		   } else { alert("에러발생 관리자에게 문의하세요") }
-	   		}
-		   	,error: function(result) {
-	   		}
-		});
-	} else {
-	
-		$.ajax({
-		    url         : '../planTableAjax/planInsert'
-		   ,type        : 'POST'
-		   ,data        : test
-		   ,dataType    : 'text'
-		   ,success     : function(data,status) {
-		       if (status =="success") {
-		    	   if(data == true) {
-			    	   	alert("저장 성공 ");
-			    	   	alert(data);
-			    	   	planTableNum = data }
-		    	   else {
-			    		alert("저장에 실패했습니다"); 
-			    		alert(data);
-			    	   	planTableNum = data }
-	    		   isSave = true;
-	   		   } else { alert("에러발생 관리자에게 문의하세요") }
-	   		}
-		   ,error: function(result) {
-	   		}
-		});
-	} //else
+	$.ajax({
+	    url         : '../planTableAjax/planUpdate'
+	   ,type        : 'POST'
+	   ,data        : test
+	   ,dataType    : 'text'
+	   ,success     : function(data,status) {
+	       if (status =="success") {
+	    	   if(data == true) {
+		    	   	alert("저장 성공"); }
+	    	   else {
+		    		alert("저장에 실패했습니다"); }
+4   		   } else { alert("에러발생 관리자에게 문의하세요") }
+   		}
+	   	,error: function(result) {
+   		}
+	});
 }
 
 </script>

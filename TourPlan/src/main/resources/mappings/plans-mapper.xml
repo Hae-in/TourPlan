@@ -16,8 +16,6 @@
 			<if test="period1 != null and period1 != ''">
 				ARRIVALDATE-DEPARTUREDATE+1 BETWEEN #{period1} AND
 				#{period2}
-				AND ISOPEN = '1'
-				AND STATE = '1'
 			</if>
 			<if test="city != null and city != ''">
 				AND P.PLANNUM IN (SELECT DISTINCT T.PLANNUM FROM PLANTABLE T
@@ -38,6 +36,12 @@
 			<if test="plannum_list != null and plannum_list != ''">
 				AND P.PLANNUM IN (${plannum_list})
 			</if>
+			<if test="isopen != null and isopen != ''">
+				AND ISOPEN = #{isopen}
+			</if>
+			<if test="state != null and state != ''">
+				AND STATE = #{state}
+			</if>
 		</where>
 		<choose>
 			<when test="plan_sort != null and plan_sort != ''">
@@ -50,7 +54,7 @@
 	</select>
 
 	<select id="select" parameterType="planSearch" resultType="plan">
-			SELECT *
+			SELECT PLANNUM, PLANNAME, TO_CHAR(DEPARTUREDATE, 'yyyy/mm/dd') "departuredate", TO_CHAR(ARRIVALDATE, 'yyyy/mm/dd') "arrivaldate", PEOPLE, CATEGORYNUM, ISOPEN, STATE, WRITEDATE, ID
 			FROM PLAN
 			WHERE PLANNUM = #{plannum}
 	</select>
@@ -78,8 +82,9 @@
 	</select>
 
 	<insert id="insert" statementType="CALLABLE" parameterType="plan">
-		insert into plan (plannum, planname, departuredate, arrivaldate, people, categorynum, isopen, state)
-		values (plan_seq.nextval, #{planname}, to_date(#{departuredate}, 'yy/mm/dd'), to_date(#{arrivaldate}, 'yy/mm/dd'), #{people}, #{categorynum}, #{isopen}, #{state})
+		insert into plan (plannum, planname, departuredate, arrivaldate, people, categorynum, isopen, state, id, writedate)
+		values (plan_seq.nextval, #{planname}, to_date(#{departuredate}, 'yy/mm/dd'), to_date(#{arrivaldate}, 'yy/mm/dd')
+				, #{people}, #{categorynum}, #{isopen}, #{state}, #{id}, sysdate)
 		<!-- { 	CALL PLAN_INS_PROC(
 			#{planname},
 			#{people},

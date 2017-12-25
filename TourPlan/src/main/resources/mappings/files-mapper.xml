@@ -17,19 +17,40 @@
 	</insert>
 	
 	<update id="update" parameterType="files">
-		update files set 
-			tablename = #{tablename},
-			tablenum = #{tablenum},
-			filename = #{filename},
-			realfilename = #{realfilename},
-			filesize = #{filesize}
+		update files
+		<set> 
+			<if test="tablename != null and tablename != ''">
+				tablename = #{tablename}
+			</if>
+			<if test="tablenum != null and tablenum != ''">
+				tablenum = #{tablenum}
+			</if>
+			<if test="filename != null and filename != ''">
+				filename = #{filename}
+			</if>
+			<if test="realfilename != null and realfilename != ''">
+				realfilename = #{realfilename}
+			</if>
+			<if test="filesize != null and filesize != ''">
+				filesize = #{filesize}
+			</if>
+		</set>
 		where filenum = #{filenum}			
 	</update>
 	
 	<update id="updateName" parameterType="files">
 		update files set realfilename = #{realfilename} 
-		where tablename = #{tablename}
-		and tablenum = #{tablenum}
+		<where>
+			<if test="tablename != null and tablename != ''">
+				tablename = #{tablename}
+			</if>
+			<if test="tablenum != null and tablenum != ''">
+				and tablenum = #{tablenum}
+			</if>
+			<if test="filenum != null and filenum != ''">
+				and filenum = #{filenum}
+			</if>
+		</where>
 	</update>		
 	
 	<delete id="delete">

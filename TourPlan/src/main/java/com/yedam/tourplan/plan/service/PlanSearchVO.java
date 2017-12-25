@@ -7,6 +7,7 @@ public class PlanSearchVO extends PlanVO {
 	private String city;
 	private String membernum;
 	private String plannum_list;
+	private String keyword;
 	
 	public String getPeriod1() {
 		return period1;
@@ -44,4 +45,11 @@ public class PlanSearchVO extends PlanVO {
 	public void setPlannum_list(String plannum_list) {
 		this.plannum_list = plannum_list;
 	}
+	public String getKeyword() {
+		return keyword;
+	}
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
+	}
 }
+

@@ -3,14 +3,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <% 
 	response.setHeader("P3P","CP='CAO PSA CONi OTR OUR DEM ONL'"); 
-	PlanVO vo = (PlanVO) session.getAttribute("vo");
-	String memberid = (String) session.getAttribute("memberid");
-	String myPlan = "no";
+	PlanVO vo = (PlanVO) request.getAttribute("plan");
+	String catenum = vo.getCategorynum();
+	String isopen = vo.getIsopen();
 	String writer = vo.getId();
 	String state = vo.getState();
-	if(writer.equals(memberid) && state.equals("0"))	{
-		myPlan = "yes";
-	} else { }
 %>
 <!DOCTYPE html>
 <html>
@@ -24,11 +21,12 @@
 <script src='<c:url value='/'/>resources/js/jquery.form.min.js'></script>
 <script>
 var plannum = "<%=vo.getPlannum()%>";
-var myPlan = "<%=myPlan%>";
-$("#myUpdate").hide();
 $(function(){
-	if(myPlan == "yes") {
-		$("#myUpdate").show();
+	
+	$("#sel > option[value='<%=catenum%>']").attr("selected", "true");
+	var isopen = "<%=isopen%>";
+	if(isopen == "1") {
+		$("#isopen_ck2").prop("checked", "true");
 	}
 	
 	// Get the element with id="defaultOpen" and click on it
@@ -87,6 +85,10 @@ $(function(){
 		evt.currentTarget.className += " active";
 	}
 
+	function isitok() {
+		if($("#isopen_ck:checked").val() == null) {
+		} else { $("#isopen").val("1"); }
+	}
 </script>
 <style>
 * {
@@ -370,7 +372,8 @@ div#redips-drag #table1 div {
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         <div id="planBody" class="modal-body">
-        	<form action="../plan/insert.do?isupdate=yes">
+        	<form action="../plan/modify.do" onsubmit="isitok();">
+        	<input type="hidden" name="plannum" value="<%=vo.getPlannum()%>">
         	<table>
         		<tr>
         			<td>여행제목</td> <td><input type="text" name="planname" value="간단한 소개"/></td>
@@ -395,10 +398,13 @@ div#redips-drag #table1 div {
 						  				</select></td>
         		</tr>
         		<tr>
-        			<td>공개여부</td> <td><input type="radio" id="openOK" name="isopen" value="1"><label for="openOK">공개</label></td>
+        			<td>공개여부</td>
+        			<td>
+        				<label class="switch"><input id="isopen_ck" type="checkbox" value="1"><span class="slider round"></span></label>
+        			</td>
         		</tr>
         		<tr>
-        			<td></td> <td><input type="radio" id="openNO" name="isopen" value="0"><label for="openNO">비공개</label></td>
+        			<td><input type="hidden" name="state" value="0"></td> <td><input id="isopen" type="hidden" name="isopen" value="0"></td>
         		</tr>
         		<tr>
         			<td colspan="2"><button>일정만들기</button></td>
@@ -411,41 +417,31 @@ div#redips-drag #table1 div {
   </div>
 <!-- Modal End -->
 
+
 	<div class="header">
-		<input type="text" id="planName" placeholder="아까 적은 여행제목 (수정가능)"/>
+		<input type="text" id="planName" placeholder="${plan.planname}"/>
 		<div class="divContents">
 			<div>
 				<table border="1">
 					<tr>
-						<td>출발일</td><td>일수</td><td>인원</td><td>여행테마</td><td>공개여부</td><td>이미지</td>
+						<td>출발일</td><td>일수</td><td>인원</td><td>여행테마</td><td>이미지</td>
 					</tr>
 					<tr>
-						<td><input type="text"></td>
-						<td><input type="text"></td>
-						<td><input type="text"></td>
+						<td>${plan.departuredate}</td>
+						<td>${plan.day}</td>
+						<td>${plan.people}</td>
 						<td>
-							<input class="planCate" type="button" value="나홀로여행">
-							<input class="planCate" type="button" value="친구와여행">
-							<input class="planCate" type="button" value="가족여행"> 
-							<input class="planCate" type="button" value="단체여행"> 
-							<input class="planCate" type="button" value="커플여행"> 
-							<input class="planCate" type="button" value="기타">
+							<select id="sel" name="categorynum">
+        						<option value="11">나홀로여행</option>
+								<option value="12">친구와여행</option>
+  				 				<option value="13">가족여행</option>
+			     				<option value="14">단체여행</option>
+			     				<option value="15">커플여행</option>
+			     				<option value="16">기타</option>
+			  				</select>
 						</td>
 						<td>
-							<div id="isopen">
-								<label class="switch"> 
-									<input type="checkbox"><span class="slider round"></span>
-								</label>
-							</div>
-						</td>
-						<td>
-							<!-- 이미지 업로드 -->
 							<div id="upload"></div>
-							<form id="frm_img" method="post" enctype="multipart/form-data">
-      							<input type="file" id="uploadFile" name="uploadFile" style="border: 1px solid grey"><br />
-      							<button type="button" onclick="imageAdd();">업로드</button>
-  							</form>
-							<!-- 이미지 업로드 -->	
 						</td>
 					</tr>
 				</table>
@@ -474,8 +470,7 @@ div#redips-drag #table1 div {
 					<button class="tablinks" onclick="openTab(event, 'planTab')" id="defaultOpen">지도/일정표</button>
 				</div>
 				<div id="storyTab" class="tabcontent">
-					<h3>storyTab</h3>
-					<p>storyTab is the capital city of England.</p>
+				<iframe src="<c:url value='/'/>post/select.do?plannum=<%=vo.getPlannum()%>" width="1000px" height="800px;" border="0"></iframe>
 				</div>
 				<div id="planTab" class="tabcontent">
 					<div id="googleMap" style="width: 100%; height: 400px;"></div>
@@ -555,11 +550,9 @@ div#redips-drag #table1 div {
 				</div>
 				<div id="divBtns">
 					<span data-toggle='modal' data-target='#planModal' style="cursor: pointer; background: white;">이 일정 참고하기</span>
-					<span id="myUpdate">내 일정 수정하기</span>
 				</div>
 			</div>
 		</div>
 	</div>
-	
 </body>
 </html>

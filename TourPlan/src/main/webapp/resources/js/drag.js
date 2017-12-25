@@ -62,6 +62,11 @@ redips.init = function () {
 	rd.event.clicked = function () {
 		redips.showAll();
 	};
+	
+	//안됨
+	rd.event.dblClicked = function(objOld) {
+		rd.deleteObject(objOld);
+	}
 };
 
 

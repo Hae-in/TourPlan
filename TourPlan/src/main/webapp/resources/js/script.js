@@ -71,11 +71,21 @@ redips.init = function () {
 		send("insert", "", plannum, day, 30, 5, 0, tr, placenum, child1, child2, "");
 	}
 	
-	// after element is deleted from the timetable, print message
+	// after element is deleted from the timetable, print message 
 	rd.event.deleted = function () {
-		console.log('delete!');
-		// show / hide report buttons
-		redips.reportButton();
+		if(rd.objOld.className.indexOf('redips-clone') > -1) { console.log("복제된"); }
+		else {
+			var arr2 = new Array();
+			var x_tr = rd.td.previous.getAttribute("id");
+			
+			arr2 = rd.objOld.getAttribute("id").split("_");
+			var placenum = arr2[1];
+			var plantablenum = arr2[2];
+			
+			console.log("plantablenum : " + plantablenum)
+			
+			send("delete", plantablenum, "", "", "", "", "", "", placenum, "", "", "");
+		}
 	};
 	
 	// if any element is clicked, then make all subjects in timetable visible

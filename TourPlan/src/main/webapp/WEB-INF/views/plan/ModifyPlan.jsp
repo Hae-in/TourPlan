@@ -3,15 +3,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
-	String old_plannum = "no";
-	String catenum = "";
-	String isopen = "";
-	PlanVO old_vo = (PlanVO) request.getAttribute("vo");
-	if(old_vo != null) {
-		catenum = old_vo.getCategorynum();
-		isopen = old_vo.getIsopen();
-		old_plannum = old_vo.getPlannum();
-	}
+	String membernum = "no";
+	if(session.getAttribute("membernum") == null) {}
+	else { membernum = (String) session.getAttribute("membernum"); }
+	PlanVO s_vo = (PlanVO) session.getAttribute("vo");
+	PlanVO vo = (PlanVO) request.getAttribute("plan");
+	String catenum = vo.getCategorynum();
+	String isopen = vo.getIsopen();
+	String now_plannum = vo.getPlannum();
 %>
 <!DOCTYPE html>
 <html>
@@ -22,11 +21,12 @@
 <!-- <link rel="stylesheet" href="../resources/css/dragdrop.css" type="text/css" media="screen"/> -->
 <script type="text/javascript" src="../resources/js/redips-drag-min.js"></script>
 <script type="text/javascript" src="../resources/js/drag.js"></script>
-<script src='<c:url value='/'/>resources/js/jquery.form.min.js'></script>
+<script src='<c:url value='/'/>resources/js/jquery-3.2.1.min.js'></script>
+<script src='<c:url value='/'/>resources/js/jquery-ui.min.js'></script>
 <script>
-var oldPlannum = "<%=old_plannum%>";
-
 	$(function(){
+		var plannum = "<%=s_vo.getPlannum()%>";
+		// Get the element with id="defaultOpen" and click on it
 		document.getElementById("defaultOpen").click();
 		
 		$.ajax({
@@ -37,25 +37,28 @@ var oldPlannum = "<%=old_plannum%>";
 				
 				for (i = 0; i < data.length; i++) {
 					console.log(data[i].imagename);
+					/* $("#tbody").append("<tr><td>"+data[i].imagename+"</td><td><div>"+data[i].placename+"</div><div>"+data[i].city+", "+data[i].country+"</div></td></tr>") */
 					$("#tbody").append("<tr><td class='redips-mark lunch'><img width='100px;' height='65px;' src='../resources/images/"+(data[i].imagename == null ? "null.jpg" : data[i].imagename) +"'></td><td class='dark'><div id='place_" + data[i].placenum + "_"+i+"' class='redips-drag redips-clone'>"+data[i].placename+"<br>"+data[i].city+", " +data[i].country+"</div></td></tr>");
 				}
 			}
 		});
 		
-		if(oldPlannum == "no"){
-			console.log("새로만드는일정"); }
-		else {
-			console.log("이전일정참고");
-			//이미 들어가있는 일정 불러오기
-			var param = "plannum=" + oldPlannum;
-			$.ajax({
-				url : "../placeAjax/selectAll.do",
-				dataType : "json",
-				success : function(data_place) {
+		//이미 들어가있는 일정 불러오기
+		var param = "plannum=" + plannum;
+		$.ajax({
+			url : "../placeAjax/selectAll.do",
+			dataType : "json",
+			success : function(data_place) {
 				
 				$.getJSON("../planTableAjax/selectPT", param, function(data,status){
 					if(status =="success" ) {
 						if( data.length > 0) {
+							if(data[0].imagename != null) {
+								var img = "<img id='topimg' src='<c:url value='/'/>resources/images/" + data[0].imagename + "' width='100px' style='cursor: pointer;' data-toggle='modal' data-target='#imageModal'>";
+								$(img).appendTo($("#upload"));
+								img = "<img id='topimg' src='<c:url value='/'/>resources/images/" + data[0].imagename + "' width='100%'>";
+								$(img).appendTo($("#imageBody"));
+							}
 							for(i=0; i<data.length; i++) {
 								for(j=0; j<data_place.length; j++) {
 									if(data[i].placenum == data_place[j].placenum) {
@@ -70,22 +73,18 @@ var oldPlannum = "<%=old_plannum%>";
 						alert(status);
 					}
 				});
-			  }
-			});
-
-			$("#sel > option[value='<%=catenum%>']").attr("selected", "true");
-			var isopen = "<%=isopen%>";
-			if(isopen == "1") {
-				$("#isopen_ck").prop("checked", "true");
 			}
-			
-		}//else
+		});
 		
 		$('#table2').find('div').each(function(i, e){
 			console.log($(this).text());
 		});
 		
-		
+		$("#sel > option[value='<%=catenum%>']").attr("selected", "true");
+		var isopen = "<%=isopen%>";
+		if(isopen == "1") {
+			$("#isopen_ck2").prop("checked", "true");
+		}
 	});
 	
 	function openTab(evt, tabName) {
@@ -119,6 +118,7 @@ var oldPlannum = "<%=old_plannum%>";
 			}       
 		}
 	}
+	
 </script>
 <style>
 * {
@@ -372,7 +372,7 @@ div#redips-drag #table1 div {
 
 </style>
 </head>
-<body onunload="f5check();">
+<body>
 
 <!-- Modal -->
   <div class="modal fade" id="imageModal" role="dialog">
@@ -391,8 +391,44 @@ div#redips-drag #table1 div {
   </div>
 <!-- Modal End -->
 
+<!-- Modal -->
+  <div class="modal fade" id="shareModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">공유하기</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div id="shareBody" class="modal-body">
+        	공유는 최대 3명과 가능합니다
+        	<form action="../plan/share.do" onsubmit="saveTable();">
+        		<input type="hidden" name="writer" value="<%=membernum%>"/>
+        		<input type="hidden" name="plan_num" value="<%=vo.getPlannum()%>"/>
+        		<table>
+        			<tr>
+        				<td>공유할 친구 ID : <input type="text" name="id1"></td>
+        			</tr>
+        			<tr>
+        				<td>공유할 친구 ID : <input type="text" name="id2"></td>
+        			</tr>
+        			<tr>
+        				<td>공유할 친구 ID : <input type="text" name="id3"></td>
+        			</tr>
+        			<tr>
+        				<td><button>공유하기</button></td>
+        			</tr>
+        		</table>
+        	</form>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- Modal End -->
+
 	<div class="header">
-		<input type="text" id="planname" value="${vo.planname}"/>
+		<input type="text" id="planname" placeholder="${plan.planname}"/>
 		<div class="divContents">
 			<div>
 				<table border="1">
@@ -400,9 +436,9 @@ div#redips-drag #table1 div {
 						<td>출발일</td><td>도착일</td><td>인원</td><td>여행테마</td><td>공개여부</td><td>이미지</td>
 					</tr>
 					<tr>
-						<td><input type="text" id="departuredate" name="departuredate" value="${vo.departuredate}"></td>
-						<td><input type="text" id="arrivaldate" name="arrivaldate" value="${vo.arrivaldate}"></td>
-						<td><input type="text" id="people" name="people" value="${vo.people}"></td>
+						<td><input type="text" name="departuredate" value="${plan.departuredate}"></td>
+						<td><input type="text" name="arrivaldate" value="${plan.arrivaldate}"></td>
+						<td><input type="text" name="people" value="${plan.people}"></td>
 						<td>
 							<select id="sel" name="categorynum">
         						<option value="11">나홀로여행</option>
@@ -416,10 +452,10 @@ div#redips-drag #table1 div {
 						<td>
 							<div>
 								<label class="switch"> 
-									<input id="isopen_ck" type="checkbox" name="is" value="1"><span class="slider round"></span>
+									<input id="isopen_ck2" type="checkbox" name="is" value="1"><span class="slider round"></span>
 								</label>
 									<!-- ★★★form넘기기전 confirm해야 -->
-									<input type="hidden" id="isopen" name="isopen" value="0">
+									<input type="hidden" name="isopen" value="0">
 							</div>
 						</td>
 						<td>
@@ -465,7 +501,8 @@ div#redips-drag #table1 div {
 					<button class="tablinks" onclick="openTab(event, 'planTab')" id="defaultOpen">지도/일정표</button>
 				</div>
 				<div id="storyTab" class="tabcontent">
-					<b>★★★story</b>
+					<h3>storyTab</h3>
+					<p>storyTab is the capital city of England.</p>
 				</div>
 				<div id="planTab" class="tabcontent">
 					<div id="googleMap" style="width: 100%; height: 400px;"></div>
@@ -544,7 +581,8 @@ div#redips-drag #table1 div {
 					</div>
 				</div>
 				<div id="divBtns">
-					<button type="button" onclick="savePlan();">저장하기</button>
+					<button type="button" onclick="saveTable();">저장(plan, platable업데이트)</button>
+					<button type="button" data-toggle='modal' data-target='#shareModal'>공유하기</button>
 					<button type="button">취소</button>
 				</div>
 			</div>
@@ -554,21 +592,6 @@ div#redips-drag #table1 div {
 <script>
 var isSave = false;
 var planTableNum = "";
-var plannum = "";
-var memberId = "<%=session.getAttribute("memberid")%>";
-var image_num = "";
-
-//★★안됨
-function f5check() {
-	alert("새로고침");
-	if(isSave == false) {
-		if(confirm("저장하지 않고 페이지이동시 일정이 삭제됩니다. 계속하시겠습니까?"))
-			return true;
-		else 
-			return false;
-	}
-	else {}
-}
 
 function imageAdd(){
 	if($("#upload img").length == 0) {
@@ -581,7 +604,6 @@ function imageAdd(){
 					alert("등록되었습니다.");
 					var post = "<img src='<c:url value='/'/>resources/images/" + result.imageName + "' width='100px'>";
 					$(post).appendTo($("#upload"));
-					image_num = result.imageNum;
 				}
 			},
 			error: function(){
@@ -590,10 +612,9 @@ function imageAdd(){
 			}
 		}).submit();
 	} else {
-		alert("이미지번호 : " + image_num);
 		$("#frm_img").ajaxForm({
 			dataType:"json",
-			data : {plannum: image_num,
+			data : {plannum: plannum,
 					planname: "update"},
 			url:'../planAjax/insertImage',
 			success: function(result, textStatus){
@@ -612,62 +633,6 @@ function imageAdd(){
 	}
 }
 
-function savePlan() {
-	if(memberId == "" || memberId == null) {
-		return;
-	} else {
-	
-	if($("#isopen_ck:checked").val() == null) {} 
-	else { $("#isopen").val("1"); }
-
-	var param2 = "planname=" + $("#planname").val() + "&departuredate=" + $("#departuredate").val() + "&arrivaldate=" + $("#arrivaldate").val()
-	+ "&people=" + $("#people").val() + "&categorynum=" + $("#sel").val() + "&isopen=" + $("#isopen").val() + "&state=0&id=" + memberId + "&imagename=" + image_num;
-	console.log("makePlan의 param값 : " + param2);
-	
-	if(isSave == true) {
-		param2 += "&plannum=" + plannum;
-		$.ajax({
-		    url         : '../planAjax/update'
-	   		,type        : 'GET'
-		   	,data        : param2
-	   		,dataType    : 'text'
-	   		,success     : function(data,status) {
-		       	if (status =="success") {
-		    	   	if(data.length > 0) {
-		    		   	alert("수정 성공");
-		    	   		alert("update한 plannum : " + data);
-		    	   		plannum = data;
-		    	   		saveTable();
-		    	   		}
-	   		   else {
-		    			alert("저장에 실패했습니다"); }
-   			   	} else { alert("에러발생 관리자에게 문의하세요") }
-   			}
-		  });
-	}
-	else {
-		$.ajax({
-		    url         : '../planAjax/insert'
-	   		,type        : 'GET'
-		   	,data        : param2
-	   		,dataType    : 'text'
-	   		,success     : function(data,status) {
-		       	if (status =="success") {
-		    	   	if(data.length > 0) {
-		    		   	alert("저장 성공");
-		    	   		alert("insert한 plannum : " + data);
-		    	   		plannum = data;
-		    	   		saveTable();
-		    	   		}
-	   		   else {
-		    			alert("저장에 실패했습니다"); }
-   			   	} else { alert("에러발생 관리자에게 문의하세요") }
-   			}
-		  });
-		}//esle
-	}//memberId check else
-}//savePlan()
-
 function saveTable() {
 	var parameter = "["; 
 	//★★★day구해야!!
@@ -682,7 +647,7 @@ function saveTable() {
 			else {
 				var div_id = $("[day='"+i+"'][tr='"+j+"'] div").attr("id");
 				var divide_place = div_id.split("_")[1];
-				var test = "day="+i+"&tr="+j+"&placenum="+divide_place+"&plannum=" + plannum;
+				var test = "day="+i+"&tr="+j+"&placenum="+divide_place+"&plannum=<%=now_plannum%>";
 				if(isSave==true) {
 					test += "&plantablenum="+planTableNum;
 				}

@@ -111,6 +111,9 @@
 						<div class="list-group-item">
 							도시<br /> <input type="text" name="city" style="width: 220px; margin: 5px;"/>
 						</div>
+						<!-- 일반검색은 state=1, isopen=1 -->
+						<input type="hidden" name="state" value="1">
+						<input type="hidden" name="isopen" value="1">
 						<button type="submit">검색</button>
 					</div>
 				</div>

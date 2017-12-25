@@ -109,6 +109,11 @@
 							style="background-color: transparent; border: 0; color: #f6931f; font-weight: bold;">
 						</div>
 						<div class="list-group-item">
+							공개여부<br />
+							<input type="radio" id="rd8" name="isopen" value="1"><label for="rd8">공개</label>
+							<input type="radio" id="rd9" name="isopen" value="0"><label for="rd9">공개</label>
+						</div>
+						<div class="list-group-item">
 							도시<br /> <input type="text" name="city" style="width: 220px; margin: 5px;"/>
 						</div>
 						<button type="submit">검색</button>

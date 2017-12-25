@@ -55,10 +55,51 @@
 		});
 	
 	});
+
+function modalOn(p_num) {
+	$("#pNum").val(p_num);
+	$('#shareModal').modal('show');
+}
 </script>
 
 </head>
 <body>
+
+<!-- Modal -->
+  <div class="modal fade" id="shareModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">공유하기</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div id="shareBody" class="modal-body">
+        	공유는 최대 3명과 가능합니다
+        	<form action="../plan/share.do" onsubmit="saveTable();">
+        		<input type="hidden" name="writer" value="<%=session.getAttribute("membernum")%>"/>
+        		<input id="pNum" type="hidden" name="plan_num" value=""/>
+        		<table>
+        			<tr>
+        				<td>공유할 친구 ID : <input type="text" name="id1"></td>
+        			</tr>
+        			<tr>
+        				<td>공유할 친구 ID : <input type="text" name="id2"></td>
+        			</tr>
+        			<tr>
+        				<td>공유할 친구 ID : <input type="text" name="id3"></td>
+        			</tr>
+        			<tr>
+        				<td><button>공유하기</button></td>
+        			</tr>
+        		</table>
+        	</form>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- Modal End -->
 
 	<!-- Page Content -->
 	<div class="container">
@@ -71,7 +112,8 @@
 			<li class="breadcrumb-item">일정</li>
 		</ol>
 
-		<form action="../plan/selectAll.do" method="post" id="frm">
+		<form action="../plan/selectMade.do" method="post" id="frm">
+			<input type="hidden" name="id" value="<%=session.getAttribute("memberid")%>">
 			<!-- Content Row -->
 			<div class="row">
 				<!-- Sidebar Column -->
@@ -109,6 +151,16 @@
 							style="background-color: transparent; border: 0; color: #f6931f; font-weight: bold;">
 						</div>
 						<div class="list-group-item">
+							공개여부<br />
+							<input type="radio" id="rd8" name="isopen" value="1"><label for="rd8">공개</label>
+							<input type="radio" id="rd9" name="isopen" value="0"><label for="rd9">비공개</label>
+						</div>
+						<div class="list-group-item">
+							공유신청<br />
+							<input type="radio" id="rd10" name="state" value="1"><label for="rd10">승인된 일정</label>
+							<input type="radio" id="rd11" name="state" value="0"><label for="rd11">승인대기 일정</label>
+						</div>
+						<div class="list-group-item">
 							도시<br /> <input type="text" name="city" style="width: 220px; margin: 5px;"/>
 						</div>
 						<button type="submit">검색</button>
@@ -120,7 +172,8 @@
 						<c:forEach items="${planList}" var="plan">
 							<div class="col-lg-6 portfolio-item">
 								<div class="card h-100">
-									<a href="../planTable/shareView.do?plannum=${plan.plannum}"> 
+								<a style="cursor: pointer;" onclick="modalOn('${plan.plannum}');">실시간공유하기</a>
+								<a href="../plan/select.do?plannum=${plan.plannum}">
 									<c:if test="${not empty plan.imagename}">
 										<img class="card-img-top" src="<c:url value='/'/>resources/images/${plan.imagename}" alt="" width="348" height="250"> 
 									</c:if> 
@@ -137,14 +190,18 @@
 												 	<c:if test="${plan.likemy == null}">♡</c:if>
 												</span>
 											</c:if>
-											<a href="../planTable/shareView.do?plannum=${plan.plannum}">${plan.planname}</a>
+											<a href="../plan/select.do?plannum=${plan.plannum}">${plan.planname}</a>
 										</h4>
+											<c:if test="${plan.state == '0'}">
+												<a href="../plan/myUpdate.do?plannum=${plan.plannum}" style="border: 1px solid black;">이 일정 수정하기</a>
+												<a href="#" style="border: 1px solid red;">승인요청</a>
+											</c:if>
 										<p class="card-text">
 											<%-- ${i.lat}${i.lon}${i.addr}${i.city}${i.country} --%>
 										</p>
 									</div>
-									<div class="card-footer text-muted">Like Count :
-										${plan.likecount}</div>
+									<div class="card-footer text-muted">Like Count : ${plan.likecount}
+									</div>
 								</div>
 							</div>
 						</c:forEach>

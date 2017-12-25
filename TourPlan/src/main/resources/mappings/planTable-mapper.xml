@@ -40,7 +40,14 @@
 				PLACENUM = #{placenum},
 			</if>
 		</set>
-		WHERE PLANTABLENUM = #{plantablenum}
+		<where>
+			<if test="plantablenum != null and plantablenum != ''">
+			 	PLANTABLENUM = #{plantablenum}
+			</if>
+			<if test="plannum != null and plannum != ''">
+				AND PLANNUM = #{plannum}			
+			</if>
+		</where>
 	</update>
 	
 	<delete id="delete" parameterType="planTableSearch">

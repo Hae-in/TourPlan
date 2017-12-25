@@ -1,5 +1,7 @@
 package com.yedam.tourplan.plan.web;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,15 +32,34 @@ public class PlanController {
 	@Autowired
 	PlanService planService;
 	@Autowired
-	LikeplanService likeplanService;
-	@Autowired
 	MemberService memberService;
 	
 	@RequestMapping("select.do")
-	public String select(PlanSearchVO vo, HttpSession session) {
+	public String select(PlanSearchVO vo, Model model) {
+		String keyword = vo.getKeyword();
 		PlanVO s_vo = planService.select(vo);
-		session.setAttribute("vo", s_vo);
-		return "plan/plan";
+		
+		try {
+			SimpleDateFormat format = new SimpleDateFormat("yyyy/mm/dd");  
+			String departure = s_vo.getDeparturedate(); 
+			String arrival = s_vo.getArrivaldate(); 
+			
+			Date day1 = format.parse(departure);
+			Date day2 = format.parse(arrival);
+			long l_day = day2.getTime() - day1.getTime();
+			int day = (int) (l_day/86400000) + 1;
+			
+			s_vo.setDay(Integer.toString(day));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		model.addAttribute("plan" , s_vo);
+		
+		if(keyword == null || keyword.equals("")) {
+			return "plan/plan";
+		}
+		else
+			return "plan/updatePlan";
 	}
 	
 	@RequestMapping("selectAll.do")
@@ -64,29 +85,20 @@ public class PlanController {
 		return "member/myPage/likeplan";
 	}
 	
+	@RequestMapping("modify.do") 
+	public String modify(PlanVO vo, Model model) {
+		model.addAttribute("vo", vo);
+		return "plan/makePlan";
+	}
+	
+	@RequestMapping("myUpdate.do") 
+	public String myUpdate(PlanSearchVO vo, Model model) {
+		model.addAttribute("vo", planService.select(vo));
+		return "plan/updatePlan";
+	}
+	
 	@RequestMapping("insert.do")
-	public String insert(PlanVO vo, Model model, HttpSession session) {
-		String isupdate = vo.getIsupdate();
-		planService.insert(vo);
-		System.out.println(vo.getPlannum());
-
-		PlanVO seq_vo = planService.selectSeq(null);
-		System.out.println(seq_vo.getPlannum());
-		
-		//likecount가 0이되면 들어가지 않아 기본값 1을 줌
-		LikeplanVO lp_vo = new LikeplanVO();
-		lp_vo.setplannum(seq_vo.getPlannum());
-		//lp_vo.setplannum(vo.getPlannum());
-		lp_vo.setMembernum("1");
-		likeplanService.insert(lp_vo);
-		
-		if(isupdate == null) {
-			session.setAttribute("vo", seq_vo);
-			model.addAttribute("plan", seq_vo);
-		} else {
-			model.addAttribute("plan", seq_vo);
-		}
-		
+	public String insert(PlanVO vo, Model model) {
 		return "plan/makePlan";
 	}
 	
@@ -155,10 +167,13 @@ public class PlanController {
 		s_vo.setKeyword((String) session.getAttribute("membernum"));
 		List<SharePlanVO> list = planService.selectShare(s_vo);
 		String str = "";
-		for(int i=0; i<list.size(); i++) {
-			str += list.get(i).getPlannum();
-			if(i != list.size()-1)
-				str += ",";
+		if(list.size() == 0) { str = "0"; } 
+		else {
+			for(int i=0; i<list.size(); i++) {
+				str += list.get(i).getPlannum();
+				if(i != list.size()-1)
+					str += ",";
+			}
 		}
 		
 		PlanSearchVO vo = new PlanSearchVO();
