@@ -496,7 +496,7 @@ div#redips-drag #table1 div {
 	
 	//★★★포트바꿔야!
 	var webSocket = new WebSocket(
-			'ws://localhost:8090/tourplan/websocket/sharePlan.do');
+			'ws://localhost:80/tourplan/websocket/sharePlan.do');
 	webSocket.onerror = function(event) {
 		onError(event)
 	};

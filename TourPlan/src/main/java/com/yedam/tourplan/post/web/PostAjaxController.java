@@ -67,20 +67,17 @@ public class PostAjaxController {
 		Map<String, String> map = new HashMap<String, String>();
 
 		String UPLOAD_LOCATION = request.getSession().getServletContext().getRealPath("/resources/images/");
-		System.out.println(UPLOAD_LOCATION);
 		if (uploadFiles != null) {
 			for (int i = 0; i < uploadFiles.size(); i++) {
 			MultipartFile uploadFile = uploadFiles.get(i);
 			if (!uploadFile.isEmpty() && uploadFile.getSize() > 0) {
-				System.out.println("파일명 : " + uploadFile.getOriginalFilename());
-				System.out.println("파일크기 : " + uploadFile.getSize());
 					String realFileName = System.currentTimeMillis() + uploadFile.getOriginalFilename();
 					uploadFile.transferTo(new File(UPLOAD_LOCATION, realFileName));
 
 					// FileVO에 업로드한 파일명과 파일크기 등을 저장
 					FilesVO fileVo = new FilesVO();
 					fileVo.setTablename("post");
-					fileVo.setTablenum(vo.getPlantablenum());
+					fileVo.setTablenum("0");
 					fileVo.setFilename(uploadFile.getOriginalFilename());
 					fileVo.setRealfilename(realFileName);
 					fileVo.setFilesize(Long.toString(uploadFile.getSize()));
@@ -88,6 +85,7 @@ public class PostAjaxController {
 
 					map.put("code", "success");
 					map.put("imageName", realFileName);
+					map.put("imageNum", fileVo.getFilenum());
 				}
 			}
 		}

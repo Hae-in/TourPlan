@@ -23,7 +23,7 @@
     .validateTips { border: 1px solid transparent; padding: 0.3em; }
 </style>
 <script>
-var plannum = <%=vo.getPlannum()%>;
+var plannum = "<%=vo.getPlannum()%>";
 
 function onImage() {
 	$("#frm1").hide();
@@ -141,6 +141,7 @@ $(function() {
 <button id="reload" type="button">새로고침</button>
 
 <!-- Story Start -->
+<c:if test="${not empty ptList}">
 <c:set value="${fn:length(ptList)-1}" var="end" />
 <c:set value="${ptList[end].day}" var="day" />
 <c:forEach begin="1" end="${day}" varStatus="status">
@@ -159,6 +160,7 @@ $(function() {
 	</c:forEach>
 	<br>
 </c:forEach>
+</c:if>
 <!-- Story End -->
 
 <!-- Modal Start -->

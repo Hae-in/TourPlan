@@ -458,8 +458,10 @@ div#redips-drag #table1 div {
 								<img src="<c:url value='/'/>resources/images/${m_picture[0].realfilename}" width='100px' height='100px' style='border-radius: 20px;'>
 							</c:if>
 						</div>
-						사용자 정보 : ${writer.id}<br>
-						${writer.nickname}
+						<c:if test="${not empty writer}">
+							사용자 정보 : ${writer.id}<br>
+							${writer.nickname}
+						</c:if>
 					</div>
 				</div>
 			</div>

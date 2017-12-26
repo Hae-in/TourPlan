@@ -63,11 +63,6 @@ public class PlanAjaxContorller {
 		lp_vo.setMembernum("1");
 		likeplanService.insert(lp_vo);
 		
-		FilesVO f_vo = new FilesVO();
-		f_vo.setTablenum(seq_vo.getPlannum());
-		f_vo.setFilenum(image_num);
-		filesService.update(f_vo);
-		
 		return seq_vo.getPlannum();
 	}
 	
@@ -115,6 +110,7 @@ public class PlanAjaxContorller {
 						} else if(vo.getPlanname().equals("otherUp")) { 
 							fileVo.setRealfilename(realFileName);
 							fileVo.setTablenum(vo.getPlannum());
+							fileVo.setTablename("plan");
 							filesService.updateName(fileVo);
 						} else {
 							fileVo.setRealfilename(realFileName);

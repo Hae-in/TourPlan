@@ -34,6 +34,10 @@ public class MemberController {
 		return "member/myPage/myPage";
 	}
 	
+	@RequestMapping("needLogin.do")
+	public String needLogin() {
+		return "main/needLogin";
+	}
 	
 	
 	

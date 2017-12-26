@@ -9,4 +9,3 @@
 	//response.sendRedirect("post/select.do?plannum=2");
 	response.sendRedirect("main/main.do");
 %>
-

@@ -54,31 +54,31 @@ public class PlanTableAjaxController {
 		return true;
 	}*/
 	
-	//★★★list로 받는거 몰라서 vo로 받게 테스트
-	@RequestMapping(value="planInsert", method=RequestMethod.POST)
+	@RequestMapping(value="planInsert", method=RequestMethod.POST, headers = {"Content-type=application/json"})
 	@ResponseBody
-	public String planInsert(PlanTableVO vo) {
-		//★테스트용 안돼서 2개다 그냥 넘김
-		vo.setFix("0");
-		vo.setSortnum("5");
-		vo.setStaytime("30");
-		if(planTableService.insert(vo))
-			return vo.getPlantablenum();
-		else {
-			return vo.getPlantablenum();
+	public boolean planInsert(@RequestBody List<PlanTableVO> list) {
+		for(int i=0; i<list.size(); i++) {
+			planTableService.insert(list.get(i));
 		}
 		
+		return true;
 	}
 	
-	//★★★list로 받는거 몰라서 vo로 받게 테스트
-	@RequestMapping(value="planUpdate", method=RequestMethod.POST)
+	@RequestMapping(value="planUpdate", method=RequestMethod.POST, headers = {"Content-type=application/json"})
 	@ResponseBody
-	public boolean planUpdate(PlanTableVO vo) {
-		//★테스트용
-		vo.setFix("0");
-		vo.setSortnum("5");
-		vo.setStaytime("30");
+	public boolean planUpdate(@RequestBody List<PlanTableVO> list) {
+		PlanTableVO vo = new PlanTableVO();
+		vo.setPlannum(list.get(0).getPlannum());
+		boolean r = planTableService.delete(vo);
 		
-		return planTableService.update(vo);
+		if(r) {
+			for(int i=0; i<list.size(); i++) {
+				planTableService.insert(list.get(i));
+			}
+		} else {
+			System.out.println("boolean false ***************************");
+		}
+		
+		return true;
 	}
 }

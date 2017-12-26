@@ -52,7 +52,13 @@
 	
 	<delete id="delete" parameterType="planTableSearch">
 		DELETE FROM PLANTABLE
-		WHERE PLANTABLENUM = #{plantablenum}
+		<if test="plantablenum != null and plantablenum != ''">
+			WHERE PLANTABLENUM = #{plantablenum}
+		</if>
+		<if test="plannum != null and plannum != ''">
+			WHERE PLANNUM = #{plannum}
+		</if>
+
 	</delete>
 	
 	<select id="selectPT" parameterType="planTable" resultType="planTable">

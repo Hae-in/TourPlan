@@ -545,7 +545,6 @@ div#redips-drag #table1 div {
 	</div>
 	
 <script>
-var planTableNum = "";
 var planNum = "<%=vo.getPlannum()%>";
 
 //★★안됨
@@ -579,6 +578,7 @@ function imageAdd(){
 			}
 		}).submit();
 	} else {
+		alert("이미지번호 : " + image_num);
 		$("#frm_img").ajaxForm({
 			dataType:"json",
 			data : {plannum: planNum,
@@ -630,50 +630,49 @@ function savePlan() {
 }
 
 function saveTable() {
-	var parameter = "["; 
+	var parameter = []; 
 	//★★★day구해야!!
 	var day = 3;
 	var tds = new Array();
 	var divs = new Array();
+	
 	for(i=1; i<=day; i++) {
 		for(j=0; j<9; j++) {
-			var p = "{";
-			
-			if($("[day='"+i+"'][tr='"+j+"'] div").length == 0) {}
+			var p = {};
+		
+			if($("[day='"+i+"'][tr='"+j+"'] div").length == 0) { }
 			else {
+			
 				var div_id = $("[day='"+i+"'][tr='"+j+"'] div").attr("id");
 				var divide_place = div_id.split("_")[1];
-				var test = "day="+i+"&tr="+j+"&placenum="+divide_place+"&plannum=" + plannum;
-				<%-- var test = "{\"day\":\""+i+"\",\"tr\":\""+j+"\",\"placenum\":\""+divide_place+"\",\"plannum\":\""+"<%=now_plannum%>"+"\"}"; --%>
-				console.log(test);
 				
-				<%-- var div_id = $("[day='"+i+"'][tr='"+j+"'] div").attr("id");
-				var divide_place = div_id.split("_")[1];
-				p += "\"day\":\""+i+"\", \"tr\":\""+j+"\", \"placenum\":\""+divide_place+"\", " + 
-				"\"plannum\":\"<%=now_plannum%>\"},";
-				console.log("param : " + p);
-				parameter += p; --%>
-			}
+				p.day = i;
+				p.tr = j;
+				p.placenum = divide_place
+				p.plannum = plannum;
+				p.fix = "0";
+				p.sortnum = "5";
+				p.staytime = "30";
+				
+				parameter.push(p);
 		}
 	}
+}
 	
-	parameter = parameter.substring(0, parameter.lastIndexOf(","));
-	console.log("parameter : "+parameter);
-	parameter += "]";
-	
-	//★plan update ajax도		JSON.stringify({data:gridData})
 	$.ajax({
 	    url         : '../planTableAjax/planUpdate'
 	   ,type        : 'POST'
-	   ,data        : test
-	   ,dataType    : 'text'
+	   ,data        : JSON.stringify( parameter )
+	   ,dataType    : 'json'
+	   ,contentType	: 'application/json' 
+	   ,mimeType: 'application/json'
 	   ,success     : function(data,status) {
 	       if (status =="success") {
 	    	   if(data == true) {
 		    	   	alert("저장 성공"); }
 	    	   else {
 		    		alert("저장에 실패했습니다"); }
-4   		   } else { alert("에러발생 관리자에게 문의하세요") }
+	  		   } else { alert("에러발생 관리자에게 문의하세요") }
    		}
 	   	,error: function(result) {
    		}

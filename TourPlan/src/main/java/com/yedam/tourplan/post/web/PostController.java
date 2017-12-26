@@ -27,22 +27,24 @@ public class PostController {
 	
 	@RequestMapping("select.do")
 	public String View(PlanTableVO vo, Model model) {
-		List<PlanTableVO> list_pt = postService.select(vo);
-		model.addAttribute("ptList", list_pt);
+		if(vo.getPlannum() == null) {}
+		else {
+			List<PlanTableVO> list_pt = postService.select(vo);
+			model.addAttribute("ptList", list_pt);
 		
-		String num = "";
-		for(int i=0; i<list_pt.size(); i++) {
-			num += list_pt.get(i).getPlacenum();
-			if(i != list_pt.size()-1)
+			String num = "";
+			for(int i=0; i<list_pt.size(); i++) {
+				num += list_pt.get(i).getPlacenum();
+				if(i != list_pt.size()-1)
 				num += ",";
 		}
 		
-		PlaceSearchVO place = new PlaceSearchVO();
-		place.setPlacenum(num);
-		List<PlaceVO> list_place = placeService.selectPlace(place);
+			PlaceSearchVO place = new PlaceSearchVO();
+			place.setPlacenum(num);
+			List<PlaceVO> list_place = placeService.selectPlace(place);
 		
-		model.addAttribute("placeList", list_place);
-		
+			model.addAttribute("placeList", list_place);
+		}
 		return "post/postView";
 	}
 }

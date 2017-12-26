@@ -44,9 +44,6 @@ redips.init = function () {
 			var placenum = arr2[1];
 			var plantablenum = arr2[2];
 			
-			console.log("예전tr: " + x_tr);
-			console.log("현재tr: " + day + "a" + tr);
-			
 			send("update", plantablenum, plannum, day, 30, 5, 0, tr, placenum, child1, child2, x_tr);
 			
 		}
@@ -65,8 +62,6 @@ redips.init = function () {
 		arr2 = rd.objOld.getAttribute("id").split("_");
 		var placenum = arr2[1];
 		var plantablenum = arr2[2];
-		
-		console.log("day : " + day + " tr : " + tr + " placenum : " + placenum);
 		
 		send("insert", "", plannum, day, 30, 5, 0, tr, placenum, child1, child2, "");
 	}

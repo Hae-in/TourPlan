@@ -10,4 +10,5 @@
 			handler="myHandler" />
 	</websocket:handlers>
 	<bean id="myHandler" class="com.yedam.tourplan.plan.web.WebsockHandler" />
+	
 </beans>

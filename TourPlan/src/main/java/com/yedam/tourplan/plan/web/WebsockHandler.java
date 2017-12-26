@@ -58,7 +58,6 @@ public class WebsockHandler extends TextWebSocketHandler implements Initializing
 			msgVO.setPlacenum("");
 			msgVO.setPlannum("");
 			planTableService.update(msgVO);
-			System.out.println(msgVO.toString());
 			sendMessage(session, (String) message.getPayload());
 		} else {
 			planTableService.delete(msgVO);
