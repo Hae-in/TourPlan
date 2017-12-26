@@ -26,7 +26,7 @@
           <div class="carousel-item active" style="background-image: url('https://img-wishbeen.akamaized.net/plan/1414143429451_15471568586_bb8dd52b2a_k.jpg')">
             <div class="carousel-caption d-none d-md-block">
               <h3>First Slide</h3>
-              <p>This is a description for the first slide.</p>
+              <p>대자연의 품에 안기다</p>
             </div>
           </div>
           <!-- Slide Two - Set the background image for this slide in the line below -->
@@ -44,14 +44,14 @@
             </div>
           </div>
           <!-- Slide Three - Set the background image for this slide in the line below -->
-          <!-- 
-          <div class="carousel-item" style="background-image: url('http://placehold.it/1900x1080')">
+          
+          <div class="carousel-item" style="background-image: url('http://www.nytimes.com/2011/09/18/travel/in-argentina-glaciers-by-way-of-patagonia.html')">
             <div class="carousel-caption d-none d-md-block">
               <h3>Third Slide</h3>
               <p>This is a description for the third slide.</p>
             </div>
           </div> 
-          -->
+          
         </div>
         <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
