@@ -26,12 +26,11 @@
 				for (i = 0; i < data.length; i++) {
 					console.log(data[i].imagename);
 					/* $("#tbody").append("<tr><td>"+data[i].imagename+"</td><td><div>"+data[i].placename+"</div><div>"+data[i].city+", "+data[i].country+"</div></td></tr>") */
-					$("#tbody").append("<tr><td class='redips-mark lunch'><img width='100px;' height='65px;' src='../resources/images/"+(data[i].imagename == null ? "null.jpg" : data[i].imagename) +"'></td><td class='dark'><div id='place_" + data[i].placenum + "_"+i+"' class='redips-drag redips-clone'>"+data[i].placename+"<br>"+data[i].city+", " +data[i].country+"</div></td></tr>");
+					//$("#tbody").append("<tr><td class='redips-mark lunch'><img width='100px;' height='65px;' src='../resources/images/"+(data[i].imagename == null ? "null.jpg" : data[i].imagename) +"'></td><td class='dark'><div id='place_" + data[i].placenum + "_"+i+"' class='redips-drag redips-clone'>"+data[i].placename+"<br>"+data[i].city+", " +data[i].country+"</div></td>"+"<td class='latlon' style='display: none;'>123</td>"+"</tr>");
+					$("#tbody").append("<tr><td class='redips-mark lunch'><img width='100px;' height='65px;' src='../resources/images/"+(data[i].imagename == null ? "null.jpg" : data[i].imagename) +"'></td><td class='dark'><div id='place_" + data[i].placenum + "_"+i+"' class='redips-drag redips-clone'>"+data[i].placename+"<br>"+data[i].city+", " +data[i].country+"</div></td>"+"<td class='lat' style='display: none;'>"+data[i].lat+"</td><td class='lon' style='display: none;'>"+data[i].lon+"</td></tr>");
 				}
 			}
 		});
-		
-		
 	});
 	
 	function getDate() {
@@ -47,7 +46,7 @@
  		var currDay = 24 * 60 * 60 * 1000;// 시 * 분 * 초 * 밀리세컨
 
  		day = parseInt(diff/currDay);
- 		console.log(day);
+ 		//console.log(day);
  		$("#dayInput").val(day);
 	}
 	
@@ -376,7 +375,7 @@ div#redips-drag #table1 div {
 					<tr>
 						<td><input type="date" id="depDate" onchange="getDate()"></td>
 						<td><input type="date" id="arrDate" onchange="getDate()"></td>
-						<td><input type="text" id="dayInput"></td>
+						<td><input type="text" id="dayInput" readonly="readonly"></td>
 						<td><input type="number" min="1"></td>
 						<td><input class="planCate" type="button" value="나홀로여행">
 							<input class="planCate" type="button" value="친구와여행"> <input
