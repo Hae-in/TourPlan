@@ -120,7 +120,7 @@
               <p>마더 테레사 하우스, 콜카타, 인도</p>
             </div>
           </div>
-          
+           
         </div>
         <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
