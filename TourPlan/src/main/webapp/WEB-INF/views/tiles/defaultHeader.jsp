@@ -1,83 +1,11 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	String membernum = "no";
 	if(session.getAttribute("membernum") == null) {  }
 	else {	membernum = (String) session.getAttribute("membernum"); }
 %>
-<!DOCTYPE html>
-<html>
-<head>
-<title></title>
-<!-- Bootstrap core CSS -->
-<link href="<c:url value='/'/>resources/thema/vendor/bootstrap/css/bootstrap.min.css"
-	rel="stylesheet">
-<!-- Custom styles for this template -->
-<link href="<c:url value='/'/>resources/thema/css/modern-business.css" rel="stylesheet">
-<link rel="stylesheet"
-	href='<c:url value='/'/>resources/js/jquery-ui.min.css'>
-<script src='<c:url value='/'/>resources/js/jquery-3.2.1.min.js'></script>
-<script src='<c:url value='/'/>resources/js/jquery-ui.min.js'></script>
-<script src="../resources/thema/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<style>
-.switch {
-	position: relative;
-	display: inline-block;
-	width: 60px;
-	height: 32px;
-}
-.switch input {
-	display: none;
-}
-
-.slider {
-	position: absolute;
-	cursor: pointer;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background-color: #ccc;
-	-webkit-transition: .4s;
-	transition: .4s;
-}
-.slider:before {
-	position: absolute;
-	content: "";
-	height: 24px;
-	width: 24px;
-	left: 4px;
-	bottom: 4px;
-	background-color: white;
-	-webkit-transition: .4s;
-	transition: .4s;
-}
-
-input:checked+.slider {
-	background-color: #2196F3;
-}
-
-input:focus+.slider {
-	box-shadow: 0 0 1px #2196F3;
-}
-
-input:checked+.slider:before {
-	-webkit-transform: translateX(26px);
-	-ms-transform: translateX(26px);
-	transform: translateX(26px);
-}
-/* Rounded sliders */
-.slider.round {
-	border-radius: 40px;
-}
-
-.slider.round:before {
-	border-radius: 50%;
-}
-</style>
-</head>
-<body>
-
 <!-- Modal -->
   <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
@@ -85,7 +13,7 @@ input:checked+.slider:before {
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">È¸¿ø°¡ÀÔ</h4>
+          <h4 class="modal-title">íšŒì›ê°€ì…</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         <div class="modal-body">
@@ -93,24 +21,24 @@ input:checked+.slider:before {
          <form id="frmModal">
          <table border="1" width="400px">
             <tr>
-                <td>¾ÆÀÌµğ</td>
+                <td>ì•„ì´ë””</td>
                 <td><input type="text" name="id"></td>
             </tr>
             <tr>
-                <td>ºñ¹Ğ¹øÈ£</td>
+                <td>ë¹„ë°€ë²ˆí˜¸</td>
                 <td><input type="password" name="password"></td>
             </tr>
             <tr>
                 <td colspan="2" align="center">
-                    <button type="button" id="log">·Î±×ÀÎ</button>
+                    <button type="button" id="log">ë¡œê·¸ì¸</button>
                 <c:if test="${msg == 'failure'}">
                     <div style="color: red">
-                        ¾ÆÀÌµğ ¶Ç´Â ºñ¹Ğ¹øÈ£°¡ ÀÏÄ¡ÇÏÁö ¾Ê½À´Ï´Ù.
+                        ì•„ì´ë”” ë˜ëŠ” ë¹„ë°€ë²ˆí˜¸ê°€ ì¼ì¹˜í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.
                     </div>
                 </c:if>
                 <c:if test="${msg == 'logout'}">
                     <div style="color: red">
-                        ·Î±×¾Æ¿ôµÇ¾ú½À´Ï´Ù.
+                        ë¡œê·¸ì•„ì›ƒë˜ì—ˆìŠµë‹ˆë‹¤.
                     </div>
                 </c:if>
                 </td>
@@ -121,30 +49,30 @@ input:checked+.slider:before {
          <form id="frmModal2">
          <table border="1" width="400px">
             <tr>
-                <td>¾ÆÀÌµğ</td>
+                <td>ì•„ì´ë””</td>
                 <td><input type="text" name="id"></td>
             </tr>
             <tr>
-                <td>ºñ¹Ğ¹øÈ£</td>
+                <td>ë¹„ë°€ë²ˆí˜¸</td>
                 <td><input type="password" name="password"></td>
             </tr>
             
             <tr>
-                <td>´Ğ³×ÀÓ</td>
+                <td>ë‹‰ë„¤ì„</td>
                 <td><input type="text" name="nickname"></td>
             </tr>
             
             <tr>
                 <td colspan="2" align="center">
-                    <button type="button" id="reg">È¸¿ø°¡ÀÔ</button>
+                    <button type="button" id="reg">íšŒì›ê°€ì…</button>
                 <c:if test="${msg == 'failure'}">
                     <div style="color: red">
-                        ¾ÆÀÌµğ ¶Ç´Â ºñ¹Ğ¹øÈ£°¡ ÀÏÄ¡ÇÏÁö ¾Ê½À´Ï´Ù.
+                        ì•„ì´ë”” ë˜ëŠ” ë¹„ë°€ë²ˆí˜¸ê°€ ì¼ì¹˜í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.
                     </div>
                 </c:if>
                 <c:if test="${msg == 'logout'}">
                     <div style="color: red">
-                        ·Î±×¾Æ¿ôµÇ¾ú½À´Ï´Ù.
+                        ë¡œê·¸ì•„ì›ƒë˜ì—ˆìŠµë‹ˆë‹¤.
                     </div>
                 </c:if>
                 </td>
@@ -154,8 +82,8 @@ input:checked+.slider:before {
          </form>
         </div>
         
-        <button id="logBtn" style="width: 200px;">·Î±×ÀÎ</button> 
-        <button id="regBtn" style="width: 200px;">È¸¿ø°¡ÀÔ</button>
+        <button id="logBtn" style="width: 200px;">ë¡œê·¸ì¸</button> 
+        <button id="regBtn" style="width: 200px;">íšŒì›ê°€ì…</button>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
@@ -178,26 +106,26 @@ input:checked+.slider:before {
 		<div class="collapse navbar-collapse" id="navbarResponsive">
 			<ul class="navbar-nav ml-auto">
 				<li class="nav-item"><a class="nav-link"
-					href="../plan/selectAll.do">¿©ÇàÀÏÁ¤</a></li>
-				<li class="nav-item"><a class="nav-link" href="../place/selectAll.do">¸í¼Ò</a>
+					href="../plan/selectAll.do">ì—¬í–‰ì¼ì •</a></li>
+				<li class="nav-item"><a class="nav-link" href="../place/selectAll.do">ëª…ì†Œ</a>
 				</li>
-				<li class="nav-item"><a class="nav-link" href="../helpdesk/selectAll.do">°í°´¼¾ÅÍ</a>
+				<li class="nav-item"><a class="nav-link" href="../helpdesk/selectAll.do">ê³ ê°ì„¼í„°</a>
 				</li>
-				<li class="nav-item"><a class="nav-link" href="../planTable/makePlan.do">ÀÏÁ¤¸¸µé±â</a></li>
-				<li class="nav-item"><a class="nav-link" id="menuLogin" style="cursor: pointer;" data-toggle="modal" data-target="#myModal">·Î±×ÀÎ</a></li>
+				<li class="nav-item"><a class="nav-link" href="../planTable/makePlan.do">ì¼ì •ë§Œë“¤ê¸°</a></li>
+				<li class="nav-item"><a class="nav-link" id="menuLogin" style="cursor: pointer;" data-toggle="modal" data-target="#myModal">ë¡œê·¸ì¸</a></li>
 				<li class="nav-item"><a class="nav-link" id="menuMy" href="../member/select.do?membernum=<%=membernum%>">Mypage</a></li>
-				<li class="nav-item"><a class="nav-link" id="menuLogout" style="cursor: pointer;">·Î±×¾Æ¿ô</a></li>
-				<li class="nav-item"><a class="nav-link" href="../admin/plan.do">°ü¸®ÀÚ</a></li>
-				<!-- <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPortfolio" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">·Î±×ÀÎ</a>
+				<li class="nav-item"><a class="nav-link" id="menuLogout" style="cursor: pointer;">ë¡œê·¸ì•„ì›ƒ</a></li>
+				<li class="nav-item"><a class="nav-link" href="../admin/plan.do">ê´€ë¦¬ì</a></li>
+				<!-- <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPortfolio" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">ë¡œê·¸ì¸</a>
 						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownPortfolio"> 
-						<a class="dropdown-item" href="portfolio-1-col.html">·Î±×ÀÎ</a> 
-						<a class="dropdown-item" href="portfolio-2-col.html">È¸¿ø°¡ÀÔ</a> 
+						<a class="dropdown-item" href="portfolio-1-col.html">ë¡œê·¸ì¸</a> 
+						<a class="dropdown-item" href="portfolio-2-col.html">íšŒì›ê°€ì…</a> 
 					</div></li>
 				 <li class="nav-item">
-            	<a class="btn btn-primary" href="contact.html">ÀÏÁ¤¸¸µé±â</a>
+            	<a class="btn btn-primary" href="contact.html">ì¼ì •ë§Œë“¤ê¸°</a>
             </li>
             <li class="nav-item">
-            	<a class="btn btn-primary" href="contact.html">·Î±×ÀÎ</a>
+            	<a class="btn btn-primary" href="contact.html">ë¡œê·¸ì¸</a>
             </li> -->
 			</ul>
 		</div>
@@ -229,30 +157,30 @@ $("#regBtn").click(function () {
 });
 
 $("#menuLogout").click(function() {
-	if(confirm('·Î±×¾Æ¿ô ÇÏ½Ã°Ú½À´Ï±î?')) {
+	if(confirm('ë¡œê·¸ì•„ì›ƒ í•˜ì‹œê² ìŠµë‹ˆê¹Œ?')) {
 		$.getJSON("../memberAjax/logout", function(data,status){
 			if(status =="success" ) {
 				if(data == true) {
 					location.reload();
 				} else {
-					alert("¿¡·¯¹ß»ı °ü¸®ÀÚ¿¡°Ô ¹®ÀÇÇÏ¼¼¿ä");
+					alert("ì—ëŸ¬ë°œìƒ ê´€ë¦¬ìì—ê²Œ ë¬¸ì˜í•˜ì„¸ìš”");
 				}
 			} else {
-				alert("¿¡·¯¹ß»ı °ü¸®ÀÚ¿¡°Ô ¹®ÀÇÇÏ¼¼¿ä");
+				alert("ì—ëŸ¬ë°œìƒ ê´€ë¦¬ìì—ê²Œ ë¬¸ì˜í•˜ì„¸ìš”");
 			}
 		});
 	} else {}
 });
 
 $("#log").click(function() {
-	var param = $("#frmModal").serialize();//frmModal¾ÈÀÇ °ªÀ» °¡Á®¿Â´Ù
-	$.getJSON("../memberAjax/select", param, function(data,status){ //form¾È °ª = param¾ÈÀÇ °ª,  
+	var param = $("#frmModal").serialize();//frmModalì•ˆì˜ ê°’ì„ ê°€ì ¸ì˜¨ë‹¤
+	$.getJSON("../memberAjax/select", param, function(data,status){ //formì•ˆ ê°’ = paramì•ˆì˜ ê°’,  
 		if(status =="success" ) {
 			if(data == true) {
-				alert("·Î±×ÀÎ¼º°ø");
+				alert("ë¡œê·¸ì¸ì„±ê³µ");
 				location.reload();
 			} else {
-				alert("¾ÆÀÌµğ¿Í ºñ¹Ğ¹øÈ£¸¦ È®ÀÎÇØ ÁÖ¼¼¿ä");
+				alert("ì•„ì´ë””ì™€ ë¹„ë°€ë²ˆí˜¸ë¥¼ í™•ì¸í•´ ì£¼ì„¸ìš”");
 			}
 		} else {
 			alert(status);
@@ -262,14 +190,14 @@ $("#log").click(function() {
 
 $("#reg").click(function() {
 	var param = $("#frmModal2").serialize();
-	$.getJSON("../memberAjax/insert", param, function(data,status){ //ºäÆäÀÌÁö »ó¿¡¼­ Á¦ÀÌ½¼ ÇüÅÂ·Î µ¥ÀÌÅÍ¸¦ °¡Á®¿Â´Ù
+	$.getJSON("../memberAjax/insert", param, function(data,status){ //ë·°í˜ì´ì§€ ìƒì—ì„œ ì œì´ìŠ¨ í˜•íƒœë¡œ ë°ì´í„°ë¥¼ ê°€ì ¸ì˜¨ë‹¤
 		if(status =="success" ) {
 			if(data == true) {
-				alert("È¸¿ø°¡ÀÔ ¿Ï·á");
+				alert("íšŒì›ê°€ì… ì™„ë£Œ");
 				$("#frmModal2").hide();
 				$("#frmModal").show();
 			} else {
-				alert("¿À·ù");
+				alert("ì˜¤ë¥˜");
 			}
 		} else {
 			alert(status);
@@ -278,6 +206,3 @@ $("#reg").click(function() {
 });
 
 </script>
-
-</body>
-</html>
