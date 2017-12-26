@@ -81,11 +81,10 @@ public class PostAjaxController {
 					fileVo.setFilename(uploadFile.getOriginalFilename());
 					fileVo.setRealfilename(realFileName);
 					fileVo.setFilesize(Long.toString(uploadFile.getSize()));
-					filesService.insert(fileVo);
+					//filesService.insert(fileVo);
 
 					map.put("code", "success");
 					map.put("imageName", realFileName);
-					map.put("imageNum", fileVo.getFilenum());
 				}
 			}
 		}

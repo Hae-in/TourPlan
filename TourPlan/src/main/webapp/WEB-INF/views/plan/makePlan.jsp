@@ -19,7 +19,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>투어플랜(TourPlan)-일정만들기 상세</title>
-<!-- <link rel="stylesheet" href="../resources/css/dragdrop.css" type="text/css" media="screen"/> -->
 <script type="text/javascript" src="../resources/js/redips-drag-min.js"></script>
 <script type="text/javascript" src="../resources/js/drag2.js"></script>
 <script src='<c:url value='/'/>resources/js/jquery.form.min.js'></script>
@@ -84,7 +83,6 @@ var oldPlannum = "<%=old_plannum%>";
 		$('#table2').find('div').each(function(i, e){
 			console.log($(this).text());
 		});
-		
 		
 	});
 	
@@ -690,7 +688,7 @@ function savePlan() {
 }//savePlan()
 
 function saveTable() {
-	var parameter = "["; 
+	var parameter = []; 
 	//★★★day구해야!!
 	var day = 3;
 	var tds = new Array();
@@ -698,31 +696,38 @@ function saveTable() {
 	
 		for(i=1; i<=day; i++) {
 			for(j=0; j<9; j++) {
-				var p = "{";
+				var p = {};
 			
 				if($("[day='"+i+"'][tr='"+j+"'] div").length == 0) { }
 				else {
 				
 				var div_id = $("[day='"+i+"'][tr='"+j+"'] div").attr("id");
 				var divide_place = div_id.split("_")[1];
-				p += "\"day\":\""+i+"\",\"tr\":\""+j+"\",\"placenum\":\""+divide_place+"\"," + 
-				"\"plannum\":\"" + plannum + "\",\"fix\":\"0\",\"sortnum\":\"5\",\"staytime\":\"30\"},";	
-				console.log("param : " + p);
-				parameter += p;
+				
+				p.day = i;
+				p.tr = j;
+				p.placenum = divide_place
+				p.plannum = plannum;
+				p.fix = "0";
+				p.sortnum = "5";
+				p.staytime = "30";
+				
+				//★★★1227 ajax 포스트넘 가져와서 속성에 넣고 해당 div부를 때 그 속성값 plantableVO로 함께 담음
+				//이후 컨트롤러에서 plantable insert후 plannum, plantablenum을 함께 넘겨 post의 plantablenum에 update
+				//그러면 select할때 plannum,plantablenum으로 가져올 수 있음
+				//만약 2개이상이라면? VO에 배열넣을수있나? 
+				//$("#post"+i+"a"+tr)의 포스트num을 가져와야
+				parameter.push(p);
 			}
 		}
 	}
-	
-	parameter = parameter.substring(0, parameter.lastIndexOf(","));
-	parameter += "]";
-	console.log("parameter : "+parameter);
 	
 	if(isSave == true) {
 		$.ajax({
 		    url         : '../planTableAjax/planUpdate'
 		   ,type        : 'POST'
 		   ,dataType    : 'json'
-		   ,data		: parameter
+		   ,data		: JSON.stringify( parameter )
 		   ,contentType	: 'application/json' 
 		   ,mimeType: 'application/json'
 		   ,success     : function(data,status) {
@@ -742,7 +747,7 @@ function saveTable() {
 		    url         : '../planTableAjax/planInsert'
 		   ,type        : 'POST'
 		   ,dataType    : 'json'
-		   ,data		: parameter
+		   ,data		: JSON.stringify( parameter )
 		   ,contentType	: 'application/json' 
 		   ,mimeType: 'application/json'
 		   ,success     : function(data,status) {
@@ -779,15 +784,9 @@ function dayCheck() {
 			
 			//포스트도 함께 추가
 			var day_div = "<div style='border: 1px solid red;'><font size='5'><b>" + (last_day+i) + " Day</b></font></div>"
-			+ "<br><div id='post" + i + "a0'></div>"
-			+ "<br><div id='post" + i + "a1'></div>"
-			+ "<br><div id='post" + i + "a2'></div>"
-			+ "<br><div id='post" + i + "a3'></div>"
-			+ "<br><div id='post" + i + "a4'></div>"
-			+ "<br><div id='post" + i + "a5'></div>"
-			+ "<br><div id='post" + i + "a6'></div>"
-			+ "<br><div id='post" + i + "a7'></div>"
-			+ "<br><div id='post" + i + "a8'></div>";
+			for(j=0; j<9; j++) {
+				day_div += "<div id='post"+i+"a"+j+"'></div><button id='"+i+","+j+"' class='postbtn' style='display:none;'>포스트쓰기</button>"
+			}
 			$("#storyTab").append(day_div);
 		}
 	} else if(form_day < last_day) {
@@ -813,19 +812,20 @@ function dayCheck() {
 var post_day = $("#day").val();
 for(i=1; i<=post_day; i++) {
 	var day_div = "<div id='postDay" + i + "' style='border: 1px solid red;'><font size='5'><b>" + i + " Day</b></font></div>"
-	+ "<br><div id='post" + i + "a0'></div>"
-	+ "<br><div id='post" + i + "a1'></div>"
-	+ "<br><div id='post" + i + "a2'></div>"
-	+ "<br><div id='post" + i + "a3'></div>"
-	+ "<br><div id='post" + i + "a4'></div>"
-	+ "<br><div id='post" + i + "a5'></div>"
-	+ "<br><div id='post" + i + "a6'></div>"
-	+ "<br><div id='post" + i + "a7'></div>"
-	+ "<br><div id='post" + i + "a8'></div>"
+	for(j=0; j<9; j++) {
+		day_div += "<div id='post"+i+"a"+j+"'></div><button id='"+i+","+j+"' class='postbtn' style='display:none;'>포스트쓰기</button>"
+	}
 	$("#storyTab").append(day_div);
 }
 
+
 //Post Function
+$("#frm2").hide();
+	
+var p_all = "";
+var arr = "";
+var post = "";
+
 function onImage() {
 	$("#frm1").hide();
 	$("#frm2").show();
@@ -850,34 +850,23 @@ function postAdd(){
 	if($("#frm1").css("display") != "none") {
 		post = $("#post").val();						//포스트 insert후 추가 위한 변수
 		$("#post").val("");	
-		param = "post=" + post;						//포스트 입력값 파라미터로 전환
-	} else {	
-		param =	"post=" + post; 
-	}
-	param += "&plantablenum=" + arr[0] + "&plannum=" + arr[1] + "&day=" + arr[2] + "&tr=" + arr[3];
+	} else {}
 	
 	dialog.dialog( "close" );
-	$.getJSON("../postAjax/insert", param, function(data,status){
-		if(status =="success" ) {
-				var div = "<div style='border: 1px solid grey; padding: 5px; margin: 5px; width: fit-content;'>" + post + "</div>"
-				$(div).appendTo($("#" + arr[2] + "_" + arr[3]));
-		} else {
-			alert(status);
-		}
-	});
+	var div = "<div style='border: 1px solid grey; padding: 5px; margin: 5px; width: fit-content;'>" + post + "</div>"
+	$(div).appendTo($("#post" + arr[0] + "a" + arr[1]));
 }
  
 function imageAdd_Post(){
 	console.log("이미지버튼 클릭");
 	$("#frm2").ajaxForm({
 		dataType:"json",
-		data : {plantablenum: arr[0]},
+		data : {plantablenum: ""},
 		url:'../postAjax/insertImage.do',
 		success: function(result, textStatus){
 			if(result.code == 'success') {
 				alert("등록되었습니다.");
 				post = "<img src='<c:url value='/'/>resources/images/" + result.imageName + "' width='800px'>";
-				//★★★1226 받아온 result.imageNum을 부모속성에 넣는다 
 				postAdd();
 			}
 		},
@@ -901,14 +890,15 @@ dialog = $( "#dialog-form" ).dialog({
         }
       }
     });
- 
-// Modal 띄우기 위한 버튼
-$( ".postbtn" ).button().on( "click", function() {
-   p_all = $(this).attr("id");
-   arr = p_all.split(",");					//클릭한 위치 알기 위한 버튼 id String split
-   dialog.dialog( "open" );
-});
 
+$(function () {
+// Modal 띄우기 위한 버튼
+	$( ".postbtn" ).button().on( "click", function() {
+	   p_all = $(this).attr("id");
+	   arr = p_all.split(",");					//클릭한 위치 알기 위한 버튼 id String split
+	   dialog.dialog( "open" );
+	});
+})
 </script>
 	
 </body>

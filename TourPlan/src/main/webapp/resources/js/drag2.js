@@ -29,21 +29,37 @@ redips.init = function () {
 		var x_tr = rd.td.source.getAttribute("id");
 		console.log("tr : " + tr + " 과 x_tr : " + x_tr);
 		
+		var arr = new Array();
+		arr = tr.split("a");
+		
 		var child1 = rd.objOld.childNodes[0].nodeValue;
 		var child2 = rd.objOld.childNodes[2].nodeValue;
 		
-		$("#post"+tr).append("<div style='border: solid 1px orange;'>" + child1 + "<br>" + child2 + "</div>");
-		$("#post"+x_tr).empty();
+		//★★★물어보기
+		var n = $("#post"+x_tr+">*").length;
+		for(i=0; i<n; i++) {
+			console.log(i+"번째 자식 옮기는중");
+			console.log($("#post"+x_tr+">*:eq("+i+")"));
+			var child = $("#post"+x_tr+">*:eq("+i+")");
+			$("#post"+tr).append(child);
+		}
+		$("#post"+tr+"+button").css("display", "block");
+		//$("#post"+x_tr).empty();
+		$("#post"+x_tr+"+button").css("display", "none");
 		}
 	};
 
 	rd.event.clonedDropped = function() {
 		var tr = rd.td.target.getAttribute("id");
+		var arr = new Array();
+		arr = tr.split("a");
 		
 		var child1 = rd.objOld.childNodes[0].nodeValue;
 		var child2 = rd.objOld.childNodes[2].nodeValue;
 		
 		$("#post"+tr).append("<div style='border: solid 1px orange;'>" + child1 + "<br>" + child2 + "</div>");
+		//$("#post"+tr).append("<button class='postbtn' onclick=\"postbtnClick('"+arr[0]+"','"+arr[1]+"');\">포스트쓰기</button>");
+		$("#post"+tr+"+button").css("display", "block");
 	}
 	
 	// after element is deleted from the timetable, print message
