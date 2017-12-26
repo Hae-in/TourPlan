@@ -181,7 +181,7 @@ input:checked+.slider:before {
 					href="../plan/selectAll.do">여행일정</a></li>
 				<li class="nav-item"><a class="nav-link" href="../place/selectAll.do">명소</a>
 				</li>
-				<li class="nav-item"><a class="nav-link" href="contact.html">고객센터</a>
+				<li class="nav-item"><a class="nav-link" href="../helpdesk/selectAll.do">고객센터</a>
 				</li>
 				<li class="nav-item"><a class="nav-link" href="../planTable/makePlan.do">일정만들기</a></li>
 				<li class="nav-item"><a class="nav-link" id="menuLogin" style="cursor: pointer;" data-toggle="modal" data-target="#myModal">로그인</a></li>
