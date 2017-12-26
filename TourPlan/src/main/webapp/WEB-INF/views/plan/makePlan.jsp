@@ -866,7 +866,7 @@ function postAdd(){
 		}
 	});
 }
-
+ 
 function imageAdd_Post(){
 	console.log("이미지버튼 클릭");
 	$("#frm2").ajaxForm({
