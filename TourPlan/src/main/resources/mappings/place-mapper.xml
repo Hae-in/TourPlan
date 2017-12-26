@@ -61,9 +61,15 @@
 		<if test="categorynum != null">
 			categorynum = #{categorynum}
 		</if>		
-		<if test="keyword != null">
-			and placename like '%' || #{keyword} || '%'
+		<if test="placename != null">
+			and placename like '%' || #{placename} || '%'
 		</if>
+		<if test="city != null">
+			and city like '%' || #{city} || '%'
+		</if>	
+		<if test="country != null">
+			and country like '%' || #{country} || '%'
+		</if>				
 		</where>		
 		<if test="sort != null">
 		order by #{sort} desc
