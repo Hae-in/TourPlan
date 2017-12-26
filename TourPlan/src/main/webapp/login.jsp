@@ -43,6 +43,10 @@
                 <td><input type="password" name="userPw" id="userPw"></td>
             </tr>
             <tr>
+                <td>비밀번호</td>
+                <td><input type="password" name="userPwCheck" id="userPwCheck"></td>
+            </tr>
+            <tr>
                 <td colspan="2" align="center">
                     <button type="button" id="btnLogin">로그인</button>
                 <c:if test="${msg == 'failure'}">

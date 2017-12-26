@@ -48,7 +48,30 @@
 			});
 		});
 		
-	});
+		$("#city").keyup(function(){
+			var city = $("#city").val();
+			$("#keyword_result").text("");
+			if(city != "") {
+				$.ajax("../placeAjax/selectAll.do",{
+					method: 'post',
+					data: { city: city },
+					dataType:'json',
+					success : function(data, status){
+						if(status=="success") {
+							var options = "";
+							for (i = 0; i < data.length; i++) {
+								options += '<div>' + data[i].country + " / " + data[i].city + " / " + data[i].placename + '</div>';
+							}
+							$("#keyword_result").append(options);
+						} else {
+							alert(status);	
+						}	
+					}				
+				});	
+			}	
+		});
+		
+	});	
 </script>
 </head>
 <body>
@@ -79,7 +102,8 @@
 							<div id="category"></div>
 						</div>
 						<div class="list-group-item">
-							도시<br /> <input type="text" name="city">
+							도시<br /> <input type="text" name="city" id="city">
+							<div id="keyword_result"></div>
 						</div>
 						<input type="submit" value="검색">
 					</div>

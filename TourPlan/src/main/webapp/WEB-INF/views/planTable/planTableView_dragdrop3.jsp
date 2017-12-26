@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
@@ -15,7 +16,7 @@
 	$(function(){
 		// Get the element with id="defaultOpen" and click on it
 		document.getElementById("defaultOpen").click();
-		
+		 
 		$.ajax({
 			url : "<%=request.getContextPath()%>/placeAjax/selectAll.do",
 			dataType : "json",
@@ -25,22 +26,45 @@
 				for (i = 0; i < data.length; i++) {
 					console.log(data[i].imagename);
 					/* $("#tbody").append("<tr><td>"+data[i].imagename+"</td><td><div>"+data[i].placename+"</div><div>"+data[i].city+", "+data[i].country+"</div></td></tr>") */
-					$("#tbody").append("<tr><td class='redips-mark lunch'><img width='100px;' height='65px;' src='../resources/images/"+(data[i].imagename == null ? "null.jpg" : data[i].imagename) +"'></td><td class='dark'><div id='place_" + data[i].placenum + "_"+i+"' class='redips-drag redips-clone'>"+data[i].placename+"<br>"+data[i].city+", " +data[i].country+"</div></td></tr>");
+					//$("#tbody").append("<tr><td class='redips-mark lunch'><img width='100px;' height='65px;' src='../resources/images/"+(data[i].imagename == null ? "null.jpg" : data[i].imagename) +"'></td><td class='dark'><div id='place_" + data[i].placenum + "_"+i+"' class='redips-drag redips-clone'>"+data[i].placename+"<br>"+data[i].city+", " +data[i].country+"</div></td>"+"<td class='latlon' style='display: none;'>123</td>"+"</tr>");
+					$("#tbody").append("<tr><td class='redips-mark lunch'><img width='100px;' height='65px;' src='../resources/images/"+(data[i].imagename == null ? "null.jpg" : data[i].imagename) +"'></td><td class='dark'><div id='place_" + data[i].placenum + "_"+i+"' class='redips-drag redips-clone'>"+data[i].placename+"<br>"+data[i].city+", " +data[i].country+"</div></td>"+"<td class='lat' style='display: none;'>"+data[i].lat+"</td><td class='lon' style='display: none;'>"+data[i].lon+"</td></tr>");
 				}
 			}
 		});
-		
-		/* 
-		$(".place-item").dblclick(function(){
-	        $(this).empty();
-	    });
-		 */
-		
-		$('#table2').find('div').each(function(i, e){
-			console.log($(this).text());
-		});
-		
 	});
+	
+	function getDate() {
+		var depDate = $("#depDate").val().split('-');
+		var arrDate = $("#arrDate").val().split('-');
+		var depDateArr = new Date(depDate[0], depDate[1], depDate[2]); 
+		var arrDateArr = new Date(arrDate[0], arrDate[1], arrDate[2]); 
+		var day = 0;
+		//console.log(arrd);
+		//console.log(arrd1);
+
+		var diff = arrDateArr - depDateArr;
+ 		var currDay = 24 * 60 * 60 * 1000;// 시 * 분 * 초 * 밀리세컨
+
+ 		day = parseInt(diff/currDay);
+ 		//console.log(day);
+ 		$("#dayInput").val(day);
+	}
+	
+	function readData() {
+		// 테이블 읽어오기
+		$(".plan-items").each(function(i, item) {
+			var tdId = $(this).attr('id');
+			var tdIdSubstr = $(this).attr('id').substring(0,1);
+			var text = $.trim($(item).html());
+			if(text != "") {
+				//console.log(i + " : " + tdId);
+				//console.log(i + " : " + tdIdSubstr);
+				if(tdIdSubstr == 1) {
+					console.log(tdIdSubstr + text);
+				} 
+			} 
+		});alert("Page is loaded");
+	}
 	
 	function openTab(evt, tabName) {
 		var i, tabcontent, tablinks;
@@ -63,7 +87,7 @@
 		table = document.getElementById("table1");
 		tr = table.getElementsByTagName("tr");
 		for (i = 0; i < tr.length; i++) {
-			td = tr[i].getElementsByTagName("td")[0];
+			td = tr[i].getElementsByTagName("td")[1];
 			if (td) {
 				if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
 					tr[i].style.display = "";
@@ -77,48 +101,49 @@
 </script>
 <style>
 * {
-    box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 body {
-    margin: 0;
+	margin: 0;
 }
 
 /* Style the header */
 .header {
-    background-color: #f1f1f1;
-    padding: 50px;
-    /* text-align: center; */
-    /* margin-left: 300px; */
+	background-color: #f1f1f1;
+	padding: 50px;
+	/* text-align: center; */
+	/* margin-left: 300px; */
 }
 
 /* Container for flexboxes */
 .footer {
-    display: -webkit-flex;
-    display: flex;
+	display: -webkit-flex;
+	display: flex;
 }
 
 /* Create three unequal columns that sits next to each other */
 .column {
-    padding: 10px;
-    /* height: 200px; /* Should be removed. Only for demonstration */ */
+	padding: 10px;
+	/* height: 200px; /* Should be removed. Only for demonstration */
+	*/
 }
 
 /* Left column */
 .column.divNav {
-   -webkit-flex: 1;
-   -ms-flex: 1;
-   flex: 1;
-   /* position: fixed;
+	-webkit-flex: 1;
+	-ms-flex: 1;
+	flex: 1;
+	/* position: fixed;
    left: 0px;
    bottom: 0px; */
 }
 
 /* Middle column */
 .column.divMain {
-    -webkit-flex: 2;
-    -ms-flex: 4;
-    flex: 4;
+	-webkit-flex: 2;
+	-ms-flex: 4;
+	flex: 4;
 }
 
 #planName {
@@ -190,41 +215,40 @@ input:checked+.slider:before {
 	border-radius: 50%;
 }
 /*공개여부끝*/
-
 .planCate {
 	width: 120px;
 }
 
 .tab {
-    overflow: hidden;
-    border: 1px solid #ccc;
-    background-color: #f1f1f1;
+	overflow: hidden;
+	border: 1px solid #ccc;
+	background-color: #f1f1f1;
 }
 
 .tab button {
-    background-color: inherit;
-    float: left;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 14px 16px;
-    transition: 0.3s;
-    font-size: 17px;
+	background-color: inherit;
+	float: left;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	padding: 14px 16px;
+	transition: 0.3s;
+	font-size: 17px;
 }
 
 .tab button:hover {
-    background-color: #ddd;
+	background-color: #ddd;
 }
 
 .tab button.active {
-    background-color: #ccc;
+	background-color: #ccc;
 }
 
 .tabcontent {
-    display: none;
-    padding: 6px 12px;
-    border: 1px solid #ccc;
-    border-top: none;
+	display: none;
+	padding: 6px 12px;
+	border: 1px solid #ccc;
+	border-top: none;
 }
 
 .tablinks {
@@ -236,7 +260,7 @@ input:checked+.slider:before {
 	height: 100%;
 }
 
-.redips-drag {	
+.redips-drag {
 	cursor: move;
 	margin: auto;
 	z-index: 10;
@@ -244,8 +268,8 @@ input:checked+.slider:before {
 	text-align: center;
 	font-size: 10pt;
 	opacity: 0.7;
-	filter: alpha(opacity=70);
-	width: 180px;	/* table1 td item size */
+	filter: alpha(opacity = 70);
+	width: 180px; /* table1 td item size */
 	height: 50px;
 	line-height: 20px;
 	border: 1px solid #555;
@@ -261,7 +285,7 @@ div#redips-drag table {
 #table1 td, #table2 td {
 	border-style: solid;
 	border-width: 1px;
-	border-color: white;	/* 모든 table td border-color */
+	border-color: white; /* 모든 table td border-color */
 	width: 200px;
 	height: 60px;
 	text-align: center;
@@ -278,42 +302,50 @@ div#redips-drag #table1 div {
 	float: left;
 }
 
-.ar { background-color: #AAC8E2; }
-.bi { background-color: #E7D783; }
-.ch { background-color: #E99AE6; }
+.ar {
+	background-color: #AAC8E2;
+}
 
-.dark{
+.bi {
+	background-color: #E7D783;
+}
+
+.ch {
+	background-color: #E99AE6;
+}
+
+.dark {
 	color: #444;
 	background-color: #e0e0e0;
 }
 
-.button_container{
+.button_container {
 	padding-top: 10px;
 	text-align: right;
 }
 
 /* "Save" button */
-.button_container input{
+.button_container input {
 	background-color: #6A93D4;
-	color: white; 
+	color: white;
 	border-width: 1px;
 	width: 40px;
 	padding: 0px;
 }
 
-#searchTable td{
+#searchTable td {
 	width: 200px;
 }
 
 .searchInput {
-  background-image: url('/css/searchicon.png');
-  background-position: 10px 10px;
-  background-repeat: no-repeat;
-  width: 100%;
-  font-size: 16px;
-  padding: 12px 20px 12px 40px;
-  border: 1px solid #ddd;
-  margin-bottom: 12px;
+	/* background-image: url('/css/searchicon.png'); */
+	background-position: 10px 10px;
+	background-repeat: no-repeat;
+	width: 100%;
+	font-size: 16px;
+	padding: 12px 20px 12px 40px;
+	border: 1px solid #ddd;
+	margin-bottom: 12px;
 }
 
 #trashTb {
@@ -324,34 +356,37 @@ div#redips-drag #table1 div {
 	background-color: #DC4C46;
 	color: #fff;
 }
-
 </style>
 </head>
 <body>
 	<div class="header">
-		<input type="text" id="planName" placeholder="아까 적은 여행제목 (수정가능)"/>
+		<input type="text" id="planName" placeholder="아까 적은 여행제목 (수정가능)" />
 		<div class="divContents">
 			<div>
 				<table border="1">
 					<tr>
-						<td>출발일</td><td>일수</td><td>인원</td><td>여행테마</td><td>공개여부</td>
+						<td>출발일</td>
+						<td>도착일</td>
+						<td>일수</td>
+						<td>인원</td>
+						<td>여행테마</td>
+						<td>공개여부</td>
 					</tr>
 					<tr>
-						<td><input type="text"></td>
-						<td><input type="text"></td>
-						<td><input type="text"></td>
-						<td>
-							<input class="planCate" type="button" value="나홀로여행">
-							<input class="planCate" type="button" value="친구와여행">
-							<input class="planCate" type="button" value="가족여행"> 
-							<input class="planCate" type="button" value="단체여행"> 
-							<input class="planCate" type="button" value="커플여행"> 
-							<input class="planCate" type="button" value="기타">
-						</td>
+						<td><input type="date" id="depDate" onchange="getDate()"></td>
+						<td><input type="date" id="arrDate" onchange="getDate()"></td>
+						<td><input type="text" id="dayInput" readonly="readonly"></td>
+						<td><input type="number" min="1"></td>
+						<td><input class="planCate" type="button" value="나홀로여행">
+							<input class="planCate" type="button" value="친구와여행"> <input
+							class="planCate" type="button" value="가족여행"> <input
+							class="planCate" type="button" value="단체여행"> <input
+							class="planCate" type="button" value="커플여행"> <input
+							class="planCate" type="button" value="기타"></td>
 						<td>
 							<div id="isopen">
-								<label class="switch"> 
-									<input type="checkbox"><span class="slider round"></span>
+								<label class="switch"> <input type="checkbox"><span
+									class="slider round"></span>
 								</label>
 							</div>
 						</td>
@@ -362,31 +397,38 @@ div#redips-drag #table1 div {
 	</div>
 	<div id="redips-drag">
 		<div class="footer">
-			<div class="column divNav" style="background-color:#aaa;">
+			<div class="column divNav" style="background-color: #aaa;">
 				<div id="left">
 					<div id="innerLeft">
-						<input type="text" class="searchInput" id="searchInput-region" onkeyup="searchRegionFunction()" placeholder="Search.." title="Type in a name">
+						<input type="text" class="searchInput" id="searchInput-region"
+							onkeyup="searchRegionFunction()" placeholder="Search.."
+							title="Type in a name">
 						<!-- <input type="text" class="searchInput" id="searchInput-place" onkeyup="searchPlaceFunction()" placeholder="Search for place.." title="Type in a name"> -->
 						<!-- <div class="redips-trash" title="Trash">Trash</div> -->
 						<table id="trashTb">
-							<tr><td class="redips-trash" title="Trash" id="trashTD"><h3><strong>Trash</strong></h3></td></tr>
+							<tr>
+								<td class="redips-trash" title="Trash" id="trashTD"><h3>
+										<strong>Trash</strong>
+									</h3></td>
+							</tr>
 						</table>
 						<table id="table1" border="1">
 							<colgroup id="colgroup">
-								<col width="180px"/>
+								<col width="180px" />
 							</colgroup>
 							<tbody id="tbody">
-								
+
 							</tbody>
 						</table>
 						<button id="newPlaceBtn">새장소등록</button>
 					</div>
 				</div>
 			</div>
-			<div class="column divMain" style="background-color:#bbb;">
+			<div class="column divMain" style="background-color: #bbb;">
 				<div class="tab">
 					<button class="tablinks" onclick="openTab(event, 'storyTab')">스토리</button>
-					<button class="tablinks" onclick="openTab(event, 'planTab')" id="defaultOpen">지도/일정표</button>
+					<button class="tablinks" onclick="openTab(event, 'planTab')"
+						id="defaultOpen">지도/일정표</button>
 				</div>
 				<div id="storyTab" class="tabcontent">
 					<h3>storyTab</h3>
@@ -396,23 +438,66 @@ div#redips-drag #table1 div {
 					<div id="googleMap" style="width: 100%; height: 400px;"></div>
 					<script>
 						function myMap() {
+							var mapLocation = new google.maps.LatLng('35.870888', '128.598391'); // 지도에서 가운데로 위치할 위도와 경도
 							var mapProp = {
-								center : new google.maps.LatLng(51.508742, -0.120850),
+								center : mapLocation,
 								zoom : 5,
+								mapTypeId: google.maps.MapTypeId.ROADMAP
 							};
 							var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
 						}
 					</script>
+					
+					<!-- 
+					<script type="text/javascript">
+      					function initialize() {
+					        var mapLocation = new google.maps.LatLng('35.870888', '128.598391'); // 지도에서 가운데로 위치할 위도와 경도
+					        var markLocation = new google.maps.LatLng('35.870888', '128.598391'); // 마커가 위치할 위도와 경도
+         
+					        var mapOptions = {
+					        	center: mapLocation, // 지도에서 가운데로 위치할 위도와 경도(변수)
+					        	zoom: 17, // 지도 zoom단계
+					        	mapTypeId: google.maps.MapTypeId.ROADMAP
+					        };
+					        var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);	// id: map-canvas, body에 있는 div태그의 id와 같아야 함
+					            
+					        var size_x = 60; // 마커로 사용할 이미지의 가로 크기
+					        var size_y = 60; // 마커로 사용할 이미지의 세로 크기
+					         
+					        // 마커로 사용할 이미지 주소
+					        var image = new google.maps.MarkerImage( 'http://www.larva.re.kr/home/img/boximage3.png', new google.maps.Size(size_x, size_y), '', '', new google.maps.Size(size_x, size_y));
+					        var marker;
+					        
+					        marker = new google.maps.Marker({
+					        	position: markLocation, // 마커가 위치할 위도와 경도(변수)
+					        	map: map,
+								icon: image, // 마커로 사용할 이미지(변수)
+								// info: '말풍선 안에 들어갈 내용',
+								title: '서대전네거리역이지롱~' // 마커에 마우스 포인트를 갖다댔을 때 뜨는 타이틀
+					        });
+         
+					        var content = "이곳은 서대전네거리역이다! <br/> 지하철 타러 가자~"; // 말풍선 안에 들어갈 내용
+					         
+					        // 마커를 클릭했을 때의 이벤트. 말풍선 뿅~
+					        var infowindow = new google.maps.InfoWindow({ content: content});
+					 
+					        google.maps.event.addListener(marker, "click", function() {
+					        	infowindow.open(map,marker);
+					        });
+     	 				}
+      					google.maps.event.addDomListener(window, 'load', initialize);
+					</script>
+					 -->
 					<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC6-5na3Y2gJSt31kHSeSWZqp3VM1hvgJg&callback=myMap"></script>
 					<div id="planList">
 						<div id="right">
-							<table id="table2" border="1">
+							<table id="table2" border="1" onload="readData()">
 								<colgroup>
-									<col width="100"/>
-									<col width="100"/>
-									<col width="100"/>
-									<col width="100"/>
-									<col width="100"/>
+									<col width="100" />
+									<col width="100" />
+									<col width="100" />
+									<col width="100" />
+									<col width="100" />
 								</colgroup>
 								<tbody>
 									<tr>
@@ -499,7 +584,8 @@ div#redips-drag #table1 div {
 				</div>
 				<div id="divBtns">
 					<button type="submit">저장</button>
-					<button type="button" onclick="window.open('<c:url value='/'/>planTable/shareView.do')">공유하기</button>
+					<button type="button"
+						onclick="window.open('<c:url value='/'/>planTable/shareView.do')">공유하기</button>
 					<button type="button">취소</button>
 				</div>
 			</div>

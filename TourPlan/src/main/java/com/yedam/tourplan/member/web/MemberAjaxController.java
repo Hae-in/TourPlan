@@ -33,7 +33,32 @@ public class MemberAjaxController {
 	MemberService memberService;
 	@Autowired
 	FilesService filesService;
-
+	
+	//아이디 중복체크
+	@RequestMapping("memberIdCheck")
+	@ResponseBody
+	public boolean memberIdCheck(MemberSearchVO vo, HttpSession session, HttpServletRequest request, HttpServletResponse response) {
+		MemberVO m_vo = memberService.select(vo);
+		if (m_vo == null) {
+			return true;//사용가능 1
+		} else {
+			return false;//사용불가 0
+		}
+	}
+	
+	//닉네임 중복체크
+	@RequestMapping("nicknameCheck")
+	@ResponseBody
+	public boolean nicknameCheck(MemberSearchVO vo, HttpSession session, HttpServletRequest request, HttpServletResponse response) {
+		MemberVO m_vo = memberService.select(vo);
+		if (m_vo == null) {
+			return true;//사용가능 1
+		} else {
+			return false;//사용불가 0
+		}
+	}
+	
+	//셀렉트
 	@RequestMapping("select")
 	@ResponseBody
 	public boolean select(MemberSearchVO vo, HttpSession session, HttpServletRequest request, HttpServletResponse response) {
@@ -48,6 +73,8 @@ public class MemberAjaxController {
 			return false;
 		}
 	}
+	
+	
 	
 	@RequestMapping("logout")
 	@ResponseBody
