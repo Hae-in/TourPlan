@@ -5,79 +5,6 @@
 	if(session.getAttribute("membernum") == null) {  }
 	else {	membernum = (String) session.getAttribute("membernum"); }
 %>
-<!DOCTYPE html>
-<html>
-<head>
-<title></title>
-<!-- Bootstrap core CSS -->
-<link href="<c:url value='/'/>resources/thema/vendor/bootstrap/css/bootstrap.min.css"
-	rel="stylesheet">
-<!-- Custom styles for this template -->
-<link href="<c:url value='/'/>resources/thema/css/modern-business.css" rel="stylesheet">
-<link rel="stylesheet"
-	href='<c:url value='/'/>resources/js/jquery-ui.min.css'>
-<script src='<c:url value='/'/>resources/js/jquery-3.2.1.min.js'></script>
-<script src='<c:url value='/'/>resources/js/jquery-ui.min.js'></script>
-<script src="../resources/thema/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<style>
-.switch {
-	position: relative;
-	display: inline-block;
-	width: 60px;
-	height: 32px;
-}
-.switch input {
-	display: none;
-}
-
-.slider {
-	position: absolute;
-	cursor: pointer;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background-color: #ccc;
-	-webkit-transition: .4s;
-	transition: .4s;
-}
-.slider:before {
-	position: absolute;
-	content: "";
-	height: 24px;
-	width: 24px;
-	left: 4px;
-	bottom: 4px;
-	background-color: white;
-	-webkit-transition: .4s;
-	transition: .4s;
-}
-
-input:checked+.slider {
-	background-color: #2196F3;
-}
-
-input:focus+.slider {
-	box-shadow: 0 0 1px #2196F3;
-}
-
-input:checked+.slider:before {
-	-webkit-transform: translateX(26px);
-	-ms-transform: translateX(26px);
-	transform: translateX(26px);
-}
-/* Rounded sliders */
-.slider.round {
-	border-radius: 40px;
-}
-
-.slider.round:before {
-	border-radius: 50%;
-}
-</style>
-</head>
-<body>
-
 <!-- Modal -->
   <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
@@ -174,8 +101,7 @@ input:checked+.slider:before {
       </div>
       
     </div>
-  </div>
-    V
+  </div>    
 <nav
 	class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark fixed-top">
 	<div class="container">
@@ -191,14 +117,8 @@ input:checked+.slider:before {
 			<ul class="navbar-nav ml-auto">
 				<li class="nav-item"><a class="nav-link"
 					href="../plan/selectAll.do">여행일정</a></li>
-				<li class="nav-item"><a class="nav-link" href="../place/selectAll.do">명소</a>
-				</li>
-<<<<<<< HEAD
-				<li class="nav-item"><a class="nav-link" href="contact.html">고객센터</a>
-=======
-				<li class="nav-item"><a class="nav-link" href="../helpdesk/selectAll.do">������</a>
->>>>>>> branch 'master' of https://github.com/JeonHyeJu/TourPlan.git
-				</li>
+				<li class="nav-item"><a class="nav-link" href="../place/selectAll.do">명소</a></li>
+				<li class="nav-item"><a class="nav-link" href="../helpdesk/selectAll.do">고객센터</a></li>
 				<li class="nav-item"><a class="nav-link" href="../planTable/makePlan.do">일정만들기</a></li>
 				<li class="nav-item"><a class="nav-link" id="menuLogin" style="cursor: pointer;" data-toggle="modal" data-target="#myModal">로그인</a></li>
 				<li class="nav-item"><a class="nav-link" id="menuMy" href="../member/select.do?membernum=<%=membernum%>">Mypage</a></li>
@@ -438,6 +358,3 @@ $("#reg").click(function() {
 });
 
 </script>
-
-</body>
-</html>
