@@ -23,32 +23,19 @@ redips.init = function () {
 	redips.divNodeList = document.getElementById('table2').getElementsByTagName('div');
 	// show / hide report buttons (needed for dynamic version - with index.php)
 	redips.reportButton();
+	
 	// element is dropped
 	rd.event.dropped = function () {
 		var	objOld = rd.objOld,					// original object
 			targetCell = rd.td.target,			// target cell
 			targetRow = targetCell.parentNode,	// target row
 			i, objNew;							// local variables
-		// if checkbox is checked and original element is of clone type then clone spread subjects to the week
-		if (document.getElementById('week').checked === true && objOld.className.indexOf('redips-clone') > -1) {
-			// loop through table cells
-			for (i = 0; i < targetRow.cells.length; i++) {
-				// skip cell if cell has some content (first column is not empty because it contains label)
-				if (targetRow.cells[i].childNodes.length > 0) {
-					continue;
-				}
-				// clone DIV element
-				objNew = rd.cloneObject(objOld);
-				// append to the table cell
-				targetRow.cells[i].appendChild(objNew);
-			}
-		}
-		// print message only if target and source table cell differ
-		if (rd.td.target !== rd.td.source) { 
-			redips.printMessage('Content has been changed!');
-		}
-		// show / hide report buttons
-		redips.reportButton();
+		
+		//alert('test');
+		//alert(objOld.getAttribute("lat"));
+		//alert('test');
+		myMap(objOld.getAttribute("lat"), objOld.getAttribute("lon"));
+		//alert(objOld.getAttribute("placename"));
 	};
 
 	// after element is deleted from the timetable, print message
@@ -168,17 +155,17 @@ redips.reportButton = function () {
 				style = 'visible';
 			}
 			// hide or show report button
-			document.getElementById(id).style.visibility = style;
+			//document.getElementById(id).style.visibility = style;
 		}
 	}
 };
 
 
-// print message
+/*// print message
 redips.printMessage = function (message) {
 	document.getElementById('message').innerHTML = message;
 };
-
+*/
 
 // function show all subjects in timetable
 redips.showAll = function () {
