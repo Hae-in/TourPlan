@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.yedam.tourplan.common.Paging;
 import com.yedam.tourplan.files.service.FilesService;
 import com.yedam.tourplan.files.service.FilesVO;
 import com.yedam.tourplan.place.service.PlaceSearchVO;
@@ -93,7 +94,7 @@ public class PlaceController {
 			files.setTablenum(num);
 			model.addAttribute("files", filesService.selectAll(files));
 		}
-		return "place/form";
+		return "popup/place/form";
 	}	
 	
 	//등록&수정 처리
@@ -191,11 +192,18 @@ public class PlaceController {
 	
 	//조회
 	@RequestMapping("selectAll.do")
-	public String selectAll(PlaceSearchVO vo, Model model, HttpSession session) {
+	public String selectAll(PlaceSearchVO vo, Model model, HttpSession session, Paging paging) {
+		//전체 건수
+		int total = placeService.selectListTotCnt(vo);
+		paging.setTotalRecord(total);
+		vo.setFirst(paging.getFirst());
+		vo.setLast(paging.getLast());	
+		
+		
 		//System.out.println("membernum" + session.getAttribute("membernum"));
 		vo.setMembernum((String)session.getAttribute("membernum"));
 		model.addAttribute("placeList", placeService.selectAll(vo));
+		model.addAttribute("paging", paging);
 		return "place/selectAll";
 	}	
-	
 }

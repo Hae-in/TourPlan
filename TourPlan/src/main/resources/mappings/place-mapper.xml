@@ -50,6 +50,7 @@
 	</select>	
 
 	<select id="selectAll" parameterType="placeSearch" resultType="place">
+		select b.* from ( select rownum rn, a.* from ( 
 		select place.*		
 		, (select realfilename from files where tablename='place' and tablenum = place.placenum and state=1 and rownum=1) as imagename
         , (select count(*) as likecnt from likeplace where placenum = place.placenum) as likecnt
@@ -77,11 +78,33 @@
 		<if test="sort == null">
 		order by place.placenum desc
 		</if> 			 
+		 ) a ) b where rn between #{first} and #{last} 
 	</select>	
 	
 	<select id="selectPlace" resultType="place">
 		select placenum, placename from place
 		where placenum in (${placenum})
 	</select>	
+	
+	<select id="selectListTotCnt" parameterType="placeSearch" resultType="int">
+		<![CDATA[
+			SELECT 	COUNT(*) totcnt
+			FROM 	Place
+		]]>	
+			<where> 
+		<if test="categorynum != null">
+			categorynum = #{categorynum}
+		</if>		
+		<if test="placename != null">
+			and placename like '%' || #{placename} || '%'
+		</if>
+		<if test="city != null">
+			and city like '%' || #{city} || '%'
+		</if>	
+		<if test="country != null">
+			and country like '%' || #{country} || '%'
+		</if>				
+		</where> 		
+	</select>
 	
 </mapper>
