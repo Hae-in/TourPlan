@@ -366,7 +366,7 @@ div#redips-drag #table1 div {
 
 .del_a {
 	cursor: pointer;
-	font-color: red;
+	color: red;
 }
 </style>
 </head>
@@ -559,7 +559,8 @@ $.getJSON("../postAjax/selectPost", param_post, function(data,status){
 	if(status =="success" ) {
 		if( data.length > 0) {
 			for(i=0; i<data.length; i++) {
-				var div = "<div style='border: 1px solid grey; padding: 5px; margin: 5px; width: fit-content;'>" + data[i].post + "</div>"
+				var div = "<div style='border: 1px solid grey; padding: 5px; margin: 5px; width: fit-content;'>" + data[i].post + 
+				"<span id='postNum"+data[i].postnum+"' class='del_a'>X</span></div>"
 				$(div).appendTo($("#post" + data[i].day + "a" + data[i].tr));
 				$("#"+data[i].day+"b"+data[i].tr).show()
 				$("#"+data[i].day+"a"+data[i].tr).attr("postnum", data[i].postnum);
@@ -789,7 +790,7 @@ function postAdd(){
 	$.getJSON("../postAjax/insert", param, function(data,status){
 		if(status =="success" ) {
 			var div = "<div style='border: 1px solid grey; padding: 5px; margin: 5px; width: fit-content;'>" + post 
-			+ + "<a id='postNum"+data+"' class='del_a'><font color='red'>X</font></a></div>";
+			+ "<span id='postNum"+data+"' class='del_a'>X</span></div>";
 			$(div).appendTo($("#post" + arr[0] + "a" + arr[1]));
 			
 			if($("#"+arr[0]+"a"+arr[1]).attr("postnum") == null || $("#"+arr[0]+"a"+arr[1]).attr("postnum") == '') {
@@ -846,28 +847,31 @@ $(function () {
 	   dialog.dialog( "open" );
 	});
 	
-	$( ".del_a" ).click(function() {
-		   var post_temp = $(this).attr("id");
-		   var arr = post_temp.split("m");
-		   var del_param = "postnum=" + arr[1]; 
-		   $.ajax({
-			    url         : '../postAjax/delete'
-			   ,type        : 'POST'
-			   ,dataType    : 'text'
-			   ,data		: del_param
-			   ,success     : function(data,status) {
-			       if (status =="success") {
-			    	   if(data == true) {
-				    	   	alert("삭제 성공 ");
-			    	   		isSave = true;	}
-			    	   else {
-				    		alert("실패했습니다"); }
-		   		   } else { alert("에러발생 관리자에게 문의하세요") }
-		   		}
-			   ,error: function(result) {
-		   		}
-			});
+	$(document).on('click', '.del_a',function(e) {
+		e.stopImmediatePropagation();
+	   var post_temp = $(this).attr("id");
+	   var arr = post_temp.split("m");
+	   var del_param = "postnum=" + arr[1]; 
+	   $.ajax({
+		    url         : '../postAjax/delete'
+		   ,type        : 'POST'
+		   ,dataType    : 'text'
+		   ,data		: del_param
+		   ,success     : function(data,status) {
+		       if (status =="success") {
+			    	alert("삭제 성공 ");
+			    	
+			    	var pt_id = $("#postNum"+data).parent().parent().attr("id");
+			    	var temp_arr = new Array();
+			    	temp_arr = pt_id.split("t");
+			    	pt_id = temp_arr[1];
+			    	$("#"+pt_id).attr("postnum", "");
+			    	
+			    	$("#postNum"+data).parent().remove();
+	   		   } else { alert("에러발생 관리자에게 문의하세요") }
+	   		}
 		});
+	});
 })
 </script>
 	

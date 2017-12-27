@@ -63,11 +63,14 @@ public class PlanTableAjaxController {
 	public boolean planInsert(@RequestBody List<PlanTableVO> list) {
 		for(int i=0; i<list.size(); i++) {
 			planTableService.insert(list.get(i));
-			PostVO p_vo = new PostVO();
-			p_vo.setPostnum(list.get(i).getPostnum());
-			p_vo.setPlantablenum(list.get(i).getPlantablenum());
-			p_vo.setPlannum(list.get(i).getPlannum());
-			postService.update(p_vo);
+			if(list.get(i).getPostnum() == null || list.get(i).getPostnum().equals("")) {}
+			else {
+				PostVO p_vo = new PostVO();
+				p_vo.setPostnum(list.get(i).getPostnum());
+				p_vo.setPlantablenum(list.get(i).getPlantablenum());
+				p_vo.setPlannum(list.get(i).getPlannum());
+				postService.update(p_vo);
+			}
 		}
 		
 		return true;
@@ -83,7 +86,7 @@ public class PlanTableAjaxController {
 		if(r) {
 			for(int i=0; i<list.size(); i++) {
 				planTableService.insert(list.get(i));
-				if(list.get(i).getPostnum() == null || list.get(i).getPostnum().equals("null")) {}
+				if(list.get(i).getPostnum() == null || list.get(i).getPostnum().equals("")) {}
 				else {
 					PostVO p_vo = new PostVO();
 					p_vo.setPostnum(list.get(i).getPostnum());

@@ -370,7 +370,7 @@ div#redips-drag #table1 div {
 
 .del_a {
 	cursor: pointer;
-	font-color: red;
+	color: red;
 }
 </style>
 </head>
@@ -866,7 +866,7 @@ function postAdd(){
 	$.getJSON("../postAjax/insert", param, function(data,status){
 		if(status =="success" ) {
 			var div = "<div style='border: 1px solid grey; padding: 5px; margin: 5px; width: fit-content;'>" + post 
-			+ "<a id='postNum"+data+"' class='del_a'>X</a></div>"
+			+ "<span id='postNum"+data+"' class='del_a'>X</span></div>"
 			$(div).appendTo($("#post" + arr[0] + "a" + arr[1]));
 			
 			if($("#"+arr[0]+"a"+arr[1]).attr("postnum") == null || $("#"+arr[0]+"a"+arr[1]).attr("postnum") == '') {
@@ -923,7 +923,9 @@ $(function () {
 	   dialog.dialog( "open" );
 	});
 	
-	$( ".del_a" ).click(function() {
+	//동적으로 생성된 태그는 click()이 안먹음 -> on으로 걸어야!
+	$(document).on('click', '.del_a',function(e) {
+		e.stopImmediatePropagation();
 	   var post_temp = $(this).attr("id");
 	   var arr = post_temp.split("m");
 	   var del_param = "postnum=" + arr[1]; 
@@ -934,11 +936,15 @@ $(function () {
 		   ,data		: del_param
 		   ,success     : function(data,status) {
 		       if (status =="success") {
-		    	   if(data == true) {
-			    	   	alert("삭제 성공 ");
-		    	   		isSave = true;	}
-		    	   else {
-			    		alert("실패했습니다"); }
+			    	alert("삭제 성공 ");
+			    	
+			    	var pt_id = $("#postNum"+data).parent().parent().attr("id");
+			    	var temp_arr = new Array();
+			    	temp_arr = pt_id.split("t");
+			    	pt_id = temp_arr[1];
+			    	$("#"+pt_id).attr("postnum", "");
+			    	
+			    	$("#postNum"+data).parent().remove();
 	   		   } else { alert("에러발생 관리자에게 문의하세요") }
 	   		}
 		});
