@@ -69,6 +69,35 @@ $(function(){
 				
 			}
 		});
+		
+		var post_day = $("#day").text();
+		for(i=1; i<=post_day; i++) {
+			var day_div = "<div id='postDay" + i + "' style='border: 1px solid red;'><font size='5'><b>" + i + " Day</b></font>";
+			var table_td = "<td class='redips-mark dark'>Day" + i + "</td>";
+			$("#table2 tr:eq(0)").append(table_td);
+			for(j=0; j<9; j++) {
+				day_div += "<div id='post"+i+"a"+j+"'></div><button id='"+i+","+j+"' class='postbtn' style='display:none;'>포스트쓰기</button>";
+				table_td = "<td id="+i+"a"+j+"></td>"
+				$("#table2 tr:eq("+(j+1)+")").append(table_td);
+			}
+			day_div += "</div>";
+			$("#storyTab").append(day_div);
+		}
+		
+		//처음 Post목록 불러오는 ajax
+		var param_post = "plannum="+plannum;
+		$.getJSON("../postAjax/selectPost", param_post, function(data,status){
+			if(status =="success" ) {
+				if( data.length > 0) {
+					for(i=0; i<data.length; i++) {
+						var div = "<div style='border: 1px solid grey; padding: 5px; margin: 5px; width: fit-content;'>" + data[i].post + "</div>"
+						$(div).appendTo($("#post" + data[i].day + "a" + data[i].tr));
+					}
+				}
+			} else {
+				alert(status);
+			}
+		})	
 });
 	
 	function openTab(evt, tabName) {
@@ -361,63 +390,6 @@ div#redips-drag #table1 div {
   </div>
 <!-- Modal End -->
 
-<!-- Modal -->
-  <div class="modal fade" id="planModal" role="dialog">
-    <div class="modal-dialog modal-lg">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">여행일정 만들기</h4>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-        <div id="planBody" class="modal-body">
-        	<form action="../plan/modify.do" onsubmit="isitok();">
-        	<input type="hidden" name="plannum" value="<%=vo.getPlannum()%>">
-        	<table>
-        		<tr>
-        			<td>여행제목</td> <td><input type="text" name="planname" value="간단한 소개"/></td>
-        		</tr>
-        		<tr>
-        			<td>출발일</td> <td><input type="text" name="departuredate"></td>
-        		</tr>
-        		<tr>
-        			<td>도착일</td> <td><input type="text" name="arrivaldate"></td>
-        		</tr>
-        		<tr>
-        			<td>인원</td> <td><input type="text" name="people"></td>
-        		</tr>
-        		<tr>
-        			<td>카테고리</td> <td><select name="categorynum">
-        									<option value="11">나홀로여행</option>
-				 							<option value="12">친구와여행</option>
-  							 				<option value="13">가족여행</option>
-						     				<option value="14">단체여행</option>
-						     				<option value="15">커플여행</option>
-						     				<option value="16">기타</option>
-						  				</select></td>
-        		</tr>
-        		<tr>
-        			<td>공개여부</td>
-        			<td>
-        				<label class="switch"><input id="isopen_ck" type="checkbox" value="1"><span class="slider round"></span></label>
-        			</td>
-        		</tr>
-        		<tr>
-        			<td><input type="hidden" name="state" value="0"></td> <td><input id="isopen" type="hidden" name="isopen" value="0"></td>
-        		</tr>
-        		<tr>
-        			<td colspan="2"><button>일정만들기</button></td>
-        		</tr>
-        	</table>
-        	</form>
-        </div>
-      </div>
-    </div>
-  </div>
-<!-- Modal End -->
-
-
 	<div class="header">
 		<input type="text" id="planName" placeholder="${plan.planname}"/>
 		<div class="divContents">
@@ -428,7 +400,7 @@ div#redips-drag #table1 div {
 					</tr>
 					<tr>
 						<td>${plan.departuredate}</td>
-						<td>${plan.day}</td>
+						<td id="day">${plan.day}</td>
 						<td>${plan.people}</td>
 						<td>
 							<select id="sel" name="categorynum">
@@ -471,7 +443,7 @@ div#redips-drag #table1 div {
 					<button class="tablinks" onclick="openTab(event, 'planTab')" id="defaultOpen">지도/일정표</button>
 				</div>
 				<div id="storyTab" class="tabcontent">
-				<iframe src="<c:url value='/'/>post/select.do?plannum=<%=vo.getPlannum()%>" width="1000px" height="800px;" border="0"></iframe>
+					스토리
 				</div>
 				<div id="planTab" class="tabcontent">
 					<div id="googleMap" style="width: 100%; height: 400px;"></div>
@@ -488,61 +460,26 @@ div#redips-drag #table1 div {
 					<div id="planList">
 						<div id="right">
 							<table id="table2" border="1">
-								<colgroup>
-									<col width="100"/>
-									<col width="100"/>
-									<col width="100"/>
-								</colgroup>
 								<tbody>
 									<tr>
-										<td class="redips-mark dark">Day1</td>
-										<td class="redips-mark dark">Day2</td>
-										<td class="redips-mark dark">Day3</td>
 									</tr>
 									<tr>
-											<td id="1a0"></td>
-											<td id="2a0"></td>
-											<td id="3a0"></td>
 										</tr>
 										<tr>
-											<td id="1a1"></td>
-											<td id="2a1"></td>
-											<td id="3a1"></td>
 										</tr>
 										<tr>
-											<td id="1a2"></td>
-											<td id="2a2"></td>
-											<td id="3a2"></td>
 										</tr>
 										<tr>
-											<td id="1a3"></td>
-											<td id="2a3"></td>
-											<td id="3a3"></td>
 										</tr>
 										<tr>
-											<td id="1a4"></td>
-											<td id="2a4"></td>
-											<td id="3a4"></td>
 										</tr>
 										<tr>
-											<td id="1a5"></td>
-											<td id="2a5"></td>
-											<td id="3a5"></td>
 										</tr>
 										<tr>
-											<td id="1a6"></td>
-											<td id="2a6"></td>
-											<td id="3a6"></td>
 										</tr>
 										<tr>
-											<td id="1a7"></td>
-											<td id="2a7"></td>
-											<td id="3a7"></td>
 										</tr>
 										<tr>
-											<td id="1a8"></td>
-											<td id="2a8"></td>
-											<td id="3a8"></td>
 										</tr>
 								</tbody>
 							</table>

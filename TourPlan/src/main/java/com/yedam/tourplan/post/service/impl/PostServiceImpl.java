@@ -29,4 +29,16 @@ public class PostServiceImpl implements PostService {
 	public boolean insert(PostVO vo) {
 		return postDAO.insert(vo);
 	}
+
+	@Override
+	public boolean update(PostVO vo) {
+		return postDAO.update(vo);
+	}
+	
+	@Override
+	public boolean delete(PostVO vo) {
+		return postDAO.delete(vo);
+	}
+	
+	
 }

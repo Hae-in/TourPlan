@@ -106,7 +106,24 @@ public class PlanController {
 	
 	@RequestMapping("myUpdate.do") 
 	public String myUpdate(PlanSearchVO vo, Model model) {
-		model.addAttribute("vo", planService.select(vo));
+		PlanVO s_vo = planService.select(vo);
+		
+		try {
+			SimpleDateFormat format = new SimpleDateFormat("yyyy/mm/dd");  
+			String departure = s_vo.getDeparturedate(); 
+			String arrival = s_vo.getArrivaldate(); 
+			
+			Date day1 = format.parse(departure);
+			Date day2 = format.parse(arrival);
+			long l_day = day2.getTime() - day1.getTime();
+			int day = (int) (l_day/86400000) + 1;
+			
+			s_vo.setDay(Integer.toString(day));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		model.addAttribute("vo", s_vo);
 		return "plan/updatePlan";
 	}
 	
@@ -193,6 +210,7 @@ public class PlanController {
 		vo.setPlannum_list(str);
 		
 		model.addAttribute("planList", planService.selectAll(vo));
-		return "member/myPage/likeplan";
+		//return "member/myPage/likeplan";
+		return "member/myPage/myShare";
 	}
 }
