@@ -30,7 +30,7 @@
 </head>
 <body>
 
-.
+
 	<div id="dialog-form">111</div>
 
 	<div id="users-contain" class="ui-widget">
