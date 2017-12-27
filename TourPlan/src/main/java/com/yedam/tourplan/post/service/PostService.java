@@ -11,4 +11,8 @@ public interface PostService {
 	public List<PlanTableVO> select(PlanTableVO vo);
 	
 	public boolean insert(PostVO vo);
+	
+	public boolean update(PostVO vo);
+	
+	public boolean delete(PostVO vo);
 }

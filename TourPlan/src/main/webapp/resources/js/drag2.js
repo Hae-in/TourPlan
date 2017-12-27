@@ -27,7 +27,7 @@ redips.init = function () {
 		else {
 		var tr = rd.td.target.getAttribute("id");
 		var x_tr = rd.td.source.getAttribute("id");
-		console.log("tr : " + tr + " 과 x_tr : " + x_tr);
+		console.log("tr : #post" + tr + " 과 x_tr : #post" + x_tr);
 		
 		var arr = new Array();
 		arr = tr.split("a");
@@ -35,12 +35,12 @@ redips.init = function () {
 		var child1 = rd.objOld.childNodes[0].nodeValue;
 		var child2 = rd.objOld.childNodes[2].nodeValue;
 		
-		//★★★물어보기
+		//append를 하면 eq가 바뀐다!!
 		var n = $("#post"+x_tr+">*").length;
 		for(i=0; i<n; i++) {
 			console.log(i+"번째 자식 옮기는중");
-			console.log($("#post"+x_tr+">*:eq("+i+")"));
-			var child = $("#post"+x_tr+">*:eq("+i+")");
+			console.log($("#post"+x_tr+">*:eq(0)"));
+			var child = $("#post"+x_tr+">*:eq(0)");
 			$("#post"+tr).append(child);
 		}
 		$("#post"+tr+"+button").css("display", "block");

@@ -50,8 +50,20 @@ public class PostAjaxController {
 	
 	@RequestMapping("insert")
 	@ResponseBody
-	public boolean insert(PostVO vo) {
-		return postService.insert(vo);
+	public String insert(PostVO vo) {
+		if(postService.insert(vo)) {
+			return vo.getPostnum();
+		} else 
+			return vo.getPostnum();
+	}
+	
+	@RequestMapping("delete")
+	@ResponseBody
+	public String delete(PostVO vo) {
+		if(postService.delete(vo)) {
+			return vo.getPostnum();
+		} else 
+			return vo.getPostnum();
 	}
 	
 	// 이미지 등록

@@ -32,6 +32,7 @@ var plannum = <%=vo.getPlannum()%>;
 				for (i = 0; i < data.length; i++) {
 					$("#tbody").append("<tr><td><img width='100px;' src='../resources/images/"+(data[i].imagename == null ? "null.jpg" : data[i].imagename) +"'></td><td class='dark'><div id='place_" + data[i].placenum + "_" + "' class='redips-drag redips-clone'>"+data[i].placename+"<br>"+data[i].city+", " +data[i].country+"</div></td></tr>");
 				}
+				//$("body div:first").remove();
 			}
 		});
 	});
@@ -386,7 +387,7 @@ div#redips-drag #table1 div {
 					<button class="tablinks" onclick="openTab(event, 'planTab')" id="defaultOpen">지도/일정표</button>
 				</div>
 				<div id="storyTab" class="tabcontent">
-				<iframe src="<c:url value='/'/>post/select.do?plannum=<%=vo.getPlannum()%>" width="1000px" height="800px;" border="0"></iframe>
+				story
 				</div>
 				<div id="planTab" class="tabcontent">
 					<div id="googleMap" style="width: 100%; height: 400px;"></div>
@@ -666,7 +667,6 @@ function imageAdd(){
 		}).submit();
 	}
 }
-
 </script>
 </body>
 </html>

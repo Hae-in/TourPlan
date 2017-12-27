@@ -22,27 +22,46 @@
 		]]>
 	</select>
 	
-	<insert id="insert" parameterType="post">
-		<![CDATA[
-			INSERT INTO POST (POSTNUM, PLANTABLENUM, PLANNUM, POST, DAY, TR)
-			VALUES (post_seq.nextVal, #{plantablenum}, #{plannum}, #{post}, #{day}, #{tr})
-		]]>
+	<insert id="insert"  statementType="CALLABLE" parameterType="post">
+			{ 	call post_ins_proc(
+				#{post},
+				#{plantablenum},
+				#{plannum},
+				#{day},
+				#{tr},
+				#{postnum, mode=OUT, jdbcType=VARCHAR, javaType=string}
+			)
+		}
 	</insert>
 
 	<update id="update" parameterType="post">
 		UPDATE POST
 		<set>
 			<if test="post != null and post != ''">
-				POST = #{post}
+				POST = #{post},
+			</if>
+			<if test="plantablenum != null and plantablenum != ''">
+				PLANTABLENUM = #{plantablenum},
+			</if>
+			<if test="plannum != null and plannum != ''">
+				PLANNUM = #{plannum}
 			</if>
 		</set>
-		WHERE POSTNUM = #{postnum}
+				WHERE POSTNUM in (${postnum})
 	</update>
 
 	<delete id="delete" parameterType="post">
-		<![CDATA[
 		DELETE FROM POST
-		WHERE POSTNUM = #{postnum}
-		]]>
+		<where>
+			<if test="postnum != null and postnum != ''">
+				POSTNUM = #{postnum}
+			</if>
+			<if test="day != null and day != ''">
+				AND DAY = #{day}
+			</if>
+			<if test="plannum != null and plannum != ''">
+				AND PLANNUM = #{plannum}
+			</if>
+		</where>
 	</delete>
 </mapper>
