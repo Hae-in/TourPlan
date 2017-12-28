@@ -2,6 +2,8 @@ package com.yedam.tourplan.place.web;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +27,19 @@ public class PlaceAjaxController {
 		return placeService.selectAll(vo);
 	}
 	
+	@RequestMapping("adminUpdate.do")
+	@ResponseBody
+	public void update(PlaceVO vo, HttpServletRequest request) {
+		String oper = request.getParameter("oper");
+		if(oper.equals("edit")) {
+			placeService.update(vo);			
+		} else if(oper.equals("add")) {
+			placeService.insert(vo);
+		} else if(oper.equals("del")) {
+			vo.setPlacenum(request.getParameter("id"));
+			placeService.delete(vo);
+		}
+	}
 	
 
 }

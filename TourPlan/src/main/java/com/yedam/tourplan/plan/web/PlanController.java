@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yedam.tourplan.common.Paging;
 import com.yedam.tourplan.files.service.FilesService;
 import com.yedam.tourplan.files.service.FilesVO;
 import com.yedam.tourplan.member.service.MemberSearchVO;
@@ -76,8 +77,15 @@ public class PlanController {
 	}
 	
 	@RequestMapping("selectAll.do")
-	public String selectAll(PlanSearchVO vo, Model model) {
+	public String selectAll(PlanSearchVO vo, Model model, Paging paging) {
+		//전체 건수
+		int total = planService.selectListTotCnt(vo);
+		paging.setTotalRecord(total);
+		vo.setFirst(paging.getFirst());
+		vo.setLast(paging.getLast());	
+		
 		model.addAttribute("planList", planService.selectAll(vo));
+		model.addAttribute("paging", paging);
 		return "plan/planList";
 	}
 	
@@ -106,7 +114,24 @@ public class PlanController {
 	
 	@RequestMapping("myUpdate.do") 
 	public String myUpdate(PlanSearchVO vo, Model model) {
-		model.addAttribute("vo", planService.select(vo));
+		PlanVO s_vo = planService.select(vo);
+		
+		try {
+			SimpleDateFormat format = new SimpleDateFormat("yyyy/mm/dd");  
+			String departure = s_vo.getDeparturedate(); 
+			String arrival = s_vo.getArrivaldate(); 
+			
+			Date day1 = format.parse(departure);
+			Date day2 = format.parse(arrival);
+			long l_day = day2.getTime() - day1.getTime();
+			int day = (int) (l_day/86400000) + 1;
+			
+			s_vo.setDay(Integer.toString(day));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		model.addAttribute("vo", s_vo);
 		return "plan/updatePlan";
 	}
 	
@@ -193,6 +218,7 @@ public class PlanController {
 		vo.setPlannum_list(str);
 		
 		model.addAttribute("planList", planService.selectAll(vo));
-		return "member/myPage/likeplan";
+		//return "member/myPage/likeplan";
+		return "member/myPage/myShare";
 	}
 }

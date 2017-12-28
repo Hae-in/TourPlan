@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="myTag" tagdir="/WEB-INF/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,6 +13,10 @@
 }
 </style>
 <script>
+function dolist(page){
+	document.frm.elements["page"].value = page
+	document.frm.submit();
+}
 	$(function() {
 		$.ajax({
 			url : "../categoryAjax/selectAll.do?group=1",
@@ -86,7 +91,8 @@
 			<li class="breadcrumb-item">명소</li>
 		</ol>
 
-		<form action="selectAll.do" method="post" id="frm">
+		<form action="selectAll.do" method="post" id="frm" name="frm">
+		<input type="hidden" name="page" value="1">
 			<!-- Content Row -->
 			<div class="row">
 				<!-- Sidebar Column -->
@@ -150,6 +156,10 @@
 							</div>
 						</c:forEach>
 					</div>
+					
+					
+					<myTag:paging paging="${paging}" jsfunc="dolist"/> 
+					
 					. <a href="form.do">신규..</a>
 
 

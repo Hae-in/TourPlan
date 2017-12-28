@@ -2,6 +2,8 @@ package com.yedam.tourplan.category.web;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,5 +27,19 @@ public class CategoryAjaxController {
 		CategoryVO category = new CategoryVO();
 		category.setCategorygroup(group);		
 		return categoryService.selectAll(category);
+	}
+	
+	@RequestMapping("adminUpdate.do")
+	@ResponseBody
+	public void update(CategoryVO vo, HttpServletRequest request) {
+		String oper = request.getParameter("oper");
+		if(oper.equals("edit")) {
+			categoryService.update(vo);			
+		} else if(oper.equals("add")) {
+			categoryService.insert(vo);
+		} else if(oper.equals("del")) {
+			vo.setCategorynum(request.getParameter("id"));
+			categoryService.delete(vo);
+		}		
 	}
 }

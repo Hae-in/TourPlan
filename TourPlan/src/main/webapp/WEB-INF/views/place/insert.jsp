@@ -23,10 +23,7 @@
 		$('#fileAdd').click(function(){
 			$('#aa').append('<input type="file" name="uploadFile">');
 		});	
-	});
-	
-
-	
+	});	
 </script>
     <style>
       #map {

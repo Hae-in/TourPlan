@@ -38,4 +38,8 @@ public class PlaceDAO {
 	public List<PlaceVO> selectPlace(PlaceSearchVO place) {
 		return mybatis.selectList("PlaceDAO.selectPlace", place);
 	}	
+	
+	public int selectListTotCnt(PlaceSearchVO place) {
+		return mybatis.selectOne("PlaceDAO.selectListTotCnt", place);
+	}
 }

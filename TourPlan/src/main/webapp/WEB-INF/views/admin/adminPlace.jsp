@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,16 +23,15 @@ table td {
 <script>
 	$(function() {
 		jQuery("#list2").jqGrid({
-			url : '../helpdeskAjax/selectAll.do',
-			editurl : '../helpdeskAjax/adminUpdate.do',
+			url : '../placeAjax/selectAll.do',
+			editurl : '../placeAjax/dminUpdate.do',
 			datatype : "json",
-			colNames : [ '번호', '제목', '내용', '등록일' ],
+			colNames : [ '번호', '명소명', '작성자', '등록일', '상태' ],
 			colModel : [ {
-				name : 'num',
-				index : 'num',
+				name : 'placenum',
+				index : 'placenum',
 				key : true,
-				hidden : true,		
-				//editOption:{readonly:'readonly'},
+				hidden : true,
 				width : 15,
 				align : "center",
 				editable : true
@@ -56,7 +55,6 @@ table td {
 				index : 'writedate',
 				width : 30,
 			} ],
-			jsonreader : {repeatitems:false, id:'num'},
 			editable : true,
 			autowidth : true,
 			height : "500px",
@@ -115,13 +113,9 @@ table td {
 			},
 			// options for the Delete Dailog
 			{
- 				errorTextFormat : function(data) {
+				errorTextFormat : function(data) {
 					return 'Error: ' + data.responseText
 				}
-/* 				serializeDelData: function(postdata) {
-					//return JSON.stringify({employee_id: postdata.id});
-					return "num="+postdata.id;
-				} */
 			});
 
 	});

@@ -368,6 +368,10 @@ div#redips-drag #table1 div {
 	color: #fff;
 }
 
+.del_a {
+	cursor: pointer;
+	color: red;
+}
 </style>
 </head>
 <body onunload="f5check();">
@@ -575,6 +579,16 @@ var isSave = false;
 var plannum = "";
 var memberId = "<%=session.getAttribute("memberid")%>";
 var image_num = "";
+var post_day = $("#day").val();
+
+for(i=1; i<=post_day; i++) {
+	var day_div = "<div id='postDay" + i + "' style='border: 1px solid red;'><font size='5'><b>" + i + " Day</b></font>";
+	for(j=0; j<9; j++) {
+		day_div += "<div id='post"+i+"a"+j+"'></div><button id='"+i+"b"+j+"' class='postbtn' style='display:none;'>포스트쓰기</button>"
+	}
+	day_div += "</div>";
+	$("#storyTab").append(day_div);
+}
 
 //★★안됨
 function f5check() {
@@ -703,6 +717,7 @@ function saveTable() {
 				
 				var div_id = $("[day='"+i+"'][tr='"+j+"'] div").attr("id");
 				var divide_place = div_id.split("_")[1];
+				var postnum = $("#"+i+"a"+j).attr("postnum");
 				
 				p.day = i;
 				p.tr = j;
@@ -711,13 +726,13 @@ function saveTable() {
 				p.fix = "0";
 				p.sortnum = "5";
 				p.staytime = "30";
+				p.postnum = postnum;
 				
-				//★★★1227 ajax 포스트넘 가져와서 속성에 넣고 해당 div부를 때 그 속성값 plantableVO로 함께 담음
+				parameter.push(p);
 				//이후 컨트롤러에서 plantable insert후 plannum, plantablenum을 함께 넘겨 post의 plantablenum에 update
 				//그러면 select할때 plannum,plantablenum으로 가져올 수 있음
 				//만약 2개이상이라면? VO에 배열넣을수있나? 
 				//$("#post"+i+"a"+tr)의 포스트num을 가져와야
-				parameter.push(p);
 			}
 		}
 	}
@@ -783,10 +798,11 @@ function dayCheck() {
 			}
 			
 			//포스트도 함께 추가
-			var day_div = "<div style='border: 1px solid red;'><font size='5'><b>" + (last_day+i) + " Day</b></font></div>"
+			var day_div = "<div id='postDay"+(last_day+i)+"' style='border: 1px solid red;'><font size='5'><b>" + (last_day+i) + " Day</b></font>"
 			for(j=0; j<9; j++) {
-				day_div += "<div id='post"+i+"a"+j+"'></div><button id='"+i+","+j+"' class='postbtn' style='display:none;'>포스트쓰기</button>"
+				day_div += "<div id='post"+(last_day+i)+"a"+j+"'></div><button id='"+(last_day+i)+"b"+j+"' class='postbtn' style='display:none;'>포스트쓰기</button>"
 			}
+			day_div += "</div>";
 			$("#storyTab").append(day_div);
 		}
 	} else if(form_day < last_day) {
@@ -799,7 +815,7 @@ function dayCheck() {
 				}
 			
 				//포스트도 함께 삭제
-				$("#storyTab div:last").remove();
+				$("#storyTab div[id^='postDay']:last").remove();
 			}
 		} else { $("#day").val(last_day); }
 	} else if(form_day == last_day) {
@@ -808,16 +824,6 @@ function dayCheck() {
 		$("#day").val("1");
 	}
 }
-
-var post_day = $("#day").val();
-for(i=1; i<=post_day; i++) {
-	var day_div = "<div id='postDay" + i + "' style='border: 1px solid red;'><font size='5'><b>" + i + " Day</b></font></div>"
-	for(j=0; j<9; j++) {
-		day_div += "<div id='post"+i+"a"+j+"'></div><button id='"+i+","+j+"' class='postbtn' style='display:none;'>포스트쓰기</button>"
-	}
-	$("#storyTab").append(day_div);
-}
-
 
 //Post Function
 $("#frm2").hide();
@@ -850,11 +856,29 @@ function postAdd(){
 	if($("#frm1").css("display") != "none") {
 		post = $("#post").val();						//포스트 insert후 추가 위한 변수
 		$("#post").val("");	
-	} else {}
+		param = "post=" + post;						//포스트 입력값 파라미터로 전환
+	} else {	
+		param =	"post=" + post; 
+	}
+	param += "&plantablenum=&plannum=&day=" + arr[0] + "&tr=" + arr[1];
 	
 	dialog.dialog( "close" );
-	var div = "<div style='border: 1px solid grey; padding: 5px; margin: 5px; width: fit-content;'>" + post + "</div>"
-	$(div).appendTo($("#post" + arr[0] + "a" + arr[1]));
+	$.getJSON("../postAjax/insert", param, function(data,status){
+		if(status =="success" ) {
+			var div = "<div style='border: 1px solid grey; padding: 5px; margin: 5px; width: fit-content;'>" + post 
+			+ "<span id='postNum"+data+"' class='del_a'>X</span></div>"
+			$(div).appendTo($("#post" + arr[0] + "a" + arr[1]));
+			
+			if($("#"+arr[0]+"a"+arr[1]).attr("postnum") == null || $("#"+arr[0]+"a"+arr[1]).attr("postnum") == '') {
+				$("#"+arr[0]+"a"+arr[1]).attr("postnum", data);
+			} else {
+				var n_temp = $("#"+arr[0]+"a"+arr[1]).attr("postnum");
+				$("#"+arr[0]+"a"+arr[1]).attr("postnum", n_temp+","+data); 
+			}
+		} else {
+			alert(status);
+		}
+	});
 }
  
 function imageAdd_Post(){
@@ -895,8 +919,35 @@ $(function () {
 // Modal 띄우기 위한 버튼
 	$( ".postbtn" ).button().on( "click", function() {
 	   p_all = $(this).attr("id");
-	   arr = p_all.split(",");					//클릭한 위치 알기 위한 버튼 id String split
+	   arr = p_all.split("b");					//클릭한 위치 알기 위한 버튼 id String split
 	   dialog.dialog( "open" );
+	});
+	
+	//동적으로 생성된 태그는 click()이 안먹음 -> on으로 걸어야!
+	$(document).on('click', '.del_a',function(e) {
+		e.stopImmediatePropagation();
+	   var post_temp = $(this).attr("id");
+	   var arr = post_temp.split("m");
+	   var del_param = "postnum=" + arr[1]; 
+	   $.ajax({
+		    url         : '../postAjax/delete'
+		   ,type        : 'POST'
+		   ,dataType    : 'text'
+		   ,data		: del_param
+		   ,success     : function(data,status) {
+		       if (status =="success") {
+			    	alert("삭제 성공 ");
+			    	
+			    	var pt_id = $("#postNum"+data).parent().parent().attr("id");
+			    	var temp_arr = new Array();
+			    	temp_arr = pt_id.split("t");
+			    	pt_id = temp_arr[1];
+			    	$("#"+pt_id).attr("postnum", "");
+			    	
+			    	$("#postNum"+data).parent().remove();
+	   		   } else { alert("에러발생 관리자에게 문의하세요") }
+	   		}
+		});
 	});
 })
 </script>

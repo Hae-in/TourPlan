@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,40 +23,29 @@ table td {
 <script>
 	$(function() {
 		jQuery("#list2").jqGrid({
-			url : '../helpdeskAjax/selectAll.do',
-			editurl : '../helpdeskAjax/adminUpdate.do',
+			url : '../categoryAjax/selectAll.do',
+			editurl : '../categoryAjax/adminUpdate.do',
 			datatype : "json",
-			colNames : [ '번호', '제목', '내용', '등록일' ],
+			colNames : [ '번호', '카테고리명', '그룹' ],
 			colModel : [ {
-				name : 'num',
-				index : 'num',
+				name : 'categorynum',
+				index : 'categorynum',
 				key : true,
-				hidden : true,		
-				//editOption:{readonly:'readonly'},
+				hidden : true,
 				width : 15,
 				align : "center",
 				editable : true
 			}, {
-				name : 'title',
-				index : 'title',
+				name : 'categoryname',
+				index : 'categoryname',
 				width : 50,
 				editable : true
 			}, {
-				name : 'content',
-				index : 'content',
-				edittype : "textarea",
-				editoptions : {
-					rows : "2",
-					cols : "20"
-				},
+				name : 'categorygroup',
+				index : 'categorygroup',
 				width : 65,
 				editable : true
-			}, {
-				name : 'writedate',
-				index : 'writedate',
-				width : 30,
 			} ],
-			jsonreader : {repeatitems:false, id:'num'},
 			editable : true,
 			autowidth : true,
 			height : "500px",
@@ -66,7 +55,7 @@ table td {
 			rowList : [ 10, 20, 30 ],
 			pager : '#pager2',
 			viewrecords : true,
-			caption : "고객센터"
+			caption : "카테고리"
 		});
 
 		jQuery("#list2").jqGrid('navGrid', '#pager2', {
@@ -115,13 +104,9 @@ table td {
 			},
 			// options for the Delete Dailog
 			{
- 				errorTextFormat : function(data) {
+				errorTextFormat : function(data) {
 					return 'Error: ' + data.responseText
 				}
-/* 				serializeDelData: function(postdata) {
-					//return JSON.stringify({employee_id: postdata.id});
-					return "num="+postdata.id;
-				} */
 			});
 
 	});

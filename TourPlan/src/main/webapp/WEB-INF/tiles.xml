@@ -7,19 +7,24 @@
 	<!-- Home Page -->
 	
 	<definition name="admin/*" template="/WEB-INF/views/tiles/adminLayout.jsp">
-		<put-attribute name="title" value="Welcome" />
+		<put-attribute name="title" value="" />
 		<put-attribute name="header" value="/WEB-INF/views/tiles/defaultHeader.jsp" />	
 		<put-attribute name="body" value="/WEB-INF/views/admin/{1}.jsp" />
 	</definition> 
 	
 	<definition name="member/myPage/*" template="/WEB-INF/views/tiles/myPageLayout.jsp">
-		<put-attribute name="title" value="Welcome" />
+		<put-attribute name="title" value="" />
 		<put-attribute name="header" value="/WEB-INF/views/tiles/defaultHeader.jsp" />	
 		<put-attribute name="body" value="/WEB-INF/views/member/myPage/{1}.jsp" />
 	</definition> 
+	
+	<definition name="popup/*/*" template="/WEB-INF/views/tiles/emptyLayout.jsp">
+		<put-attribute name="title" value="Welcome" />
+		<put-attribute name="body" value="/WEB-INF/views/{1}/{2}.jsp" />
+	</definition> 	
 		
 	<definition name="*/*" extends="base-definition">
-		<put-attribute name="title" value="Welcome" />
+		<put-attribute name="title" value="" />
 		<put-attribute name="body" value="/WEB-INF/views/{1}/{2}.jsp" />
 	</definition> 
 	

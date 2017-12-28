@@ -2,7 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="CategoryDAO">		
+<mapper namespace="CategoryDAO">	
+	<insert id="insert" parameterType="category">
+		insert into category(categorynum, categoryname, categorygroup)
+		values(category_seq.nextval, #{categoryname},  #{categorygroup})
+	</insert>
+	
+	<update id="update" parameterType="category">
+		update category set
+			categoryname = #{categoryname},
+			categorygroup = #{categorygroup}
+		where categorynum = #{categorynum}
+	</update>
+	
+	<delete id="delete">
+		delete from category 
+		where categorynum = #{categorynum}
+	</delete>
+		
 	<select id="select" resultType="category">
 		select *
 		 from category

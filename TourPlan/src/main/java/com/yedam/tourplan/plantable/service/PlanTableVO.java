@@ -9,6 +9,7 @@ public class PlanTableVO {
 	private String fix;
 	private String tr;
 	private String placenum;
+	private String postnum;
 	private String imagename;
 	
 	public String getPlantablenum() {
@@ -58,6 +59,12 @@ public class PlanTableVO {
 	}
 	public void setPlacenum(String placenum) {
 		this.placenum = placenum;
+	}
+	public String getPostnum() {
+		return postnum;
+	}
+	public void setPostnum(String postnum) {
+		this.postnum = postnum;
 	}
 	public String getImagename() {
 		return imagename;

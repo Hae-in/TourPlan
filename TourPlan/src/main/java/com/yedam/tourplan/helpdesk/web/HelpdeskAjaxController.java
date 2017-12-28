@@ -25,7 +25,7 @@ public class HelpdeskAjaxController {
 		return helpdeskService.selectAll(null);
 	}
 	
-	@RequestMapping("update.do")
+	@RequestMapping("adminUpdate.do")
 	@ResponseBody
 	public void update(HelpdeskVO vo, HttpServletRequest request, HttpSession session) {
 		String oper = request.getParameter("oper");
@@ -35,7 +35,7 @@ public class HelpdeskAjaxController {
 			vo.setMembernum((String)session.getAttribute("membernum"));
 			helpdeskService.insert(vo);
 		} else if(oper.equals("del")) {
-			vo.setNum(request.getParameter("num"));
+			vo.setNum(request.getParameter("id"));
 			helpdeskService.delete(vo);
 		}
 	}

@@ -1,8 +1,8 @@
 package com.yedam.tourplan.place.service;
 
 public class PlaceSearchVO extends PlaceVO {
-	int first;
-	int last;
+	int first;	//firstIndex
+	int last;	//lastIndex
 	String keyword;
 	String sort;	
 	
@@ -29,6 +29,5 @@ public class PlaceSearchVO extends PlaceVO {
 	}
 	public void setKeyword(String keyword) {
 		this.keyword = keyword;
-	}	
-	
+	}
 }
