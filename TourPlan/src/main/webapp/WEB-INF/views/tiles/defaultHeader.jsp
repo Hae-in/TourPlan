@@ -12,26 +12,26 @@
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">회원가입</h4>
+          <h4 class="modal-title"></h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         <div class="modal-body">
         
          <form id="frmModal">
-         <table border="1" width="400px">
+         <table border="0" width="400px">
             <tr>
-                <td>아이디</td>
-                <td><input type="email" name="id" id="id"></td>
+                <td><input type="email" name="id" id="id" placeholder="아이디"></td>
             </tr>
             <tr>
-                <td>비밀번호</td>
-                <td><input type="password" name="password" id="password"></td>
+                <td><input type="password" name="password" id="password" placeholder="패스워드"></td>
             </tr>
            
             <tr>
                 <td colspan="2" align="center">
+
                     <button type="button" id="log">로그인</button>
                 <c:if test="${msg == 'failure'}">
+                
                     <div style="color: red">
                         아이디 또는 비밀번호가 일치하지 않습니다.
                     </div>
@@ -45,18 +45,19 @@
             </tr>
         </table>
          </form>
-        
+
          <form id="frmModal2">
          <table border="1" width="400px">
             <tr>
                 <td>아이디</td>
-                <td><input type="email" name="id" id="rId">
+                <td><input type="email" name="id" id="rId" >
                 <span id="checkResultId"></span></td>
             </tr>
             
             <tr>
                 <td>비밀번호</td>
-                <td><input type="password" name="password" id="rPassword"></td>
+                <td><input type="password" name="password" id="rPassword">
+               		</td>
             </tr>
             
             <tr>
@@ -74,7 +75,7 @@
             
             <tr>
                 <td colspan="2" align="center">
-                    <button type="button" id="reg">회원가입</button>
+                    <button type="button" id="reg">가입하기</button>
                 <c:if test="${msg == 'failure'}">
                     <div style="color: red">
                         아이디 또는 비밀번호가 일치하지 않습니다.
@@ -92,9 +93,9 @@
          </form>
         </div>
         
-<!--    <button id="logBtn" style="width: 200px;">login</button> -->
-        <button id="regBtn" style="width: 200px;">회원가입</button>
-        <button id="idPwBtn" style="width: 200px;">Id/PW 찿기</button>
+	    <button id="logBtn" style="width: 150px;">login</button>
+        <button id="regBtn" style="width: 150px;">회원가입</button>
+        <button id="pwBtn" style="width: 150px;">패스워드 찿기</button>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
@@ -102,6 +103,37 @@
       
     </div>
   </div>    
+  
+<!--   <!-- Modal 비밀번호 발송
+  <div class="modal fade" id="pwModal" role="dialog">
+    <div class="modal-dialog">
+    
+      Modal content
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">임시 비밀번호 발송</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+        
+         <form id="frmModal3">
+         <table border="0" width="400px">
+            <tr>
+                <td><input type="email" name="pwCk" id="pwCk" placeholder="이메일 주소"></td>
+            </tr>
+            
+            <tr>
+                <td colspan="2" align="center">
+                    <button type="button" id="log">이메일 전송</button>
+                </td>
+            </tr>
+        </table>
+         </form>
+         </div>
+         </div>
+         </div>
+         </div> -->
+         
 <nav
 	class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark fixed-top">
 	<div class="container">
@@ -120,9 +152,16 @@
 				<li class="nav-item"><a class="nav-link" href="../place/selectAll.do">명소</a></li>
 				<li class="nav-item"><a class="nav-link" href="../helpdesk/selectAll.do">고객센터</a></li>
 				<li class="nav-item"><a class="nav-link" href="../planTable/makePlan.do">일정만들기</a></li>
+				
+				<c:if test="${empty sessionScope.memberid}">
 				<li class="nav-item"><a class="nav-link" id="menuLogin" style="cursor: pointer;" data-toggle="modal" data-target="#myModal">로그인</a></li>
+				</c:if>
+				
+				<c:if test="${!(empty sessionScope.memberid) }">
 				<li class="nav-item"><a class="nav-link" id="menuMy" href="../member/select.do?membernum=<%=membernum%>">Mypage</a></li>
 				<li class="nav-item"><a class="nav-link" id="menuLogout" style="cursor: pointer;">로그아웃</a></li>
+				</c:if>
+				
 				<li class="nav-item"><a class="nav-link" href="../admin/plan.do">관리자</a></li>
 				<!-- <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPortfolio" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">로그인</a>
 						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownPortfolio"> 
@@ -155,29 +194,43 @@ if(membernum == "no") {
 
 $("#frmModal2").hide();
 
-//로그인창 초기화
+//메뉴바 로그인 버튼 클릭 시 로그인창 초기화
 $("#menuLogin").click(function () {
 	$("#frmModal")[0].reset();
 	$("#frmModal2")[0].reset();
+	$("#frmModal2").hide();
+	$("#frmModal").show();
+	$("#regBtn").show();
+	$("#logBtn").hide();
+	$(".modal-title").text("로그인");
 	memberIdCheck = 0;
 	passwordCheck = 0;
 	nicknameCheck = 0;
 	$("#checkResultId").text("");
 	$("#checkResultPw").text("");
 	$("#checkResultNickname").text("");
+
 	
 });
 
+//로그인 폼 보기
 $("#logBtn").click(function () {
 	$("#frmModal2").hide();
 	$("#frmModal").show();
+	$(".modal-title").text("로그인");
 	$("#frmModal")[0].reset();
+	$("#regBtn").show();
+	$("#logBtn").hide();
 });
 
+//회원가입 폼 보기
 $("#regBtn").click(function () {
 	$("#frmModal").hide();
 	$("#frmModal2").show();
+	$(".modal-title").text("회원가입");
 	$("#frmModal2")[0].reset();
+	$("#regBtn").hide();
+	$("#logBtn").show();
 });
 
 $("#menuLogout").click(function() {
@@ -253,68 +306,75 @@ $("#rNickname").change(function() {
 	});
 });
 
-//비밀번호 중복체크 첫 번째 칸
-$("#rPwCheck").prop('disabled', true);
-	
+
+$("#rPwCheck").prop('disabled', true);//비밀번호 확인 칸 비활성화
 $("#rPassword").change(function() {
-	$("#rPwCheck").prop('disabled', false);
-	
-	if($("#rPassword").val() !="" && $("#rPwCheck").val() !="" 
-			&& $("#rPassword").val() == $("#rPwCheck").val())
-		passwordCheck=1;
-	else {
-		passwordCheck=0;
-		$("#checkResultPw").text("패스워드가 일치하지 않습니다.");
+	$("#checkResultPw").text("");
+
+	// 비밀번호 숫자/영문/특수문자 혼합, 8~16자 체크
+	if(!chkPwd( $.trim($('#rPassword').val()))){
+		   $('#rPassword').val('');
+		   $('#rPassword').focus();
+		   return false;
 	}
+
+	$("#rPwCheck").prop('disabled', false);//비밀번호 확인 칸 활성화
+
+
+	//비밀번호 중복체크 첫 번째 칸
+	if($("#rPassword").val() !="" && $("#rPwCheck").val() !="" ){
+		if($("#rPassword").val() == $("#rPwCheck").val()){
+			passwordCheck=1;
+		}
+		else {
+			passwordCheck=0;
+			$("#checkResultPw").text("패스워드가 일치하지 않습니다. 다시 입력해 주세요.");
+		}
+	}	
 });
-/* 
-<script language='javascript'>
 
-//checkvalue 기능
-function checkvalue() {
+//비밀번호 영문/숫자/특수문자 혼합 입력, 8~16자 체크
+function chkPwd(str){
 
-//a 텍스트 필드와 b 텍스트 필드 중 둘다 값이 있을 때
-if(test.a.value && test.b.value) {
+	 var pw = str;
+	 var num = pw.search(/[0-9]/g);
+	 var eng = pw.search(/[a-z]/ig);
+	 var spe = pw.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
 
-// 두 필드의 값이 서로 다를 때
-if(test.a.value!=test.b.value){
+	 if(pw.length < 8 || pw.length > 16){
+		  alert("8자리 ~ 16자리 이내로 입력해주세요.");
+		  return false;
+	 }
 
-// status 필드에 일치하지 않는다는 문장 출력
-test.status.value = "[ 일치하지 않습니다 ]";
+	 if(pw.search(/₩s/) != -1){
+		  alert("비밀번호는 공백 없이 입력해주세요.");
+		  return false;
+	 } 
+	 
+	 if(num < 0 || eng < 0 || spe < 0 ){
+		  alert("영문, 숫자, 특수문자를 혼합하여 입력해주세요.");
+		  return false;
+	 }
 
-// 그에 맞게 길이 수정
-test.status.style.width = 120;
-
-// 두 필드의 값이 동일 할 때
-} else {
-
-// status 필드에 일치한다는 문장 출력
-test.status.value = "[ 일치합니다 ]";
-
-// 역시 그에 맞게 길이 수정
-test.status.style.width = 83;
+	 return true;
 }
 
-//a 텍스트 필드와 b 텍스트 필드 두중하나라도 값이 없을 때
-} else {
-
-// 아무것도 입력이 안 되어 있으므로 비밀번호를 입력해 달라는 메세지를 status 필드에 출력 함
-test.status.value = "[ 비밀번호를 입력해 주세요 ]";
-
-// 그에 맞게 길이 수정
-test.status.style.width = 160;
-} */
-
+	
 //비밀번호 중복체크 두 번째 칸
-
 $("#rPwCheck").change(function() {
-	if($("#rPassword").val() !="" && $("#rPwCheck").val() !="" 
-			&& $("#rPassword").val() ==$("#rPwCheck").val())
-		passwordCheck=1;
-	else {
-		passwordCheck=0;
-		$("#checkResultPw").text("패스워드가 일치하지 않습니다.");
-	}
+
+
+	if($("#rPassword").val() !="" && $("#rPwCheck").val() !="" ){
+		if($("#rPassword").val() == $("#rPwCheck").val()){
+			passwordCheck=1;
+		}
+		else {
+			passwordCheck=0;
+			$("#checkResultPw").text("패스워드가 일치하지 않습니다. 다시 입력해 주세요.");
+			$("#rPwCheck").val("");
+			$('#rPwCheck').focus();
+		}
+	}	
 });
 
 
@@ -357,4 +417,13 @@ $("#reg").click(function() {
 	});
 });
 
+/* $("#sendPw").click(function() {
+
+	//입력값 체크
+	if(memberIdCheck == 0){
+        alert("아이디를 입력하세요.");
+        $("#rId").focus(); // 입력포커스 이동
+        return; // 함수 종료
+    }
+} */
 </script>
