@@ -254,7 +254,7 @@
 			<div class="col-md-12">
 				<p>
 				<h2>
-					인기명소<a class="btn btn-secondary" href="#" style="float: right">더보기&rarr;</a>
+					인기명소<a class="btn btn-secondary" href="../place/selectAll.do" style="float: right">더보기&rarr;</a>
 				</h2>
 				</p>
 			</div>

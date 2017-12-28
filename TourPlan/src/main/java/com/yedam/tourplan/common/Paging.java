@@ -2,7 +2,7 @@ package com.yedam.tourplan.common;
 
 public class Paging {
 	int pageUnit=10 ; 		//한페이지 출력할 레코드 건수
-	int pageSize=3 ; 		//페이지번호 수 (5) 1~ 5까지
+	int pageSize=5 ; 		//페이지번호 수 (5) 1~ 5까지
 	int totalPageCount;     //페이지 갯수
 	int totalRecord ;		//전체 레코드건수
 	int page = 1;			//현재 페이지
