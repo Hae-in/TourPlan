@@ -33,29 +33,14 @@
            
           <div class="carousel-item" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/1/14/Nirmal_Hriday.JPG?resize=660%2C330')">
             <div class="carousel-caption d-none d-md-block">
-<<<<<<< HEAD
               <h3><a href="../theme/theme1.do">여행자의 마지막 로망, 빙하</a></h3>
-=======
-              <h3>자신을 돌아보는 봉사활동 여행</h3>
-              <p>마더 테레사 하우스, 콜카타, 인도</p>
-            </div>
-          </div>
-           
-          <div class="carousel-item" style="background-image: url('https://www.whentobewhere.com/sites/default/files/styles/banner/public/photos/Moreno_0005_banner.jpg?itok=e3e6cNyo&sc=778bdc87b6355eccc9fccf6dea752c15?resize=660%2C330')">
-            <div class="carousel-caption d-none d-md-block">
-              <h3>여행자 마지막 로망, 빙하</h3>
->>>>>>> branch 'master' of https://github.com/JeonHyeJu/TourPlan.git
               <p>깔라파테, 아르헨티나</p>
             </div>
           </div>
           
           <div class="carousel-item" style="background-image: url('https://i.imgur.com/cIH9lDy.jpg?resize=660%2C330')">
             <div class="carousel-caption d-none d-md-block">
-<<<<<<< HEAD
               <h3><a href="../theme/theme2.do">대자연의 품에 안기다</a></h3>
-=======
-              <h3>대자연에 압도되다</h3>
->>>>>>> branch 'master' of https://github.com/JeonHyeJu/TourPlan.git
               <p>그랜드 캐년, 미국</p>
             </div>
           </div>

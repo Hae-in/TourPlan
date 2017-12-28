@@ -41,6 +41,7 @@ $(function(){
 		$.ajax({
 			url : "../placeAjax/selectAll.do",
 			dataType : "json",
+			async : false,
 			success : function(data_place) {
 				
 				$.getJSON("../planTableAjax/selectPT", param, function(data,status){
@@ -60,6 +61,8 @@ $(function(){
 								}
 								var div = "<div id='place_" + data[i].placenum + "_" + data[i].plantablenum + "' class='redips-drag'>" + data_place[j].placename + "<br>" + data_place[j].city + ", " + data_place[j].country+ "</div>";
 								 $(div).appendTo($("#" + data[i].day + "a" + data[i].tr));
+								 
+								 $("#post"+ data[i].day + "a" + data[i].tr).append("<div style='border: solid 1px orange;'>" + data_place[j].placename + "<br>" + data_place[j].city + ", " + data_place[j].country +  "</div>");
 							}
 						}
 					} else {
@@ -92,7 +95,7 @@ $(function(){
 				if( data.length > 0) {
 					for(i=0; i<data.length; i++) {
 						var div = "<div style='border: 1px solid grey; padding: 5px; margin: 5px; width: fit-content;'>" + data[i].post + "</div>"
-						$(div).appendTo($("#post" + data[i].day + "a" + data[i].tr));
+						$("#post" + data[i].day + "a" + data[i].tr).append(div);
 					}
 				}
 			} else {
@@ -435,6 +438,8 @@ div#redips-drag #table1 div {
 							사용자 정보 : ${writer.id}<br>
 							${writer.nickname}
 						</c:if>
+						<!-- ★★★ report 넣어야함-->
+						<a href="#"><font color='red'>잘못된 일정 신고하기</font></a>
 					</div>
 				</div>
 			</div>

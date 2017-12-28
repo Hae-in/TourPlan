@@ -2,19 +2,6 @@
 <%@page import="com.yedam.tourplan.plan.service.PlanVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%
-	String old_plannum = "no";
-	String catenum = "";
-	String isopen = "";
-	String old_day = "3";
-	PlanVO old_vo = (PlanVO) request.getAttribute("old_vo");
-	if(old_vo != null) {
-		catenum = old_vo.getCategorynum();
-		isopen = old_vo.getIsopen();
-		old_plannum = old_vo.getPlannum();
-		old_day = old_vo.getDay();
-	}
-%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,8 +12,6 @@
 <script type="text/javascript" src="../resources/js/drag2.js"></script>
 <script src='<c:url value='/'/>resources/js/jquery.form.min.js'></script>
 <script>
-var oldPlannum = "<%=old_plannum%>";
-
 	$(function(){
 		document.getElementById("defaultOpen").click();
 		
@@ -43,48 +28,23 @@ var oldPlannum = "<%=old_plannum%>";
 			}
 		});
 		
-		if(oldPlannum == "no"){
-			console.log("새로만드는일정"); }
-		else {
-			console.log("이전일정참고");
-			//이미 들어가있는 일정 불러오기
-			var param = "plannum=" + oldPlannum;
-			$.ajax({
-				url : "../placeAjax/selectAll.do",
-				dataType : "json",
-				success : function(data_place) {
-				
-				$.getJSON("../planTableAjax/selectPT", param, function(data,status){
-					if(status =="success" ) {
-						if( data.length > 0) {
-							for(i=0; i<data.length; i++) {
-								for(j=0; j<data_place.length; j++) {
-									if(data[i].placenum == data_place[j].placenum) {
-										break;
-									}
-								}
-								var div = "<div id='place_" + data[i].placenum + "_" + data[i].plantablenum + "' class='redips-drag'>" + data_place[j].placename + "<br>" + data_place[j].city + ", " + data_place[j].country+ "</div>";
-								 $(div).appendTo($("#" + data[i].day + "a" + data[i].tr));
-							}
-						}
-					} else {
-						alert(status);
-					}
-				});
-			  }
-			});
-
-			$("#sel > option[value='<%=catenum%>']").attr("selected", "true");
-			var isopen = "<%=isopen%>";
-			if(isopen == "1") {
-				$("#isopen_ck").prop("checked", "true");
-			}
-			
-		}//else
-		
 		$('#table2').find('div').each(function(i, e){
 			console.log($(this).text());
 		});
+		
+		var post_day = $("#day").val();
+		for(i=1; i<=post_day; i++) {
+			var day_div = "<div id='postDay" + i + "' style='border: 1px solid red;'><font size='5'><b>" + i + " Day</b></font>";
+			var table_td = "<td class='redips-mark dark'>Day" + i + "</td>";
+			$("#table2 tr:eq(0)").append(table_td);
+			for(j=0; j<9; j++) {
+				day_div += "<div id='post"+i+"a"+j+"'></div><button id='"+i+"b"+j+"' class='postbtn' style='display:none;'>포스트쓰기</button>";
+				table_td = "<td id="+i+"a"+j+" day='"+i+"' tr='"+j+"'></td>"
+				$("#table2 tr:eq("+(j+1)+")").append(table_td);
+			}
+			day_div += "</div>";
+			$("#storyTab").append(day_div);
+		}
 		
 	});
 	
@@ -118,6 +78,20 @@ var oldPlannum = "<%=old_plannum%>";
 				}
 			}       
 		}
+	}
+	
+	function getDate() {
+		var depDate = $("#departuredate").val().split('-');
+		var arrDate = $("#arrivaldate").val().split('-');
+		var depDateArr = new Date(depDate[0], depDate[1], depDate[2]); 
+		var arrDateArr = new Date(arrDate[0], arrDate[1], arrDate[2]); 
+		var cal_day = 0;
+
+		var diff = arrDateArr - depDateArr;
+ 		var currDay = 24 * 60 * 60 * 1000;// 시 * 분 * 초 * 밀리세컨
+
+ 		cal_day = parseInt(diff/currDay)+1;
+ 		$("#day").val(cal_day);
 	}
 </script>
 <style>
@@ -426,10 +400,10 @@ div#redips-drag #table1 div {
 						<td>출발일</td><td>도착일</td><td>day</td><td>인원</td><td>여행테마</td><td>공개여부</td><td>이미지</td>
 					</tr>
 					<tr>
-						<td><input type="text" id="departuredate" name="departuredate" value="${vo.departuredate}"></td>
-						<td><input type="text" id="arrivaldate" name="arrivaldate" value="${vo.arrivaldate}"></td>
-						<td><input type="text" id="day" value="3" onchange="dayCheck();"></td>
-						<td><input type="text" id="people" name="people" value="${vo.people}"></td>
+						<td><input type="date" id="departuredate" name="departuredate" value=""></td>
+						<td><input type="date" id="arrivaldate" name="arrivaldate" value="" onchange="getDate()"></td>
+						<td><input type="text" id="day" value="3" readonly="readonly"><button type="button" onclick="dayCheck();">변경</button></td>
+						<td><input type="text" id="people" name="people" value=""></td>
 						<td>
 							<select id="sel" name="categorynum">
         						<option value="11">나홀로여행</option>
@@ -492,10 +466,6 @@ div#redips-drag #table1 div {
 					<button class="tablinks" onclick="openTab(event, 'planTab')" id="defaultOpen">지도/일정표</button>
 				</div>
 				<div id="storyTab" class="tabcontent">
-					<!-- Stoty tab Start -->
-
-					
-					<!-- Stoty tab End -->
 				</div>
 				<div id="planTab" class="tabcontent">
 					<div id="googleMap" style="width: 100%; height: 400px;"></div>
@@ -514,54 +484,24 @@ div#redips-drag #table1 div {
 							<table id="table2" border="1">
 								<tbody>
 									<tr>
-										<td class="redips-mark dark">Day1</td>
-										<td class="redips-mark dark">Day2</td>
-										<td class="redips-mark dark">Day3</td>
 									</tr>
 									<tr>
-											<td id="1a0" day="1" tr="0"></td>
-											<td id="2a0" day="2" tr="0"></td>
-											<td id="3a0" day="3" tr="0"></td>
 										</tr>
 										<tr>
-											<td id="1a1" day="1" tr="1"></td>
-											<td id="2a1" day="2" tr="1"></td>
-											<td id="3a1" day="3" tr="1"></td>
 										</tr>
 										<tr>
-											<td id="1a2" day="1" tr="2"></td>
-											<td id="2a2" day="2" tr="2"></td>
-											<td id="3a2" day="3" tr="2"></td>
 										</tr>
 										<tr>
-											<td id="1a3" day="1" tr="3"></td>
-											<td id="2a3" day="2" tr="3"></td>
-											<td id="3a3" day="3" tr="3"></td>
 										</tr>
 										<tr>
-											<td id="1a4" day="1" tr="4"></td>
-											<td id="2a4" day="2" tr="4"></td>
-											<td id="3a4" day="3" tr="4"></td>
 										</tr>
 										<tr>
-											<td id="1a5" day="1" tr="5"></td>
-											<td id="2a5" day="2" tr="5"></td>
-											<td id="3a5" day="3" tr="5"></td>
 										</tr>
 										<tr>
-											<td id="1a6" day="1" tr="6"></td>
-											<td id="2a6" day="2" tr="6"></td>
-											<td id="3a6" day="3" tr="6"></td>
 										</tr>
 										<tr>
-											<td id="1a7" day="1" tr="7"></td>
-											<td id="2a7" day="2" tr="7"></td>
-											<td id="3a7" day="3" tr="7"></td>
 										</tr>
 										<tr>
-											<td id="1a8" day="1" tr="8"></td>
-											<td id="2a8" day="2" tr="8"></td>
-											<td id="3a8" day="3" tr="8"></td>
 										</tr>
 								</tbody>
 							</table>
@@ -582,15 +522,6 @@ var plannum = "";
 var memberId = "<%=session.getAttribute("memberid")%>";
 var image_num = "";
 var post_day = $("#day").val();
-
-for(i=1; i<=post_day; i++) {
-	var day_div = "<div id='postDay" + i + "' style='border: 1px solid red;'><font size='5'><b>" + i + " Day</b></font>";
-	for(j=0; j<9; j++) {
-		day_div += "<div id='post"+i+"a"+j+"'></div><button id='"+i+"b"+j+"' class='postbtn' style='display:none;'>포스트쓰기</button>"
-	}
-	day_div += "</div>";
-	$("#storyTab").append(day_div);
-}
 
 //★★안됨
 function f5check() {
@@ -705,7 +636,7 @@ function savePlan() {
 
 function saveTable() {
 	var parameter = []; 
-	var day = "<%=old_day%>";
+	var day = $("#day").val();
 	var tds = new Array();
 	var divs = new Array();
 	
@@ -918,10 +849,11 @@ dialog = $( "#dialog-form" ).dialog({
 
 $(function () {
 // Modal 띄우기 위한 버튼
-	$( ".postbtn" ).button().on( "click", function() {
-	   p_all = $(this).attr("id");
-	   arr = p_all.split("b");					//클릭한 위치 알기 위한 버튼 id String split
-	   dialog.dialog( "open" );
+	$(document).on("click", '.postbtn', function(e) {
+		e.stopImmediatePropagation();
+		   p_all = $(this).attr("id");
+		   arr = p_all.split("b");					//클릭한 위치 알기 위한 버튼 id String split
+		   dialog.dialog( "open" );
 	});
 	
 	//동적으로 생성된 태그는 click()이 안먹음 -> on으로 걸어야!

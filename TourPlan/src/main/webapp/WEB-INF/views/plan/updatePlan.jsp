@@ -41,6 +41,7 @@ var plan_num = "<%=plannum%>";
 		$.ajax({
 			url : "../placeAjax/selectAll.do",
 			dataType : "json",
+			async : false,
 			success : function(data_place) {
 				
 			$.getJSON("../planTableAjax/selectPT", param, function(data,status){
@@ -60,7 +61,9 @@ var plan_num = "<%=plannum%>";
 							}
 							var div = "<div id='place_" + data[i].placenum + "_" + data[i].plantablenum + "' class='redips-drag'>" + data_place[j].placename + "<br>" + data_place[j].city + ", " + data_place[j].country+ "</div>";
 							 $(div).appendTo($("#" + data[i].day + "a" + data[i].tr));
-							 $("#"+data[i].day+"b"+data[i].tr).show()
+							 
+							$("#post"+ data[i].day + "a" + data[i].tr).append("<div style='border: solid 1px orange;'>" + data_place[j].placename + "<br>" + data_place[j].city + ", " + data_place[j].country +  "</div>");
+							$("#post"+ data[i].day + "a" + data[i].tr + "+button").css("display", "block");
 						}
 					}
 				} else {
@@ -79,6 +82,38 @@ var plan_num = "<%=plannum%>";
 		$('#table2').find('div').each(function(i, e){
 			console.log($(this).text());
 		});
+		
+		var post_day = $("#day").val();
+		for(i=1; i<=post_day; i++) {
+			var day_div = "<div id='postDay" + i + "' style='border: 1px solid red;'><font size='5'><b>" + i + " Day</b></font>";
+			var table_td = "<td class='redips-mark dark'>Day" + i + "</td>";
+			$("#table2 tr:eq(0)").append(table_td);
+			for(j=0; j<9; j++) { 
+				day_div += "<div id='post"+i+"a"+j+"'></div><button id='"+i+"b"+j+"' class='postbtn' style='display:none;'>포스트쓰기</button>";
+				table_td = "<td id="+i+"a"+j+" day='"+i+"' tr='"+j+"'></td>"
+				$("#table2 tr:eq("+(j+1)+")").append(table_td);
+			}
+			day_div += "</div>";
+			$("#storyTab").append(day_div);
+		}
+
+		//처음 Post목록 불러오는 ajax
+		var param_post = "plannum="+planNum;
+		$.getJSON("../postAjax/selectPost", param_post, function(data,status){
+			if(status =="success" ) {
+				if( data.length > 0) {
+					for(i=0; i<data.length; i++) {
+						var div = "<div style='border: 1px solid grey; padding: 5px; margin: 5px; width: fit-content;'>" + data[i].post + 
+						"<span id='postNum"+data[i].postnum+"' class='del_a'>X</span></div>"
+						$(div).appendTo($("#post" + data[i].day + "a" + data[i].tr));
+						$("#"+data[i].day+"b"+data[i].tr).show()
+						$("#"+data[i].day+"a"+data[i].tr).attr("postnum", data[i].postnum);
+					}
+				}
+			} else {
+				alert(status);
+			}
+		});	
 		
 	});
 	
@@ -112,6 +147,20 @@ var plan_num = "<%=plannum%>";
 				}
 			}       
 		}
+	}
+	
+	function getDate() {
+		var depDate = $("#departuredate").val().split('-');
+		var arrDate = $("#arrivaldate").val().split('-');
+		var depDateArr = new Date(depDate[0], depDate[1], depDate[2]); 
+		var arrDateArr = new Date(arrDate[0], arrDate[1], arrDate[2]); 
+		var cal_day = 0;
+
+		var diff = arrDateArr - depDateArr;
+ 		var currDay = 24 * 60 * 60 * 1000;// 시 * 분 * 초 * 밀리세컨
+
+ 		cal_day = parseInt(diff/currDay)+1;
+ 		$("#day").val(cal_day);
 	}
 </script>
 <style>
@@ -420,9 +469,9 @@ div#redips-drag #table1 div {
 						<td>출발일</td><td>도착일</td><td>day</td><td>인원</td><td>여행테마</td><td>공개여부</td><td>이미지</td>
 					</tr>
 					<tr>
-						<td><input type="text" id="departuredate" name="departuredate" value="${vo.departuredate}"></td>
-						<td><input type="text" id="arrivaldate" name="arrivaldate" value="${vo.arrivaldate}"></td>
-						<td><input type="text" id="day" onchange="dayCheck();" value="${vo.day}"></td>
+						<td><input type="date" id="departuredate" name="departuredate" value="${vo.departuredate}"></td>
+						<td><input type="date" id="arrivaldate" name="arrivaldate" value="${vo.arrivaldate}" onchange="getDate()"></td>
+						<td><input type="text" id="day" value="${vo.day}"><button type="button" onclick="dayCheck();">변경</button></td>
 						<td><input type="text" id="people" name="people" value="${vo.people}"></td>
 						<td>
 							<select id="sel" name="categorynum">
@@ -538,38 +587,6 @@ div#redips-drag #table1 div {
 	
 <script>
 var planNum = "<%=vo.getPlannum()%>";
-
-var post_day = $("#day").val();
-for(i=1; i<=post_day; i++) {
-	var day_div = "<div id='postDay" + i + "' style='border: 1px solid red;'><font size='5'><b>" + i + " Day</b></font>";
-	var table_td = "<td class='redips-mark dark'>Day" + i + "</td>";
-	$("#table2 tr:eq(0)").append(table_td);
-	for(j=0; j<9; j++) { 
-		day_div += "<div id='post"+i+"a"+j+"'></div><button id='"+i+"b"+j+"' class='postbtn' style='display:none;'>포스트쓰기</button>";
-		table_td = "<td id="+i+"a"+j+" day='"+i+"' tr='"+j+"'></td>"
-		$("#table2 tr:eq("+(j+1)+")").append(table_td);
-	}
-	day_div += "</div>";
-	$("#storyTab").append(day_div);
-}
-
-//처음 Post목록 불러오는 ajax
-var param_post = "plannum="+planNum;
-$.getJSON("../postAjax/selectPost", param_post, function(data,status){
-	if(status =="success" ) {
-		if( data.length > 0) {
-			for(i=0; i<data.length; i++) {
-				var div = "<div style='border: 1px solid grey; padding: 5px; margin: 5px; width: fit-content;'>" + data[i].post + 
-				"<span id='postNum"+data[i].postnum+"' class='del_a'>X</span></div>"
-				$(div).appendTo($("#post" + data[i].day + "a" + data[i].tr));
-				$("#"+data[i].day+"b"+data[i].tr).show()
-				$("#"+data[i].day+"a"+data[i].tr).attr("postnum", data[i].postnum);
-			}
-		}
-	} else {
-		alert(status);
-	}
-})	
 
 //★★안됨
 function f5check() {
@@ -863,10 +880,11 @@ function postAutoDel(postnumber) {
 
 $(function () {
 // Modal 띄우기 위한 버튼
-	$( ".postbtn" ).button().on( "click", function() {
-	   p_all = $(this).attr("id");
-	   arr = p_all.split("b");					//클릭한 위치 알기 위한 버튼 id String split
-	   dialog.dialog( "open" );
+	$(document).on("click", '.postbtn', function(e) {
+		e.stopImmediatePropagation();
+		   p_all = $(this).attr("id");
+		   arr = p_all.split("b");					//클릭한 위치 알기 위한 버튼 id String split
+		   dialog.dialog( "open" );
 	});
 	
 	$(document).on('click', '.del_a',function(e) {

@@ -54,6 +54,7 @@ var oldPlannum = "<%=old_plannum%>";
 		$.ajax({
 			url : "../placeAjax/selectAll.do",
 			dataType : "json",
+			async : false,
 			success : function(data_place) {
 			
 			$.getJSON("../planTableAjax/selectPT", param, function(data,status){
@@ -115,6 +116,20 @@ var oldPlannum = "<%=old_plannum%>";
 				}
 			}       
 		}
+	}
+	
+	function getDate() {
+		var depDate = $("#departuredate").val().split('-');
+		var arrDate = $("#arrivaldate").val().split('-');
+		var depDateArr = new Date(depDate[0], depDate[1], depDate[2]); 
+		var arrDateArr = new Date(arrDate[0], arrDate[1], arrDate[2]); 
+		var cal_day = 0;
+
+		var diff = arrDateArr - depDateArr;
+ 		var currDay = 24 * 60 * 60 * 1000;// 시 * 분 * 초 * 밀리세컨
+
+ 		cal_day = parseInt(diff/currDay)+1;
+ 		$("#day").val(cal_day);
 	}
 </script>
 <style>
@@ -423,9 +438,9 @@ div#redips-drag #table1 div {
 						<td>출발일</td><td>도착일</td><td>day</td><td>인원</td><td>여행테마</td><td>공개여부</td><td>이미지</td>
 					</tr>
 					<tr>
-						<td><input type="text" id="departuredate" name="departuredate" value="${vo.departuredate}"></td>
-						<td><input type="text" id="arrivaldate" name="arrivaldate" value="${vo.arrivaldate}"></td>
-						<td><input type="text" id="day" onchange="dayCheck();" value="<%=old_vo.getDay()%>"></td>
+						<td><input type="date" id="departuredate" name="departuredate" value="${vo.departuredate}"></td>
+						<td><input type="date" id="arrivaldate" name="arrivaldate" value="${vo.arrivaldate}" onchange="getDate()"></td>
+						<td><input type="text" id="day" value="<%=old_vo.getDay()%>"><button type="button" onclick="dayCheck();">변경</button></td>
 						<td><input type="text" id="people" name="people" value="${vo.people}"></td>
 						<td>
 							<select id="sel" name="categorynum">
@@ -876,10 +891,11 @@ dialog = $( "#dialog-form" ).dialog({
 
 $(function () {
 // Modal 띄우기 위한 버튼
-	$( ".postbtn" ).button().on( "click", function() {
-	   p_all = $(this).attr("id");
-	   arr = p_all.split("b");					//클릭한 위치 알기 위한 버튼 id String split
-	   dialog.dialog( "open" );
+	$(document).on("click", '.postbtn', function(e) {
+		e.stopImmediatePropagation();
+		   p_all = $(this).attr("id");
+		   arr = p_all.split("b");					//클릭한 위치 알기 위한 버튼 id String split
+		   dialog.dialog( "open" );
 	});
 	
 	//동적으로 생성된 태그는 click()이 안먹음 -> on으로 걸어야!

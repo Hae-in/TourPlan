@@ -67,8 +67,8 @@ public class PlanTableAjaxController {
 			else {
 				PostVO p_vo = new PostVO();
 				p_vo.setPostnum(list.get(i).getPostnum());
-				p_vo.setPlantablenum(list.get(i).getPlantablenum());
 				p_vo.setPlannum(list.get(i).getPlannum());
+				p_vo.setPlantablenum(list.get(i).getPlantablenum());
 				postService.update(p_vo);
 			}
 		}
@@ -81,22 +81,18 @@ public class PlanTableAjaxController {
 	public boolean planUpdate(@RequestBody List<PlanTableVO> list) {
 		PlanTableVO vo = new PlanTableVO();
 		vo.setPlannum(list.get(0).getPlannum());
-		boolean r = planTableService.delete(vo);
+		planTableService.delete(vo);
 		
-		if(r) {
-			for(int i=0; i<list.size(); i++) {
-				planTableService.insert(list.get(i));
-				if(list.get(i).getPostnum() == null || list.get(i).getPostnum().equals("")) {}
-				else {
-					PostVO p_vo = new PostVO();
-					p_vo.setPostnum(list.get(i).getPostnum());
-					p_vo.setPlannum(list.get(i).getPlannum());
-					p_vo.setPlantablenum(list.get(i).getPlantablenum());
-					postService.update(p_vo);
-				}
+		for(int i=0; i<list.size(); i++) {
+			planTableService.insert(list.get(i));
+			if(list.get(i).getPostnum() == null || list.get(i).getPostnum().equals("")) {}
+			else {
+				PostVO p_vo = new PostVO();
+				p_vo.setPostnum(list.get(i).getPostnum());
+				p_vo.setPlannum(list.get(i).getPlannum());
+				p_vo.setPlantablenum(list.get(i).getPlantablenum());
+				postService.update(p_vo);
 			}
-		} else {
-			System.out.println("boolean false ***************************");
 		}
 		
 		return true;

@@ -5,6 +5,9 @@
 <% 
 	response.setHeader("P3P","CP='CAO PSA CONi OTR OUR DEM ONL'"); 
 	PlanVO vo = (PlanVO) request.getAttribute("vo");
+	String catenum = vo.getCategorynum();
+	String isopen = vo.getIsopen();
+	String vo_day = vo.getDay();
 %>
 <!DOCTYPE html> 
 <html>
@@ -12,7 +15,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>투어플랜(TourPlan)-일정만들기 상세</title>
-<script type="text/javascript" src="<c:url value='/'/>resources/js/header.js"></script>
 <script type="text/javascript" src="<c:url value='/'/>resources/js/redips-drag-min.js?v=<%=System.currentTimeMillis()%>"></script>
 <script type="text/javascript" src="<c:url value='/'/>resources/js/script.js?v=<%=System.currentTimeMillis()%>"></script>
 <script src='<c:url value='/'/>resources/js/jquery.form.min.js'></script>
@@ -20,21 +22,75 @@
 var plannum = <%=vo.getPlannum()%>; 
 
 	$(function(){
-		// Get the element with id="defaultOpen" and click on it
 		document.getElementById("defaultOpen").click();
 		
 		$.ajax({
 			url : "<%=request.getContextPath()%>/placeAjax/selectAll.do",
 			dataType : "json",
 			success : function(data) {
-				//받아온 json을 테이블에 출력
-				
 				for (i = 0; i < data.length; i++) {
 					$("#tbody").append("<tr><td><img width='100px;' src='../resources/images/"+(data[i].imagename == null ? "null.jpg" : data[i].imagename) +"'></td><td class='dark'><div id='place_" + data[i].placenum + "_" + "' class='redips-drag redips-clone'>"+data[i].placename+"<br>"+data[i].city+", " +data[i].country+"</div></td></tr>");
 				}
-				//$("body div:first").remove();
 			}
 		});
+		
+
+		$("#sel > option[value='<%=catenum%>']").attr("selected", "true");
+		var isopen = "<%=isopen%>";
+		if(isopen == "1") {
+			$("#isopen_ck").prop("checked", "true");
+		}
+		
+		var post_day = $("#day").val();
+		for(i=1; i<=post_day; i++) {
+			var day_div = "<div id='postDay" + i + "' style='border: 1px solid red;'><font size='5'><b>" + i + " Day</b></font>";
+			var table_td = "<td class='redips-mark dark'>Day" + i + "</td>";
+			$("#table2 tr:eq(0)").append(table_td);
+			for(j=0; j<9; j++) {
+				day_div += "<div id='post"+i+"a"+j+"'></div><button id='"+i+"b"+j+"' class='postbtn' style='display:none;'>포스트쓰기</button>";
+				table_td = "<td id="+i+"a"+j+" day='"+i+"' tr='"+j+"'></td>"
+				$("#table2 tr:eq("+(j+1)+")").append(table_td);
+			}
+			day_div += "</div>";
+			$("#storyTab").append(day_div);
+		}
+		
+		//이미 들어가있는 일정 불러오기
+		var param = "plannum=" + plannum;
+		$.ajax({
+			url : "../placeAjax/selectAll.do",
+			dataType : "json",
+			success : function(data_place) {
+			
+			$.getJSON("../planTableAjax/selectPT", param, function(data,status){
+				if(status =="success" ) {
+					if( data.length > 0) {
+						if(data[0].imagename != null) {
+							var img = "<img id='topimg' src='<c:url value='/'/>resources/images/" + data[0].imagename + "' width='100px' style='cursor: pointer;' data-toggle='modal' data-target='#imageModal'>";
+							$(img).appendTo($("#upload"));
+							img = "<img id='topimg' src='<c:url value='/'/>resources/images/" + data[0].imagename + "' width='100%'>";
+							$(img).appendTo($("#imageBody"));
+						}
+						for(i=0; i<data.length; i++) {
+							for(j=0; j<data_place.length; j++) {
+								if(data[i].placenum == data_place[j].placenum) {
+									break;
+								}
+							}
+							var div = "<div id='place_" + data[i].placenum + "_" + data[i].plantablenum + "' class='redips-drag'>" + data_place[j].placename + "<br>" + data_place[j].city + ", " + data_place[j].country+ "</div>";
+							 $(div).appendTo($("#" + data[i].day + "a" + data[i].tr));
+							 
+							$("#post"+ data[i].day + "a" + data[i].tr).append("<div style='border: solid 1px orange;'>" + data_place[j].placename + "<br>" + data_place[j].city + ", " + data_place[j].country +  "</div>");
+							$("#post"+ data[i].day + "a" + data[i].tr + "+button").css("display", "block");
+						}
+					}
+				} else {
+					alert(status);
+				}
+			});
+		  }
+		});
+		
 	});
 	
 	function openTab(evt, tabName) {
@@ -69,6 +125,19 @@ var plannum = <%=vo.getPlannum()%>;
 		}
 	}
 	
+	function getDate() {
+		var depDate = $("#departuredate").val().split('-');
+		var arrDate = $("#arrivaldate").val().split('-');
+		var depDateArr = new Date(depDate[0], depDate[1], depDate[2]); 
+		var arrDateArr = new Date(arrDate[0], arrDate[1], arrDate[2]); 
+		var cal_day = 0;
+
+		var diff = arrDateArr - depDateArr;
+ 		var currDay = 24 * 60 * 60 * 1000;// 시 * 분 * 초 * 밀리세컨
+
+ 		cal_day = parseInt(diff/currDay)+1;
+ 		$("#day").val(cal_day);
+	}
 </script>
 <style>
 * {
@@ -320,46 +389,49 @@ div#redips-drag #table1 div {
 </head>
 <body>
 	<div class="header">
-		<input type="text" id="planName" placeholder="아까 적은 여행제목 (수정가능)"/>
+		<input type="text" id="planname" value=""/>
 		<div class="divContents">
 			<div>
 				<table border="1">
 					<tr>
-						<td>출발일</td><td>일수</td><td>인원</td><td>여행테마</td><td>공개여부</td> <td>이미지</td>
+						<td>출발일</td><td>도착일</td><td>day</td><td>인원</td><td>여행테마</td><td>공개여부</td><td>이미지</td>
 					</tr>
 					<tr>
-						<td><input type="text"></td>
-						<td><input type="text"></td>
-						<td><input type="text"></td>
+						<td><input type="date" id="departuredate" name="departuredate" value="<%=vo.getDeparturedate()%>"></td>
+						<td><input type="date" id="arrivaldate" name="arrivaldate" value="<%=vo.getArrivaldate()%>" onchange="getDate();"></td>
+						<td><input type="text" id="day" value="<%=vo.getDay()%>"><button type="button" onclick="dayCheck();">변경</button></td>
+						<td><input type="text" id="people" name="people" value="<%=vo.getPeople()%>"></td>
 						<td>
-							<input class="planCate" type="button" value="나홀로여행">
-							<input class="planCate" type="button" value="친구와여행">
-							<input class="planCate" type="button" value="가족여행"> 
-							<input class="planCate" type="button" value="단체여행"> 
-							<input class="planCate" type="button" value="커플여행"> 
-							<input class="planCate" type="button" value="기타">
-						</td>
+							<select id="sel" name="categorynum">
+        						<option value="11">나홀로여행</option>
+								<option value="12">친구와여행</option>
+  				 				<option value="13">가족여행</option>
+			     				<option value="14">단체여행</option>
+			     				<option value="15">커플여행</option>
+			     				<option value="16">기타</option>
+			  				</select>
+			  			</td>
 						<td>
-							<div id="isopen">
+							<div>
 								<label class="switch"> 
-									<input type="checkbox"><span class="slider round"></span>
+									<input id="isopen_ck" type="checkbox" name="is" value="1"><span class="slider round"></span>
 								</label>
+									<input type="hidden" id="isopen" name="isopen" value="0">
 							</div>
 						</td>
 						<td>
 							<!-- 이미지 업로드 -->
 							<div id="upload"></div>
 							<form id="frm_img" method="post" enctype="multipart/form-data">
-      							<input type="file" id="uploadFile" name="uploadFile" style="border: 1px solid grey"><br />
+      							<input type="file" name="uploadFile" style="border: 1px solid grey"><br />
       							<button type="button" onclick="imageAdd();">업로드</button>
   							</form>
-							<!-- 이미지 업로드 -->						
+							<!-- 이미지 업로드 -->			
 						</td>
 					</tr>
 				</table>
 			</div>
 		</div>
-		
 	</div>
 	<div id="redips-drag">
 		<div class="footer">
@@ -387,7 +459,6 @@ div#redips-drag #table1 div {
 					<button class="tablinks" onclick="openTab(event, 'planTab')" id="defaultOpen">지도/일정표</button>
 				</div>
 				<div id="storyTab" class="tabcontent">
-				story
 				</div>
 				<div id="planTab" class="tabcontent">
 					<div id="googleMap" style="width: 100%; height: 400px;"></div>
@@ -404,61 +475,26 @@ div#redips-drag #table1 div {
 					<div id="planList">
 						<div id="right">
 							<table id="table2" border="1">
-								<colgroup>
-									<col width="100"/>
-									<col width="100"/>
-									<col width="100"/>
-								</colgroup>
 								<tbody>
 									<tr>
-										<td class="redips-mark dark">Day1</td>
-										<td class="redips-mark dark">Day2</td>
-										<td class="redips-mark dark">Day3</td>
 									</tr>
 									<tr>
-											<td id="1a0"></td>
-											<td id="2a0"></td>
-											<td id="3a0"></td>
 										</tr>
 										<tr>
-											<td id="1a1"></td>
-											<td id="2a1"></td>
-											<td id="3a1"></td>
 										</tr>
 										<tr>
-											<td id="1a2"></td>
-											<td id="2a2"></td>
-											<td id="3a2"></td>
 										</tr>
 										<tr>
-											<td id="1a3"></td>
-											<td id="2a3"></td>
-											<td id="3a3"></td>
 										</tr>
 										<tr>
-											<td id="1a4"></td>
-											<td id="2a4"></td>
-											<td id="3a4"></td>
 										</tr>
 										<tr>
-											<td id="1a5"></td>
-											<td id="2a5"></td>
-											<td id="3a5"></td>
 										</tr>
 										<tr>
-											<td id="1a6"></td>
-											<td id="2a6"></td>
-											<td id="3a6"></td>
 										</tr>
 										<tr>
-											<td id="1a7"></td>
-											<td id="2a7"></td>
-											<td id="3a7"></td>
 										</tr>
 										<tr>
-											<td id="1a8"></td>
-											<td id="2a8"></td>
-											<td id="3a8"></td>
 										</tr>
 								</tbody>
 							</table>
@@ -466,8 +502,7 @@ div#redips-drag #table1 div {
 					</div>
 				</div>
 				<div id="divBtns">
-					<button type="submit">저장</button>
-					<button type="button">공유하기</button>
+					<button type="button" onclick="savePlan();">저장하기</button>
 					<button type="button">취소</button>
 				</div>
 			</div>
@@ -492,6 +527,8 @@ div#redips-drag #table1 div {
 <!-- Modal End -->
 
 <script type="text/javascript">
+var isSave = false;
+var dayCheckNum = 0;
 //WebSocket start -----------------------------------
 	var xhttp = new XMLHttpRequest();
 	
@@ -503,39 +540,7 @@ div#redips-drag #table1 div {
 	};
 	webSocket.onopen = function(event) {
 		var param = "plannum=" + plannum;
-		
-		$.ajax({
-			url : "../placeAjax/selectAll.do",
-			dataType : "json",
-			success : function(data_place) {
-				
-				$.getJSON("../planTableAjax/selectPT", param, function(data,status){
-					if(status =="success" ) {
-						if( data.length > 0) {
-							if(data[0].imagename != null) {
-								var img = "<img id='topimg' src='<c:url value='/'/>resources/images/" + data[0].imagename + "' width='100px' style='cursor: pointer;' data-toggle='modal' data-target='#imageModal'>";
-								$(img).appendTo($("#upload"));
-								img = "<img id='topimg' src='<c:url value='/'/>resources/images/" + data[0].imagename + "' width='100%'>";
-								$(img).appendTo($("#imageBody"));
-							}
-							for(i=0; i<data.length; i++) {
-								for(j=0; j<data_place.length; j++) {
-									if(data[i].placenum == data_place[j].placenum) {
-										break;
-									}
-								}
-								var div = "<div id='place_" + data[i].placenum + "_" + data[i].plantablenum + "' class='redips-drag'>" + data_place[j].placename + "<br>" + data_place[j].city + ", " + data_place[j].country+ "</div>";
-								 $(div).appendTo($("#" + data[i].day + "a" + data[i].tr));
-							}
-						}
-					} else {
-						alert(status);
-					}
-				});
-				
-			}
-		});
-		
+	
 		onOpen(event)
 	};
 	webSocket.onmessage = function(event) {
@@ -543,7 +548,7 @@ div#redips-drag #table1 div {
 		
 		switch (msg.type) {
 		case "insert":
-			if($("#"+ msg.day + "a" + msg.tr + " div").length == 0) {
+			if($("#"+ msg.tdid + " div").length == 0) {
 				console.log("노자식");
 				
 				//복제
@@ -552,11 +557,11 @@ div#redips-drag #table1 div {
 				
 				//복제품 속성부여
 				$(copy_div).attr("class", 'redips-drag');
-				$(copy_div).attr("id", $(div).attr("id") + msg.plantablenum);
+				$(copy_div).attr("id", $(div).attr("id") + msg.copynum);
 				
 				//복제품 변수에 담기
 				var idid = $(copy_div).attr("id"); 
-				var parent = $("#"+ msg.day + "a" + msg.tr).get(0);
+				var parent = $("#"+ msg.tdid).get(0);
 				
 				//복제품 부모에게 이동
 				REDIPS.drag.moveObject({
@@ -565,10 +570,10 @@ div#redips-drag #table1 div {
 				});
 				
 			} else {
-				var div = $("#"+ msg.day + "a" + msg.tr + " div");
+				var div = $("#"+ msg.tdid + " div");
 				var arr = new Array();
 				arr = div.attr("id").split("_");
-				var id = arr[0] + "_" + arr[1] + "_" + msg.plantablenum;
+				var id = arr[0] + "_" + arr[1] + "_" + msg.copynum;
 				
 				div.attr("id", id)
 				console.log("자식있는 아이디값 : " + id);
@@ -576,21 +581,35 @@ div#redips-drag #table1 div {
 			break;
 			
 		case "update":
-			if($("#"+ msg.day + "a" + msg.tr + " div").length == 0) {
+			if($("#"+ msg.tdid + " div").length == 0) {
 			
 				var div = $("#" + msg.willmove + " div");
-				$(div).appendTo($("#"+ msg.day + "a" + msg.tr));
+				$(div).appendTo($("#"+ msg.tdid));
 				$("#" + msg.willmove).empty();
 				
 			} else {
-				console.log($("#"+ msg.day + "a" + msg.tr + " div"));
+				console.log($("#"+ msg.tdid + " div"));
 				console.log("밑에 if실행");
 			}
 			break;
 		case "delete":
-			console.log("delete의 plantablenum : " + msg.plantablenum);
-			console.log("delete의 placenum : " + msg.placenum);
-			$("#place_" + msg.placenum + "_" + msg.plantablenum).parent().empty();
+			$("#" + msg.tdid).parent().empty();
+			break;
+		case "imageUp":
+			$("#upload").empty();
+			$("<img src='<c:url value='/'/>resources/images/"+msg.tdid+"' width='100px'>").appendTo($("#upload"));
+			break;
+		case "planSave":
+			alert('일정을 저장하였습니다');
+			break;
+		case "dayCheck":
+			if($("#day").val() != msg.tdid) {
+				$("#day").val(msg.tdid);
+				dayCheck();
+				
+				$("#departuredate").val(msg.copynum);
+				$("#arrivaldate").val(msg.placenum);
+			}
 			break;
 		}
 
@@ -606,17 +625,12 @@ div#redips-drag #table1 div {
 	function onError(event) {
 		alert("에러발생 관리자에게 문의하세요");
 	}
-	function send(v_type, v_plantablenum, v_plannum, v_day, v_staytime, v_sortnum, v_fix, v_tr, v_placenum, v_child1, v_child2, v_willMove) {
+	function send(v_type, v_tdid,v_copynum, v_placenum, v_child1, v_child2, v_willMove) {
 		// 서버로 전송할 데이터를 담을 msg 객체 생성.
 		var msg = {
 			type : v_type,
-			plantablenum : v_plantablenum,
-			plannum : v_plannum, 
-			day : v_day, 
-			staytime : v_staytime, 
-			sortnum : v_sortnum, 
-			fix : v_fix, 
-			tr : v_tr,
+			tdid : v_tdid,
+			copynum : v_copynum,
 			placenum : v_placenum,
 			child1 : v_child1,
 			child2 : v_child2,
@@ -638,6 +652,7 @@ function imageAdd(){
 				if(result.code == 'success') {
 					alert("등록되었습니다.");
 					var post = "<img src='<c:url value='/'/>resources/images/" + result.imageName + "' width='100px'>";
+					send("imageUp", result.imageName, "", "", "", "", "");
 					$(post).appendTo($("#upload"));
 				}
 			},
@@ -650,12 +665,13 @@ function imageAdd(){
 		$("#frm_img").ajaxForm({
 			dataType:"json",
 			data : {plannum: plannum,
-					planname: "update"},
+					planname: "otherUp"},
 			url:'../planAjax/insertImage',
 			success: function(result, textStatus){
 				if(result.code == 'success') {
 					alert("등록되었습니다.");
 					var post = "<img src='<c:url value='/'/>resources/images/" + result.imageName + "' width='100px'>";
+					send("imageUp", result.imageName, "", "", "", "", "");
 					$("#upload").empty();
 					$(post).appendTo($("#upload"));
 				}
@@ -667,6 +683,135 @@ function imageAdd(){
 		}).submit();
 	}
 }
+
+function savePlan() {
+	if($("#isopen_ck:checked").val() == null) {} 
+	else { $("#isopen").val("1"); }
+
+	var param2 = "planname=" + $("#planname").val() + "&departuredate=" + $("#departuredate").val() + "&arrivaldate=" + $("#arrivaldate").val()
+	+ "&people=" + $("#people").val() + "&categorynum=" + $("#sel").val() + "&isopen=" + $("#isopen").val() + "&state=0";
+	
+	param2 += "&plannum=" + plannum;
+	$.ajax({
+	    url         : '../planAjax/update'
+		,type        : 'GET'
+	   	,data        : param2
+		,dataType    : 'text'
+		,success     : function(data,status) {
+	      	if (status =="success") {
+	    	   	if(data.length > 0) {
+	    		   	alert("수정 성공");
+	    	   		alert("update한 plannum : " + data);
+	    	   		plannum = data;
+	    	   		saveTable();
+	    	   		}
+	 		   else {
+	    			alert("저장에 실패했습니다"); }
+   		   	} else { alert("에러발생 관리자에게 문의하세요") }
+   		}
+	  });
+}//savePlan()
+
+function saveTable() {
+	var parameter = []; 
+	var day = "<%=vo_day%>";
+	var tds = new Array();
+	var divs = new Array();
+	
+		for(i=1; i<=day; i++) {
+			for(j=0; j<9; j++) {
+				var p = {};
+			
+				if($("[day='"+i+"'][tr='"+j+"'] div").length == 0) { }
+				else {
+				
+				var div_id = $("[day='"+i+"'][tr='"+j+"'] div").attr("id");
+				var divide_place = div_id.split("_")[1];
+				var postnum = $("#"+i+"a"+j).attr("postnum");
+				
+				p.day = i;
+				p.tr = j;
+				p.placenum = divide_place
+				p.plannum = plannum;
+				p.fix = "0";
+				p.sortnum = "5";
+				p.staytime = "30";
+				p.postnum = postnum;
+				
+				parameter.push(p);
+				}
+			}
+		}
+	
+		$.ajax({
+		    url         : '../planTableAjax/planUpdate'
+		   ,type        : 'POST'
+		   ,dataType    : 'json'
+		   ,data		: JSON.stringify( parameter )
+		   ,contentType	: 'application/json' 
+		   ,mimeType: 'application/json'
+		   ,success     : function(data,status) {
+		       if (status =="success") {
+		    	   if(data == true) {
+			    	   	alert("저장 성공"); }
+		    	   else {
+			    		alert("저장에 실패했습니다"); }
+	   		   } else { alert("에러발생 관리자에게 문의하세요") }
+	   		}
+		   	,error: function(result) {
+	   		}
+		});
+		
+	send("planSave");
+}
+
+function dayCheck() {
+	console.log("dayCheck실행");
+	var last_day = parseInt($("#table2 tr:eq(2) td").length);
+	var form_day = parseInt($("#day").val());
+	
+	if($("#day").val() <= 0) {
+		alert("0이하는 설정할 수 없습니다.");
+		$("#day").val("1");
+	} else if(form_day > last_day) {
+		var sub = form_day - last_day;
+		for(i=1; i<=sub; i++) {
+			$("#table2 tr:eq(0)").append("<td class='redips-mark dark'>Day"+(last_day+i)+"</td>");
+			for(j=0; j<9; j++) {
+				var append_td = "<td id='" + (last_day+i) + "a" + j + "' day='" + (last_day+i) + "' tr='" + j + "'></td>"
+				$("#table2 tr:eq(" + (j+1) + ")").append(append_td);
+			}
+			
+			//포스트도 함께 추가
+			var day_div = "<div id='postDay"+(last_day+i)+"' style='border: 1px solid red;'><font size='5'><b>" + (last_day+i) + " Day</b></font>"
+			for(j=0; j<9; j++) {
+				day_div += "<div id='post"+(last_day+i)+"a"+j+"'></div><button id='"+(last_day+i)+"b"+j+"' class='postbtn' style='display:none;'>포스트쓰기</button>"
+			}
+			day_div += "</div>";
+			$("#storyTab").append(day_div);
+		}
+	} else if(form_day < last_day) {
+		if(confirm("일정과 포스트도 함께 삭제됩니다 함께 동의하셔야 삭제됩니다")) {
+			var sub = last_day - form_day;
+			for(i=1; i<=sub; i++) {
+				$("#table2 tr:eq(0) td:last").remove();
+				for(j=0; j<9; j++) {
+					$("#table2 tr:eq(" + (j+1) + ") td:last").remove();
+				}
+			
+				//포스트도 함께 삭제
+				$("#storyTab div[id^='postDay']:last").remove();
+			}
+		} else { $("#day").val(last_day); }
+	} else if(form_day == last_day) {
+	} else {
+		alert('숫자만 입력가능합니다');
+		$("#day").val("1");
+	}
+	var ddd = $("#day").val();
+	send("dayCheck", ddd, $("#departuredate").val(), $("#arrivaldate").val(), "", "", "");
+}
+
 </script>
 </body>
 </html>

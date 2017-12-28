@@ -14,6 +14,7 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.yedam.tourplan.plan.service.MsgVO;
 import com.yedam.tourplan.plantable.service.PlanTableSearchVO;
 import com.yedam.tourplan.plantable.service.PlanTableService;
 import com.yedam.tourplan.plantable.service.PlanTableVO;
@@ -48,19 +49,24 @@ public class WebsockHandler extends TextWebSocketHandler implements Initializing
 	@ResponseBody
 	public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
 		ObjectMapper mapper = new ObjectMapper();
-		PlanTableSearchVO msgVO = mapper.readValue((String) message.getPayload(), PlanTableSearchVO.class);
+		MsgVO msgVO = mapper.readValue((String) message.getPayload(), MsgVO.class);
 		
 		if(msgVO.getType().equals("insert")) {
-			planTableService.insert(msgVO);
-			String jsonString = mapper.writeValueAsString(msgVO);
-			sendMessage(session, jsonString);
+			//planTableService.insert(msgVO);
+			//String jsonString = mapper.writeValueAsString(msgVO);
+			//sendMessage(session, jsonString);
+			sendMessage(session, (String) message.getPayload());
 		} else if (msgVO.getType().equals("update")) {
-			msgVO.setPlacenum("");
-			msgVO.setPlannum("");
-			planTableService.update(msgVO);
+			//msgVO.setPlacenum("");
+			//msgVO.setPlannum("");
+			//planTableService.update(msgVO);
+			sendMessage(session, (String) message.getPayload());
+		} else if (msgVO.getType().equals("imageUp")) {
+			sendMessage(session, (String) message.getPayload());
+		} else if (msgVO.getType().equals("dayCheck")) {
 			sendMessage(session, (String) message.getPayload());
 		} else {
-			planTableService.delete(msgVO);
+			//planTableService.delete(msgVO);
 			sendMessage(session, (String) message.getPayload());
 		}
 

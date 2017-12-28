@@ -78,18 +78,6 @@ public class PlanController {
 	
 	@RequestMapping("selectAll.do")
 	public String selectAll(PlanSearchVO vo, Model model, Paging paging) {
-		//기간 sql에 넣기위해 자르는과정
-				if(vo == null) {
-				} else if (vo.getPeriod1() != null) {
-					String day1 = vo.getPeriod1();
-					day1 = day1.replace("-", ",");
-					day1 = day1.replaceAll("day", "");
-					day1 = day1.replaceAll(" ", "");
-					String temp[] = day1.split(",");
-					vo.setPeriod1(temp[0]);
-					vo.setPeriod2(temp[1]);
-				} else {}
-		
 		//전체 건수
 		int total = planService.selectListTotCnt(vo);
 		paging.setTotalRecord(total);
