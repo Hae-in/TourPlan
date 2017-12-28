@@ -4,111 +4,139 @@
 
 <mapper namespace="PlaceDAO">
 	<insert id="insert" statementType="CALLABLE" parameterType="place">
-		{ 	call place_ins_proc(
-				#{lat},
-				#{lon},
-				#{addr},
-				#{city},
-				#{country},
-				#{placename},
-				#{content},
-				#{membernum},
-				#{categorynum},
-				#{placenum, mode=OUT, jdbcType=VARCHAR, javaType=string},
-				#{out_msg, mode=OUT, jdbcType=VARCHAR, javaType=string}
-			)
+		{
+		call place_ins_proc(
+		#{lat},
+		#{lon},
+		#{addr},
+		#{city},
+		#{country},
+		#{placename},
+		#{content},
+		#{membernum},
+		#{categorynum},
+		#{placenum, mode=OUT, jdbcType=VARCHAR, javaType=string},
+		#{out_msg, mode=OUT, jdbcType=VARCHAR, javaType=string}
+		)
 		}
 	</insert>
-	
+
 	<update id="update" parameterType="place">
 		update place set
-			lat = #{lat},
-			lon = #{lon},
-			addr = #{addr},
-			city = #{city},
-			country = #{country},
-			placename = #{placename},
-			content = #{content},
-			categorynum = #{categorynum}
-		where placenum = #{placenum}   
+		lat = #{lat},
+		lon = #{lon},
+		addr = #{addr},
+		city = #{city},
+		country = #{country},
+		placename = #{placename},
+		content = #{content},
+		categorynum = #{categorynum}
+		where placenum = #{placenum}
 	</update>
-	
+
 	<delete id="delete">
-		delete from place 
+		delete from place
 		where placenum = #{placenum}
 	</delete>
-	
+
 	<select id="select" resultType="place">
 		select place.*
-		, (select realfilename from files where tablename='place' and tablenum = place.placenum and state=1 and rownum=1) as imagename
-        , (select count(*) as likecnt from likeplace where placenum = place.placenum) as likecnt
-        <if test="membernum != null">
-        , (select likeplacenum from likeplace where placenum = place.placenum and membernum = #{membernum}) as likemy		
-        </if>	
+		, (select realfilename from files where
+		tablename='place' and tablenum = place.placenum and state=1 and
+		rownum=1) as imagename
+		, (select count(*) as likecnt from likeplace where placenum =
+		place.placenum) as likecnt
+		<if test="membernum != null">
+			, (select likeplacenum from likeplace where placenum = place.placenum
+			and membernum = #{membernum}) as likemy
+		</if>
 		from place
 		where placenum = #{placenum}
-	</select>	
+	</select>
 
 	<select id="selectAll" parameterType="placeSearch" resultType="place">
-		<if test="first != 0">
-		select b.* from ( select rownum rn, a.* from (
-		</if> 
-		select place.*		
-		, (select realfilename from files where tablename='place' and tablenum = place.placenum and state=1 and rownum=1) as imagename
-        , (select count(*) as likecnt from likeplace where placenum = place.placenum) as likecnt
-        <if test="membernum != null">
-        , (select likeplacenum from likeplace where placenum = place.placenum and membernum = #{membernum}) as likemy	
-        </if>					
+		<if test="first != 0 and last != 0">
+			select b.* from ( select rownum rn, a.* from (
+		</if>
+		select place.*
+		, (select realfilename from files where tablename='place' and tablenum
+		= place.placenum and state=1 and rownum=1) as imagename
+		, (select count(*) as likecnt from likeplace where placenum =
+		place.placenum) as likecnt
+		<if test="membernum != null and membernum != ''">
+			, (select likeplacenum from likeplace where placenum = place.placenum
+			and membernum = #{membernum}) as likemy
+		</if>
 		from place
-		<where> 
-		<if test="categorynum != null">
-			categorynum = #{categorynum}
-		</if>		
-		<if test="placename != null">
-			and placename like '%' || #{placename} || '%'
+		<where>
+			<if test="categorynum != null and categorynum != ''">
+				categorynum = #{categorynum}
+			</if>
+			<if test="placename != null and placename != ''">
+				and placename like '%' || #{placename} || '%'
+			</if>
+			<if test="city != null and city != ''">
+				and city like '%' || #{city} || '%'
+			</if>
+			<if test="country != null and country != ''">
+				and country like '%' || #{country} || '%'
+			</if>
+			<if test="membernum != null and membernum != ''">
+				and (state = '1' or membernum = #{membernum})
+			</if>
+			<if test="membernum == null or membernum == ''">
+				and state = '1'
+			</if>
+		</where>
+		<if test="sort != null and sort != ''">
+			order by ${sort} desc
 		</if>
-		<if test="city != null">
-			and city like '%' || #{city} || '%'
-		</if>	
-		<if test="country != null">
-			and country like '%' || #{country} || '%'
-		</if>				
-		</where>		
-		<if test="sort != null">
-		order by #{sort} desc
+		<if test="sort == null or sort == ''">
+			order by place.placenum desc
 		</if>
-		<if test="sort == null">
-		order by place.placenum desc
-		</if> 
-		<if test="first != 0">			 
-		 ) a ) b where rn between #{first} and #{last} 
+		<if test="first != 0 and last != 0">
+			) a ) b where rn between #{first} and #{last}
 		</if>
-	</select>	
-	
-	<select id="selectPlace" resultType="place">
-		select placenum, placename from place
-		where placenum in (${placenum})
-	</select>	
-	
-	<select id="selectListTotCnt" parameterType="placeSearch" resultType="int">
+	</select>
+
+	<select id="selectListTotCnt" parameterType="placeSearch"
+		resultType="int">
 		<![CDATA[
-			SELECT 	COUNT(*) totcnt
-			FROM 	Place
-		]]>	
-			<where> 
-		<if test="categorynum != null">
-			categorynum = #{categorynum}
-		</if>		
-		<if test="placename != null">
-			and placename like '%' || #{placename} || '%'
-		</if>
-		<if test="city != null">
-			and city like '%' || #{city} || '%'
-		</if>	
-		<if test="country != null">
-			and country like '%' || #{country} || '%'
-		</if>				
-		</where> 		
+			select 	count(*) totcnt
+			from 	place
+		]]>
+		<where>
+			<if test="categorynum != null and categorynum != ''">
+				categorynum = #{categorynum}
+			</if>
+			<if test="placename != null and placename != ''">
+				and placename like '%' || #{placename} || '%'
+			</if>
+			<if test="city != null and city != ''">
+				and city like '%' || #{city} || '%'
+			</if>
+			<if test="country != null and country != ''">
+				and country like '%' || #{country} || '%'
+			</if>
+			<if test="membernum != null and membernum != ''">
+				and (state = '1' or membernum = #{membernum})
+			</if>
+			<if test="membernum == null or membernum == ''">
+				and state = '1'
+			</if>
+		</where>
 	</select>
 	
+	<select id="selectAllAdmin" parameterType="place" resultType="place">
+		select *
+		from place
+		order by placenum desc
+	</select>
+
+	<select id="selectPlace" resultType="place">
+		select placenum, placename
+		from place
+		where placenum in (${placenum})
+	</select>
+
 </mapper>

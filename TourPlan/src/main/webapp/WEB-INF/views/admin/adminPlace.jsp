@@ -23,51 +23,57 @@ table td {
 <script>
 	$(function() {
 		jQuery("#list2").jqGrid({
-			url : '../placeAjax/selectAll.do',
-			editurl : '../placeAjax/adminUpdate.do',
+			url : '../placeAjax/selectAllAdmin.do',
+			editurl : '../placeAjax/updateAdmin.do',
 			datatype : "json",
-			colNames : [ '번호', '명소명', '상태', '작성자', '등록일' ],
+			colNames : [ '번호', '명소명', '상태', '등록일' ],
 			colModel : [ {
 				name : 'placenum',
 				index : 'placenum',
 				key : true,
-				width : 15,
+				width : 20,
 				align : "center",
 				editable : true
 			}, {
 				name : 'placename',
 				index : 'placename',
-				width : 50,
 				editable : true
 			}, {
 				name : 'state',
 				index : 'state',
-				width : 65,
-				editable : true
-			}, {
-				name : 'membernum',
-				index : 'membernum',
-				width : 65
+				width : 30,
+				align : "center",
+				formatter:'select', 
+				formatoptions: {
+					value : "0:대기;1:승인;3:차단"
+				},
+				editable : true,
+				edittype : "select",
+				editoptions : {
+					value : "0:대기;1:승인;3:차단;"
+				}		
 			}, {				
 				name : 'writedate',
 				index : 'writedate',
-				width : 30,
+				width : 80,
+				align : "center"
 			} ],
 			editable : true,
 			autowidth : true,
 			height : "500px",
+			align : "center",
 			loadonce : true,
 			multiselect : true,
 			rowNum : 10,
 			rowList : [ 10, 20, 30 ],
 			pager : '#pager2',
 			viewrecords : true,
-			caption : "고객센터"
+			caption : "명소관리"
 		});
 
 		jQuery("#list2").jqGrid('navGrid', '#pager2', {
 			edit : true,
-			add : true,
+			add : false,
 			del : true
 		}, // options for the Edit Dialog
 			{

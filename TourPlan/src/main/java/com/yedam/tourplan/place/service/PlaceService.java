@@ -8,6 +8,7 @@ public interface PlaceService {
 	public int delete(PlaceVO place);
 	public PlaceVO select(PlaceVO place);
 	public List<PlaceVO> selectAll(PlaceSearchVO place);
+	public List<PlaceVO> selectAllAdmin(PlaceVO place);
 	public List<PlaceVO> selectPlace(PlaceSearchVO place);
 	public int selectListTotCnt(PlaceSearchVO place);
 }

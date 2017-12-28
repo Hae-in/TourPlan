@@ -51,6 +51,11 @@ public class PlaceServiceImpl implements PlaceService {
 	public int selectListTotCnt(PlaceSearchVO place) {
 		return placeDAO.selectListTotCnt(place);
 	}
+
+	@Override
+	public List<PlaceVO> selectAllAdmin(PlaceVO place) {
+		return placeDAO.selectAllAdmin(place);
+	}
 	
 	
 }

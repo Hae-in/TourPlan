@@ -22,7 +22,7 @@
 	<insert id="insert" parameterType="report">
 		<![CDATA[
 			INSERT INTO REPORT (REPORTNUM, PLACENUM, PLANNUM, MEMBERNUM, REPORTDATE, STATE, REPORTCONTENT)
-			VALUES (rep_seq.nextVal, #{placenum}, #{plannum}, #{membernum}, sysdate, '1', #{reportcontent})
+			VALUES (report_seq.nextVal, #{placenum}, #{plannum}, #{membernum}, sysdate, '1', #{reportcontent})
 		]]>
 	</insert>
 	

@@ -16,18 +16,13 @@
 	//$.jgrid.defaults.styleUI = 'Bootstrap';
 </script>
 <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script> -->
-<style>
-table td {
-	font-size: large;
-}
-</style>
 <script>
 	$(function() {
 		jQuery("#list2").jqGrid({
 			url : '../categoryAjax/selectAll.do',
-			editurl : '../categoryAjax/adminUpdate.do',
-			datatype : "json",
-			colNames : [ '번호', '카테고리명', '그룹' ],
+			editurl : '../categoryAjax/updateAdmin.do',
+			datatype : 'json',
+			colNames : [ '번호', '카테고리명', '구분' ],
 			colModel : [ {
 				name : 'categorynum',
 				index : 'categorynum',
@@ -45,6 +40,10 @@ table td {
 				name : 'categorygroup',
 				index : 'categorygroup',
 				width : 65,
+				formatter:'select', 
+				formatoptions: {
+					value : "1:명소;2:일정"
+				},
 				editable : true,
 				edittype : "select",
 				editoptions : {
@@ -119,7 +118,6 @@ table td {
 </head>
 <body>
 	<table id="list2"></table>
-	<div id="pager2"></div>.
-
+	<div id="pager2"></div>
 </body>
 </html>

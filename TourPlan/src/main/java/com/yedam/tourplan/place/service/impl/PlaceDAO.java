@@ -33,7 +33,11 @@ public class PlaceDAO {
 
 	public List<PlaceVO> selectAll(PlaceSearchVO place) {
 		return mybatis.selectList("PlaceDAO.selectAll", place);
-	}	
+	}
+	
+	public List<PlaceVO> selectAllAdmin(PlaceVO place) {
+		return mybatis.selectList("PlaceDAO.selectAllAdmin", place);
+	}		
 	
 	public List<PlaceVO> selectPlace(PlaceSearchVO place) {
 		return mybatis.selectList("PlaceDAO.selectPlace", place);

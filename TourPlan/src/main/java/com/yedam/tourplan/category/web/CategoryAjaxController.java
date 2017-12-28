@@ -29,9 +29,9 @@ public class CategoryAjaxController {
 		return categoryService.selectAll(category);
 	}
 	
-	@RequestMapping("adminUpdate.do")
+	@RequestMapping("updateAdmin.do")
 	@ResponseBody
-	public void update(CategoryVO vo, HttpServletRequest request) {
+	public void updateAdmin(CategoryVO vo, HttpServletRequest request) {
 		String oper = request.getParameter("oper");
 		if(oper.equals("edit")) {
 			categoryService.update(vo);			

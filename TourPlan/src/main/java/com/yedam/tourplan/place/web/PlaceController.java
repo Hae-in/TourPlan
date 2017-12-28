@@ -35,54 +35,6 @@ public class PlaceController {
 	@Autowired PlaceService placeService;
 	@Autowired FilesService filesService;
 	
-	//등록처리
-/*	@RequestMapping(value="insert.do", method=RequestMethod.POST)
-	public String insert(PlaceVO vo
-			, HttpSession session
-			, HttpServletRequest request
-			, HttpServletResponse response
-		) throws IllegalStateException, IOException {
-		
-		placeService.insert(vo);
-		System.out.println("등록된 게시글 번호: " + vo.getPlacenum());
-		
-		//첨부파일
-		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest)request;
-		List<MultipartFile> uploadFiles = multipartRequest.getFiles("uploadFile");
-		
-		String UPLOAD_LOCATION = request.getSession().getServletContext().getRealPath("/resources/images/");
-		System.out.println(UPLOAD_LOCATION);
-		if(uploadFiles != null) {
-			for(int i=0;i<uploadFiles.size();i++) {
-				MultipartFile uploadFile = uploadFiles.get(i);
-				if(!uploadFile.isEmpty() && uploadFile.getSize() > 0) {
-					System.out.println("파일명 : " + uploadFile.getOriginalFilename());
-					System.out.println("파일크기 : " + uploadFile.getSize());
-					String realFileName = System.currentTimeMillis() + uploadFile.getOriginalFilename();
-					uploadFile.transferTo(new File(UPLOAD_LOCATION, realFileName));
-					
-					//FileVO에 업로드한 파일명과 파일크기 등을 저장
-					FilesVO fileVo = new FilesVO();
-					fileVo.setTablename("place");
-					fileVo.setTablenum(vo.getPlacenum());
-					fileVo.setFilename(uploadFile.getOriginalFilename());
-					fileVo.setRealfilename(realFileName);
-					fileVo.setFilesize(Long.toString(uploadFile.getSize()));
-					filesService.insert(fileVo);
-				}	
-			}
-		}		
-
-		session.setAttribute("placenum", vo.getPlacenum());		
-		return "place/select";
-	}	*/	
-	
-/*	//등록폼
-	@RequestMapping(value="insert.do", method=RequestMethod.GET)
-	public String insertForm() {
-		return "place/insert";
-	}	*/	
-	
 	//등록&수정 폼
 	@RequestMapping(value="form.do", method=RequestMethod.GET)
 	public String form(@RequestParam(value="num", required=false) String num, Model model) {
@@ -104,9 +56,6 @@ public class PlaceController {
 			, HttpServletRequest request
 			, HttpServletResponse response
 		) throws IllegalStateException, IOException {
-		
-		//System.out.println("placenum : " + vo.getPlacenum());
-		//System.out.println("action : " + request.getParameter("action"));
 		
 		if(request.getParameter("action").equals("insert")) {
 			placeService.insert(vo);
@@ -198,9 +147,6 @@ public class PlaceController {
 		paging.setTotalRecord(total);
 		vo.setFirst(paging.getFirst());
 		vo.setLast(paging.getLast());	
-		
-		
-		//System.out.println("membernum" + session.getAttribute("membernum"));
 		vo.setMembernum((String)session.getAttribute("membernum"));
 		model.addAttribute("placeList", placeService.selectAll(vo));
 		model.addAttribute("paging", paging);

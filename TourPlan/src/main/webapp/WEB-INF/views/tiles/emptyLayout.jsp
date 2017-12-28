@@ -10,7 +10,6 @@
 <!-- Bootstrap core CSS -->
 <link href="<c:url value='/'/>resources/thema/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 <!-- Custom styles for this template -->
-<link href="<c:url value='/'/>resources/thema/css/modern-business.css" rel="stylesheet">
 <link href="<c:url value='/'/>resources/css/style.css" rel="stylesheet">
 <link rel="stylesheet" href='<c:url value='/'/>resources/js/jquery-ui.min.css'>
 <script src='<c:url value='/'/>resources/js/jquery-3.2.1.min.js'></script>

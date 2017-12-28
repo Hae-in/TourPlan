@@ -24,7 +24,6 @@ public class ReportController {
 	
 	@RequestMapping(value="insert.do", method=RequestMethod.GET)
 	public String insertForm(@RequestParam(value="placenum", required=false) String placenum, @RequestParam(value="plannum", required=false) String plannum) {
-		System.out.println("bb");
 		ReportVO report = new ReportVO();
 		report.setPlacenum(placenum);
 		report.setPlannum(plannum);
@@ -32,11 +31,11 @@ public class ReportController {
 	}
 	
 	@RequestMapping(value="insert.do", method=RequestMethod.POST)	
-	public String insert(ReportVO vo, HttpSession session) {
+	public String insert(ReportVO vo, HttpSession session, Model model) {
 		vo.setMembernum((String)session.getAttribute("membernum"));
-		System.out.println("aa" + vo);
 		reportService.insert(vo);
-		return "report/insert";
+		model.addAttribute("action", "success");
+		return "popup/report/insert";
 	}
 	
 /*	@RequestMapping("view.do")
