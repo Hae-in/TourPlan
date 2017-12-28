@@ -51,5 +51,10 @@ public class ReportVO {
 	public void setReportcontent(String reportcontent) {
 		this.reportcontent = reportcontent;
 	}
-
+	@Override
+	public String toString() {
+		return "ReportVO [reportnum=" + reportnum + ", placenum=" + placenum + ", plannum=" + plannum + ", membernum="
+				+ membernum + ", reportdate=" + reportdate + ", state=" + state + ", reportcontent=" + reportcontent
+				+ "]";
+	}
 }

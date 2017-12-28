@@ -6,9 +6,11 @@ public interface ReportService {
 	
 	public List<ReportVO> selectAll(ReportSearchVO vo);
 	
-	public boolean insertPlace(ReportVO vo);
+/*	public boolean insertPlace(ReportVO vo);
 	
-	public boolean insertPlan(ReportVO vo);
+	public boolean insertPlan(ReportVO vo);*/
+	
+	public boolean insert(ReportVO vo);
 	
 	public boolean update(ReportVO vo);
 

@@ -18,8 +18,15 @@
 			</where>
 			ORDER BY REPORTNUM
 	</select>
+
+	<insert id="insert" parameterType="report">
+		<![CDATA[
+			INSERT INTO REPORT (REPORTNUM, PLACENUM, PLANNUM, MEMBERNUM, REPORTDATE, STATE, REPORTCONTENT)
+			VALUES (rep_seq.nextVal, #{placenum}, #{plannum}, #{membernum}, sysdate, '1', #{reportcontent})
+		]]>
+	</insert>
 	
-	<insert id="insertPlace" parameterType="report">
+<!-- 	<insert id="insertPlace" parameterType="report">
 		<![CDATA[
 			INSERT INTO REPORT (REPORTNUM, PLACENUM, MEMBERNUM, REPORTDATE, STATE, REPORTCONTENT)
 			VALUES (rep_seq.nextVal, #{placenum}, #{membernum}, sysdate, '1', #{reportcontent})
@@ -31,7 +38,7 @@
 			INSERT INTO REPORT (REPORTNUM, PLANNUM, MEMBERNUM, REPORTDATE, STATE, REPORTCONTENT)
 			VALUES (rep_seq.nextVal, #{plannum}, #{membernum}, sysdate, '1', #{reportcontent})
 		]]>
-	</insert>
+	</insert> -->
 	
 	<update id="update" parameterType="report">
 		UPDATE REPORT
