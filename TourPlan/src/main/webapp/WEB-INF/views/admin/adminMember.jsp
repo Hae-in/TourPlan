@@ -1,11 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
 <title>Insert title here</title>
-<link rel="stylesheet" href='<c:url value='/'/>resources/js/css/ui.jqgrid-bootstrap.css'>
+<link rel="stylesheet"
+	href='<c:url value='/'/>resources/js/css/ui.jqgrid-bootstrap.css'>
 <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"> -->
 <script src='<c:url value='/'/>resources/js/jquery.jqGrid.min.js'></script>
 <script src='<c:url value='/'/>resources/js/i18n/grid.locale-kr.js'></script>
@@ -23,40 +24,44 @@ table td {
 <script>
 	$(function() {
 		jQuery("#list2").jqGrid({
-			url : '../helpdeskAjax/selectAll.do',
-			editurl : '../helpdeskAjax/adminUpdate.do',
+			url : '../memberAjax/selectAll.do',
+			editurl : '../memberAjax/adminUpdate.do',
 			datatype : "json",
-			colNames : [ '번호', '제목', '내용', '등록일' ],
+			colNames : [ '번호', '아이디', '별명', '상태', '가입일' ],
 			colModel : [ {
-				name : 'num',
-				index : 'num',
-				key : true,				
+				name : 'membernum',
+				index : 'membernum',
+				key : true,
 				width : 15,
 				align : "center",
 				editable : true,
-				editOption:{readonly:'readonly'}
+				editOption:{readonly:'readonly'}				
 			}, {
-				name : 'title',
-				index : 'title',
-				width : 200,
-				editable : true
+				name : 'id',
+				index : 'id',
+				width : 50
 			}, {
-				name : 'content',
-				index : 'content',
-				hidden : true,
-				edittype : "textarea",
-				editoptions : {
-					rows : "2",
-					cols : "20"
-				},
-				width : 0,
-				editable : true
-			}, {
-				name : 'writedate',
-				index : 'writedate',
+				name : 'nickname',
+				index : 'nickname',
+				width : 30
+			}, {				
+				name : 'state',
+				index : 'state',
 				width : 30,
+				formatter:'select', 
+				formatoptions: {
+					value : "1:회원;2:차단;3:탈퇴;9:관리자"
+				},
+				editable : true,
+				edittype : "select",
+				editoptions : {
+					value : "1:회원;2:차단;3:탈퇴;9:관리자"
+				}
+			}, {
+				name : 'regdate',
+				index : 'regdate',
+				width : 30				
 			} ],
-			jsonreader : {repeatitems:false, id:'num'},
 			editable : true,
 			autowidth : true,
 			height : "500px",
@@ -66,7 +71,7 @@ table td {
 			rowList : [ 10, 20, 30 ],
 			pager : '#pager2',
 			viewrecords : true,
-			caption : "고객센터"
+			caption : "카테고리"
 		});
 
 		jQuery("#list2").jqGrid('navGrid', '#pager2', {
@@ -91,8 +96,7 @@ table td {
 				closeAfterEdit : true,
 				errorTextFormat : function(data) {
 					return 'Error: ' + data.responseText
-				},
-				beforeInitData:function(){jQuery("#list2").jqGrid('setColProp', 'content', {hidden:false});}
+				}
 			},
 			// options for the Add Dialog
 			{
@@ -112,19 +116,14 @@ table td {
 				closeAfterAdd : true,
 				errorTextFormat : function(data) {
 					return 'Error: ' + data.responseText
-				},
-				beforeInitData:function(){jQuery("#list2").jqGrid('setColProp', 'content', {hidden:false});}
+				}
 			},
 			// options for the Delete Dailog
 			{
- 				errorTextFormat : function(data) {
+				errorTextFormat : function(data) {
 					return 'Error: ' + data.responseText
 				}
-/* 				serializeDelData: function(postdata) {
-					//return JSON.stringify({employee_id: postdata.id});
-					return "num="+postdata.id;
-				} */
-			});	
+			});
 
 	});
 </script>

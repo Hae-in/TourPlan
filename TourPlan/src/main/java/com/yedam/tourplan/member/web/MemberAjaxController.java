@@ -148,4 +148,24 @@ public class MemberAjaxController {
 
 		return map;
 	}
+	
+	@RequestMapping("selectAll.do")
+	@ResponseBody
+	public List<MemberVO> selectAll(MemberSearchVO vo) {
+		return memberService.selectAll(vo);
+	}
+	
+	@RequestMapping("adminUpdate.do")
+	@ResponseBody
+	public void adminUpdate(MemberVO vo, HttpServletRequest request) {
+		String oper = request.getParameter("oper");
+		if(oper.equals("edit")) {
+			memberService.update(vo);			
+		} else if(oper.equals("add")) {
+			memberService.insert(vo);
+		} else if(oper.equals("del")) {
+			vo.setMembernum(request.getParameter("id"));
+			memberService.delete(vo);
+		}
+	}	
 }

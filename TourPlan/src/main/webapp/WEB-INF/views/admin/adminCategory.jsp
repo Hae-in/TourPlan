@@ -1,11 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
 <title>Insert title here</title>
-<link rel="stylesheet" href='<c:url value='/'/>resources/js/css/ui.jqgrid-bootstrap.css'>
+<link rel="stylesheet"
+	href='<c:url value='/'/>resources/js/css/ui.jqgrid-bootstrap.css'>
 <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"> -->
 <script src='<c:url value='/'/>resources/js/jquery.jqGrid.min.js'></script>
 <script src='<c:url value='/'/>resources/js/i18n/grid.locale-kr.js'></script>
@@ -30,11 +31,11 @@ table td {
 			colModel : [ {
 				name : 'categorynum',
 				index : 'categorynum',
-				key : true,
-				hidden : true,
+				key : true,				
 				width : 15,
 				align : "center",
-				editable : true
+				editable : true,
+				editOption:{readonly:'readonly'}
 			}, {
 				name : 'categoryname',
 				index : 'categoryname',
@@ -44,7 +45,11 @@ table td {
 				name : 'categorygroup',
 				index : 'categorygroup',
 				width : 65,
-				editable : true
+				editable : true,
+				edittype : "select",
+				editoptions : {
+					value : "1:명소;2:일정"
+				}
 			} ],
 			editable : true,
 			autowidth : true,

@@ -24,33 +24,31 @@ table td {
 	$(function() {
 		jQuery("#list2").jqGrid({
 			url : '../placeAjax/selectAll.do',
-			editurl : '../placeAjax/dminUpdate.do',
+			editurl : '../placeAjax/adminUpdate.do',
 			datatype : "json",
-			colNames : [ '번호', '명소명', '작성자', '등록일', '상태' ],
+			colNames : [ '번호', '명소명', '상태', '작성자', '등록일' ],
 			colModel : [ {
 				name : 'placenum',
 				index : 'placenum',
 				key : true,
-				hidden : true,
 				width : 15,
 				align : "center",
 				editable : true
 			}, {
-				name : 'title',
-				index : 'title',
+				name : 'placename',
+				index : 'placename',
 				width : 50,
 				editable : true
 			}, {
-				name : 'content',
-				index : 'content',
-				edittype : "textarea",
-				editoptions : {
-					rows : "2",
-					cols : "20"
-				},
+				name : 'state',
+				index : 'state',
 				width : 65,
 				editable : true
 			}, {
+				name : 'membernum',
+				index : 'membernum',
+				width : 65
+			}, {				
 				name : 'writedate',
 				index : 'writedate',
 				width : 30,
