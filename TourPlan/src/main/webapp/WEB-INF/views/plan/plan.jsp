@@ -76,7 +76,8 @@ $(function(){
 			var table_td = "<td class='redips-mark dark'>Day" + i + "</td>";
 			$("#table2 tr:eq(0)").append(table_td);
 			for(j=0; j<9; j++) {
-				day_div += "<div id='post"+i+"a"+j+"'></div><button id='"+i+","+j+"' class='postbtn' style='display:none;'>포스트쓰기</button>";
+				day_div += "<div id='post"+i+"a"+j+"'></div>";
+				//<button id='"+i+","+j+"' class='postbtn' style='display:none;'>포스트쓰기</button>
 				table_td = "<td id="+i+"a"+j+"></td>"
 				$("#table2 tr:eq("+(j+1)+")").append(table_td);
 			}
@@ -487,7 +488,7 @@ div#redips-drag #table1 div {
 					</div>
 				</div>
 				<div id="divBtns">
-					<span data-toggle='modal' data-target='#planModal' style="cursor: pointer; background: white;">이 일정 참고하기</span>
+					<a href="../plan/modify.do?plannum=<%=vo.getPlannum()%>" style="cursor: pointer; background: white;">이 일정 참고하기</a>
 				</div>
 			</div>
 		</div>

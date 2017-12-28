@@ -24,18 +24,6 @@ public class PlanServiceImpl implements PlanService {
 	
 	@Override
 	public List<PlanVO> selectAll(PlanSearchVO vo) {
-		//기간 sql에 넣기위해 자르는과정
-		if(vo == null) {
-		} else if (vo.getPeriod1() != null) {
-			String day1 = vo.getPeriod1();
-			day1 = day1.replace("-", ",");
-			day1 = day1.replaceAll("day", "");
-			day1 = day1.replaceAll(" ", "");
-			String temp[] = day1.split(",");
-			vo.setPeriod1(temp[0]);
-			vo.setPeriod2(temp[1]);
-		} else {}
-		
 		return planDAO.selectAll(vo);
 	}
 

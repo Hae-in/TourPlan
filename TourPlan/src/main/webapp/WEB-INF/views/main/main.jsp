@@ -25,28 +25,28 @@
           <!-- Slide One - Set the background image for this slide in the line below -->
           <div class="carousel-item active" style="background-image: url('https://www.whentobewhere.com/sites/default/files/styles/banner/public/photos/Moreno_0005_banner.jpg?itok=e3e6cNyo&sc=778bdc87b6355eccc9fccf6dea752c15?resize=660%2C330')">
             <div class="carousel-caption d-none d-md-block">
-              <h3>여행자의 마지막 로망, 빙하</h3>
+              <h3><a href="../theme/theme1.do">여행자의 마지막 로망, 빙하</a></h3>
               <p>깔라파테, 아르헨티나</p>
             </div>
           </div>
           
           <div class="carousel-item" style="background-image: url('https://i.imgur.com/cIH9lDy.jpg?resize=660%2C330')">
             <div class="carousel-caption d-none d-md-block">
-              <h3>대자연의 품에 안기다</h3>
+              <h3><a href="../theme/theme2.do">대자연의 품에 안기다</a></h3>
               <p>그랜드 캐년, 미국</p>
             </div>
           </div>
           
           <div class="carousel-item" style="background-image: url('http://amazingusambaratrekking.com/img/serengeti.jpg?resize=660%2C330')">
             <div class="carousel-caption d-none d-md-block">
-              <h3>야생, 야생, 야생</h3>
+              <h3><a href="../theme/theme3.do">야생, 야생, 야생</a></h3>
               <p>세렝게티 국립공원, 탄자니아</p>
             </div>
           </div>
           
           <div class="carousel-item" style="background-image: url('https://d1ljaggyrdca1l.cloudfront.net/wp-content/uploads/2017/03/Game-Drive-at-Serengeti-National-Park--1600x900.jpg?resize=660%2C330')">
             <div class="carousel-caption d-none d-md-block">
-              <h3>야생, 야생, 야생</h3>
+              <h3><a href="../theme/theme4.do">야생, 야생, 야생</a></h3>
               <p>세렝게티 국립공원, 탄자니아</p>
             </div>
           </div>
