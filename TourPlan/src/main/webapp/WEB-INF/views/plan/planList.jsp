@@ -164,14 +164,16 @@ function dolist(page){
 					</div>
 				</div>
 			</div>
+			</form>
 			<!-- /.row -->
-		</form>
+		
 		
 		<myTag:paging paging="${paging}" jsfunc="dolist"/> 
 
 	</div>
 	<!-- /.container -->
 <script>
+if('${planSearchVO.categorynum}' != '') {
 alert('${planSearchVO.plan_sort}');
 $("[name='plan_sort']").val( '${planSearchVO.plan_sort}' );
 $("[name='categorynum']").val( '${planSearchVO.categorynum}' );
@@ -179,8 +181,11 @@ $("[name='city']").val( '${planSearchVO.city}' );
 $("[name='period1']").val( '${planSearchVO.period1}' );
 $("[name='period2']").val( '${planSearchVO.period2}' );
 $("#period1").val ( '${planSearchVO.period1}' );
-$("#period1").val ( '${planSearchVO.period2}' );
+$("#period1").val ( '${planSearchVO.period2}' );}
+else
+	alert('없다능');
 </script>
+
 </body>
 </html>
 
