@@ -119,7 +119,7 @@ table td {
 </head>
 <body>
 	<table id="list2"></table>
-	<div id="pager2"></div>
+	<div id="pager2"></div>.
 
 </body>
 </html>
