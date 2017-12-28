@@ -23,16 +23,39 @@
         </ol>
         <div class="carousel-inner" role="listbox">
           <!-- Slide One - Set the background image for this slide in the line below -->
-          <div class="carousel-item active" style="background-image: url('https://www.whentobewhere.com/sites/default/files/styles/banner/public/photos/Moreno_0005_banner.jpg?itok=e3e6cNyo&sc=778bdc87b6355eccc9fccf6dea752c15?resize=660%2C330')">
+          
+          <div class="carousel-item active" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/1/14/Nirmal_Hriday.JPG?resize=660%2C330')">
+          <div class="carousel-caption d-none d-md-block">
+              <h3>자신을 돌아보는 봉사활동 여행</h3>
+              <p>마더 테레사 하우스, 콜카타, 인도</p>
+            </div>
+          </div>
+           
+          <div class="carousel-item" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/1/14/Nirmal_Hriday.JPG?resize=660%2C330')">
             <div class="carousel-caption d-none d-md-block">
+<<<<<<< HEAD
               <h3><a href="../theme/theme1.do">여행자의 마지막 로망, 빙하</a></h3>
+=======
+              <h3>자신을 돌아보는 봉사활동 여행</h3>
+              <p>마더 테레사 하우스, 콜카타, 인도</p>
+            </div>
+          </div>
+           
+          <div class="carousel-item" style="background-image: url('https://www.whentobewhere.com/sites/default/files/styles/banner/public/photos/Moreno_0005_banner.jpg?itok=e3e6cNyo&sc=778bdc87b6355eccc9fccf6dea752c15?resize=660%2C330')">
+            <div class="carousel-caption d-none d-md-block">
+              <h3>여행자 마지막 로망, 빙하</h3>
+>>>>>>> branch 'master' of https://github.com/JeonHyeJu/TourPlan.git
               <p>깔라파테, 아르헨티나</p>
             </div>
           </div>
           
           <div class="carousel-item" style="background-image: url('https://i.imgur.com/cIH9lDy.jpg?resize=660%2C330')">
             <div class="carousel-caption d-none d-md-block">
+<<<<<<< HEAD
               <h3><a href="../theme/theme2.do">대자연의 품에 안기다</a></h3>
+=======
+              <h3>대자연에 압도되다</h3>
+>>>>>>> branch 'master' of https://github.com/JeonHyeJu/TourPlan.git
               <p>그랜드 캐년, 미국</p>
             </div>
           </div>
@@ -54,21 +77,70 @@
           <div class="carousel-item" style="background-image: url('https://radseason-cvujcydfqolrrrg.netdna-ssl.com/wp-content/uploads/2017/04/You-will-prove-to-yourself-that-persistence-overcomes-resistance-as-you-take-your-final-step-atop-of-the-Annapurna-Base-Camp.jpg?resize=660%2C330')">
             <div class="carousel-caption d-none d-md-block">
               <h3>내 생애 단 한 번, 히말라야 트레킹</h3>
-              <p>안나푸르나 베이스캠프, 네팔 </p>
+              <p>안나푸르나 베이스캠프, 네팔</p>
             </div>
           </div>
           
-          <div class="carousel-item" style="background-image: url('https://radseason-cvujcydfqolrrrg.netdna-ssl.com/wp-content/uploads/2017/04/You-will-prove-to-yourself-that-persistence-overcomes-resistance-as-you-take-your-final-step-atop-of-the-Annapurna-Base-Camp.jpg?resize=660%2C330')">
+          <div class="carousel-item" style="background-image: url('http://www.ultimatebali.com/wp-content/uploads/2015/11/Best-Surf-Spots-in-Bali.jpg?resize=660%2C330')">
             <div class="carousel-caption d-none d-md-block">
-              <h3>이 세상 모든 수중 스포츠</h3>
-              <p> </p>
+              <h3>파도가 밀어주는 짜릿함~ 서핑!</h3>
+              <p>발리, 인도네시아</p>
+            </div>
+          </div>
+          
+          <div class="carousel-item" style="background-image: url('https://www.balivillasandmore.com/wp-content/uploads/2015/09/banner5.jpg?cd1846?resize=660%2C330')">
+            <div class="carousel-caption d-none d-md-block">
+              <h3>나도! 나도 할거야~ 서핑!</h3>
+              <p>발리, 인도네시아</p>
+            </div>
+          </div>
+          
+           <div class="carousel-item" style="background-image: url('http://cdn1.theinertia.com/wp-content/uploads/2016/06/bada-1200x695.jpg?resize=660%2C330')">
+            <div class="carousel-caption d-none d-md-block">
+              <h3>당신도 할 수 있어~ 서핑!</h3>
+              <p>발리, 인도네시아</p>
             </div>
           </div>
 
-          <div class="carousel-item" style="background-image: url('https://img.travel.rakuten.co.jp/mytrip/content/gourmet/tabimeshi-hyogo/images/key.jpg')">
+          <div class="carousel-item" style="background-image: url('https://media.timeout.com/images/103444978/image.jpg?resize=660%2C330')">
             <div class="carousel-caption d-none d-md-block">
               <h3>혼자여도 나는 좋아</h3>
-              <p>방콕, 태국</p>
+              <p>뉴욕, 미국</p>
+            </div>
+          </div>
+          
+          <div class="carousel-item" style="background-image: url('https://media.architecturaldigest.com/photos/5699802bc6772b7614567435/2:1/w_2560/new-york-city-guide.jpg?resize=660%2C330')">
+            <div class="carousel-caption d-none d-md-block">
+              <h3>혼자여도 나는 좋아</h3>
+              <p>뉴욕, 미국</p>
+            </div>
+          </div>
+          
+          <div class="carousel-item" style="background-image: url('https://dly4mho8u118u.cloudfront.net/wp-content/uploads/2017/08/31074922/NYC-1380.jpg?resize=660%2C330')">
+            <div class="carousel-caption d-none d-md-block">
+              <h3>혼자여도 나는 좋아</h3>
+              <p>뉴욕, 미국</p>
+            </div>
+          </div>
+          
+       	  <div class="carousel-item" style="background-image: url('https://cdn.vox-cdn.com/thumbor/Nn3ccBgKHED9Ia4uP7apC_1LRT8=/0x53:1000x616/1600x900/cdn.vox-cdn.com/uploads/chorus_image/image/49152533/shutterstock_99855551.0.jpg?resize=660%2C330')">
+            <div class="carousel-caption d-none d-md-block">
+              <h3>혼자여도 나는 좋아</h3>
+              <p>뉴욕, 미국</p>
+            </div>
+          </div>
+          
+          <div class="carousel-item" style="background-image: url('https://i.ytimg.com/vi/Cxb6btMB6J8/maxresdefault.jpg?resize=660%2C330')">
+            <div class="carousel-caption d-none d-md-block">
+              <h3>혼자여도 나는 좋아</h3>
+              <p>뉴욕, 미국</p>
+            </div>
+          </div>
+          
+          <div class="carousel-item" style="background-image: url('https://www.nycgo.com/images/venues/152/tripadvisortimessquare_taggeryanceyiv_5912__x_large.jpg?resize=660%2C330')">
+            <div class="carousel-caption d-none d-md-block">
+              <h3>혼자여도 나는 좋아</h3>
+              <p>뉴욕, 미국</p>
             </div>
           </div>
           
@@ -85,7 +157,14 @@
               <p>나가노, 일본</p>
             </div>
           </div>
-           
+          
+          <div class="carousel-item" style="background-image: url('http://travelwithjoshcohen.com/wp-content/uploads/2014/12/hk1010.jpg?resize=660%2C330')">
+            <div class="carousel-caption d-none d-md-block">
+              <h3>내 아이에게 최고의 추억을</h3>
+              <p>디즈니랜드, 홍콩</p>
+            </div>
+          </div>
+          
           <div class="carousel-item" style="background-image: url('https://en.sandsresortsmacao.com/content/dam/macao/cotaistrip/master/main/home/about%20sands%20resort/sands-resorts-macao_2000x666.jpg?resize=660%2C330')">
             <div class="carousel-caption d-none d-md-block">
               <h3>나는야~ 밤의 나그네</h3>
@@ -100,10 +179,17 @@
             </div>
           </div>
           
-          <div class="carousel-item" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpOkIruh8TjiwovE4VIQ7ZMbADTeqkKx8R5ngrxGLxtbSAUI4p.jpeg?resize=660%2C330')">
+          <div class="carousel-item" style="background-image: url('http://www.santiagochiletour.cl/wp-content/uploads/2017/07/concha-y-toro-santiago-chile-tour.jpg?resize=660%2C330')">
             <div class="carousel-caption d-none d-md-block">
-              <h3>최고의 술을 마시러 갈테야</h3>
-              <p>방콕, 태국</p>
+              <h3>악마의 술을 마시러 갈테야</h3>
+              <p>꼰차 이 또로, 칠레</p>
+            </div>
+          </div>
+          
+          <div class="carousel-item" style="background-image: url('http://www.ibizadc.com/wp-content/uploads/2016/12/cl.jpeg?resize=660%2C330')">
+            <div class="carousel-caption d-none d-md-block">
+              <h3>환락의 밤이여 내게로 오라!</h3>
+              <p>이비자, 스페인</p>
             </div>
           </div>
           
