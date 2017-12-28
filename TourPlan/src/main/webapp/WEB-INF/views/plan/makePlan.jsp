@@ -925,7 +925,7 @@ function initMap() {
               stopover: true
             });
         }
-
+ 
         directionsService.route({
           origin: {lat:t3, lng:t4},
           destination: {lat:t5, lng:t6},
