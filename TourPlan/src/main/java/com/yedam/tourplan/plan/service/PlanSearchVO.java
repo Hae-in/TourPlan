@@ -65,12 +65,5 @@ public class PlanSearchVO extends PlanVO {
 	public void setKeyword(String keyword) {
 		this.keyword = keyword;
 	}
-	@Override
-	public String toString() {
-		return "PlanSearchVO [period1=" + period1 + ", period2=" + period2 + ", plan_sort=" + plan_sort + ", city="
-				+ city + ", membernum=" + membernum + ", plannum_list=" + plannum_list + ", keyword=" + keyword
-				+ ", first=" + first + ", last=" + last + "]";
-	}
-    
 }
 

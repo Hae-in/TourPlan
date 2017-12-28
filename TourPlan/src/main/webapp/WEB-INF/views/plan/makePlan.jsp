@@ -23,7 +23,7 @@
 				
 				for (i = 0; i < data.length; i++) {
 					console.log(data[i].imagename);
-					$("#tbody").append("<tr><td class='redips-mark lunch'><img width='100px;' height='65px;' src='../resources/images/"+(data[i].imagename == null ? "null.jpg" : data[i].imagename) +"'></td><td class='dark'><div id='place_" + data[i].placenum + "_"+i+"' class='redips-drag redips-clone'>"+data[i].placename+"<br>"+data[i].city+", " +data[i].country+"</div></td></tr>");
+					$("#tbody").append("<tr><td class='redips-mark lunch'><img width='100px;' height='65px;' src='../resources/images/"+(data[i].imagename == null ? "null.jpg" : data[i].imagename) +"'></td><td class='dark'><div lon='"+data[i].lon+"' lat='"+data[i].lat+"' id='place_" + data[i].placenum + "_"+i+"' class='redips-drag redips-clone'>"+data[i].placename+"<br>"+data[i].city+", " +data[i].country+"</div></td></tr>");
 				}
 			}
 		});
@@ -63,11 +63,12 @@
 	}
 	
 	function searchRegionFunction() {
-		var input, filter, table, tr, td, i;
-		input = document.getElementById("searchInput-region");
+		var input, filter, table, tr, td;
+		/* input = document.getElementById("searchInput-region");
 		filter = input.value.toUpperCase();
 		table = document.getElementById("table1");
-		tr = table.getElementsByTagName("tr");
+		tr = table.getElementsByTagName("tr"); 
+		
 		for (i = 0; i < tr.length; i++) {
 			td = tr[i].getElementsByTagName("td")[0];
 			if (td) {
@@ -77,6 +78,20 @@
 					tr[i].style.display = "none";
 				}
 			}       
+		}*/
+		
+		input = $("#searchInput-region");
+		filter = input.val().toUpperCase();
+		tr = $("#table1 tr");
+		
+		for(i=0; i<$("#table1 tr div").length; i++) {
+			td = $("#table1 tr div:eq("+i+")").text();
+			
+			if (td.toUpperCase().indexOf(filter) > -1) {
+				$("#table1 tr div:eq("+i+")").parent().parent().css("display", "");
+			} else {
+				$("#table1 tr div:eq("+i+")").parent().parent().css("display", "none");
+			}
 		}
 	}
 	
@@ -335,7 +350,7 @@ div#redips-drag #table1 div {
   margin-bottom: 12px;
 }
 
-#trashTb {
+#trashTD {
 	width: 100%;
 	height: 50px;
 	margin-bottom: 10px;
@@ -443,8 +458,6 @@ div#redips-drag #table1 div {
 				<div id="left">
 					<div id="innerLeft">
 						<input type="text" class="searchInput" id="searchInput-region" onkeyup="searchRegionFunction()" placeholder="Search.." title="Type in a name">
-						<!-- <input type="text" class="searchInput" id="searchInput-place" onkeyup="searchPlaceFunction()" placeholder="Search for place.." title="Type in a name"> -->
-						<!-- <div class="redips-trash" title="Trash">Trash</div> -->
 						<table id="trashTb">
 							<tr><td class="redips-trash" title="Trash" id="trashTD"><h3><strong>Trash</strong></h3></td></tr>
 						</table>
@@ -469,19 +482,12 @@ div#redips-drag #table1 div {
 				</div>
 				<div id="planTab" class="tabcontent">
 					<div id="googleMap" style="width: 100%; height: 400px;"></div>
-					<script>
-						function myMap() {
-							var mapProp = {
-								center : new google.maps.LatLng(51.508742, -0.120850),
-								zoom : 5,
-							};
-							var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
-						}
-					</script>
-					<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC6-5na3Y2gJSt31kHSeSWZqp3VM1hvgJg&callback=myMap"></script>
+  						  <div id="right-panel"><div>
+    					 <div id="directions-panel"></div>
+					<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC6-5na3Y2gJSt31kHSeSWZqp3VM1hvgJg&callback=initMap"></script>
 					<div id="planList">
-						<div id="right">
-							<table id="table2" border="1">
+						<div id="right" style="overflow-x: scroll;">
+							<table id="table2">
 								<tbody>
 									<tr>
 									</tr>
@@ -505,11 +511,13 @@ div#redips-drag #table1 div {
 										</tr>
 								</tbody>
 							</table>
+							<a href="#" style="display: inline;"> </a>
 						</div>
 					</div>
 				</div>
 				<div id="divBtns">
 					<button type="button" onclick="savePlan();">저장하기</button>
+					<button type="submit" id="submit">거리계산</button>
 					<button type="button">취소</button>
 				</div>
 			</div>
@@ -883,6 +891,67 @@ $(function () {
 		});
 	});
 })
+
+//구글맵스
+function initMap() {
+	var t3, t4, t5, t6;
+        var directionsService = new google.maps.DirectionsService;
+        var directionsDisplay = new google.maps.DirectionsRenderer;
+        var map = new google.maps.Map(document.getElementById('googleMap'), {
+          zoom: 6,
+          center: {lat: 41.85, lng: -87.65}
+        });
+        directionsDisplay.setMap(map);
+
+        document.getElementById('submit').addEventListener('click', function() {
+          calculateAndDisplayRoute(directionsService, directionsDisplay);
+        });
+      }
+
+	//★★★자바스크립트 parseDouble() 대체할것?
+      function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+        var waypts = [];
+        var checkboxArray = $("[day='2'] div");
+        var t1 = parseFloat(checkboxArray.attr("lat"));
+        var t2 = parseFloat(checkboxArray.attr("lon"));
+    	t3 = parseFloat($("[day='1'] div:eq(0)").attr("lat"));
+        t4 = parseFloat($("[day='1'] div:eq(0)").attr("lon"));
+        t5 = parseFloat($("[day='3'] div:eq(0)").attr("lat"));
+        t6 = parseFloat($("[day='3'] div:eq(0)").attr("lon"));
+        console.log(t1 + " " + t2 + " " + t3 + " " + t4 + " " + t5 + " " + t6);
+        for (var i = 0; i < checkboxArray.length; i++) {
+            waypts.push({
+              location: {lat:t1, lng:t2},
+              stopover: true
+            });
+        }
+
+        directionsService.route({
+          origin: {lat:t3, lng:t4},
+          destination: {lat:t5, lng:t6},
+          waypoints: waypts,
+          optimizeWaypoints: true,
+          travelMode: 'DRIVING'
+        }, function(response, status) {
+          if (status === 'OK') {
+            directionsDisplay.setDirections(response);
+            var route = response.routes[0];
+            var summaryPanel = document.getElementById('directions-panel');
+            summaryPanel.innerHTML = '';
+            // For each route, display summary information.
+            for (var i = 0; i < route.legs.length; i++) {
+              var routeSegment = i + 1;
+              summaryPanel.innerHTML += '<b>Route Segment: ' + routeSegment +
+                  '</b><br>';
+              summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
+              summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
+              summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
+            }
+          } else {
+            window.alert('Directions request failed due to ' + status);
+          }
+        });
+      }
 </script>
 	
 </body>

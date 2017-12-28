@@ -25,7 +25,7 @@ function dolist(page){
 							range : true,
 							min : 1,
 							max : 31,
-							values : [ 1, 3 ],
+							values : [ 1, 7 ],
 							slide : function(event, ui) {
 								$("#amount").val(
 										"day" + ui.values[0] + " - day"
@@ -167,25 +167,21 @@ function dolist(page){
 			</form>
 			<!-- /.row -->
 		
-		
 		<myTag:paging paging="${paging}" jsfunc="dolist"/> 
 
 	</div>
 	<!-- /.container -->
 <script>
-if('${planSearchVO.categorynum}' != '') {
-alert('${planSearchVO.plan_sort}');
-$("[name='plan_sort']").val( '${planSearchVO.plan_sort}' );
-$("[name='categorynum']").val( '${planSearchVO.categorynum}' );
-$("[name='city']").val( '${planSearchVO.city}' );
-$("[name='period1']").val( '${planSearchVO.period1}' );
-$("[name='period2']").val( '${planSearchVO.period2}' );
-$("#period1").val ( '${planSearchVO.period1}' );
-$("#period1").val ( '${planSearchVO.period2}' );}
-else
-	alert('없다능');
+//자바스크립트 안에도 $가 되네
+if('${planSearchVO.period1}' != '') {
+	$("input:radio[name='plan_sort']:input[value='${planSearchVO.plan_sort}']").prop("checked", "true");
+	$("input:radio[name='categorynum']:input[value='${planSearchVO.categorynum}']").prop("checked", "true");
+	$("[name='period1']").val( '${planSearchVO.period1}' );
+	$("[name='period2']").val( '${planSearchVO.period2}' );
+	$("[name='city']").val( '${planSearchVO.city}' );
+}
+else {}
 </script>
-
 </body>
 </html>
 
