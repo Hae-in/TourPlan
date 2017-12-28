@@ -21,4 +21,6 @@ public interface PlanService {
 	
 	//임시
 	public PlanVO selectSeq(PlanVO vo);
+	
+	public int selectListTotCnt(PlanSearchVO vo);
 }

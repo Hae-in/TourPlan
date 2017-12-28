@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib prefix="myTag" tagdir="/WEB-INF/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,6 +14,10 @@
 }
 </style>
 <script>
+function dolist(page){
+	document.frm.elements["page"].value = page
+	document.frm.submit();
+}
 	$(function() {
 		$("#slider-range")
 				.slider(
@@ -71,7 +76,8 @@
 			<li class="breadcrumb-item">일정</li>
 		</ol>
 
-		<form action="../plan/selectAll.do" method="post" id="frm">
+		<form action="../plan/selectAll.do" method="post" id="frm" name="frm">
+		<input type="hidden" name="page" value="1">
 			<!-- Content Row -->
 			<div class="row">
 				<!-- Sidebar Column -->
@@ -156,6 +162,8 @@
 			</div>
 			<!-- /.row -->
 		</form>
+		
+		<myTag:paging paging="${paging}" jsfunc="dolist"/> 
 
 	</div>
 	<!-- /.container -->

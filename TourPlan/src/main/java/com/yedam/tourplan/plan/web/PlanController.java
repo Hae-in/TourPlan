@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yedam.tourplan.common.Paging;
 import com.yedam.tourplan.files.service.FilesService;
 import com.yedam.tourplan.files.service.FilesVO;
 import com.yedam.tourplan.member.service.MemberSearchVO;
@@ -76,8 +77,15 @@ public class PlanController {
 	}
 	
 	@RequestMapping("selectAll.do")
-	public String selectAll(PlanSearchVO vo, Model model) {
+	public String selectAll(PlanSearchVO vo, Model model, Paging paging) {
+		//전체 건수
+		int total = planService.selectListTotCnt(vo);
+		paging.setTotalRecord(total);
+		vo.setFirst(paging.getFirst());
+		vo.setLast(paging.getLast());	
+		
 		model.addAttribute("planList", planService.selectAll(vo));
+		model.addAttribute("paging", paging);
 		return "plan/planList";
 	}
 	

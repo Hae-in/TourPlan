@@ -61,4 +61,8 @@ public class PlanDAO {
 	public PlanVO selectSeq(PlanVO vo) {
 		return mybatis.selectOne("PlanDAO.selectSeq", vo);
 	}
+	
+	public int selectListTotCnt(PlanSearchVO vo) {
+		return mybatis.selectOne("PlanDAO.selectListTotCnt", vo);
+	}
 }

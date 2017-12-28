@@ -50,7 +50,9 @@
 	</select>	
 
 	<select id="selectAll" parameterType="placeSearch" resultType="place">
-		select b.* from ( select rownum rn, a.* from ( 
+		<if test="first != 0">
+		select b.* from ( select rownum rn, a.* from (
+		</if> 
 		select place.*		
 		, (select realfilename from files where tablename='place' and tablenum = place.placenum and state=1 and rownum=1) as imagename
         , (select count(*) as likecnt from likeplace where placenum = place.placenum) as likecnt
@@ -77,8 +79,10 @@
 		</if>
 		<if test="sort == null">
 		order by place.placenum desc
-		</if> 			 
+		</if> 
+		<if test="first != 0">			 
 		 ) a ) b where rn between #{first} and #{last} 
+		</if>
 	</select>	
 	
 	<select id="selectPlace" resultType="place">

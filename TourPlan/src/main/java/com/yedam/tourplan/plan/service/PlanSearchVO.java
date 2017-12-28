@@ -8,7 +8,21 @@ public class PlanSearchVO extends PlanVO {
 	private String membernum;
 	private String plannum_list;
 	private String keyword;
+	int first;	//firstIndex
+	int last;	//lastIndex	
 	
+	public int getFirst() {
+		return first;
+	}
+	public void setFirst(int first) {
+		this.first = first;
+	}
+	public int getLast() {
+		return last;
+	}
+	public void setLast(int last) {
+		this.last = last;
+	}
 	public String getPeriod1() {
 		return period1;
 	}

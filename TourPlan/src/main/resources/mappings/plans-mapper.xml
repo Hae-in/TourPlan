@@ -6,6 +6,9 @@
 
 	<!-- 플랜 전체조회 -->
 	<select id="selectAll" parameterType="planSearch" resultType="plan">
+		<if test="first != 0">
+		select b.* from ( select rownum rn, a.* from (
+		</if> 	
 		SELECT P.PLANNUM, P.ID "userid", P.PLANNAME, P.STATE, NVL(likecount, '0') "likecount"
 		, (SELECT REALFILENAME FROM FILES WHERE TABLENAME='plan' AND TABLENUM = P.PLANNUM AND STATE=1 AND ROWNUM=1) AS imagename
 		FROM PLAN P LEFT OUTER JOIN
@@ -51,7 +54,48 @@
 				ORDER BY writedate DESC
 			</otherwise>
 		</choose>
+		<if test="first != 0">			 
+		 ) a ) b where rn between #{first} and #{last} 
+		</if>		
 	</select>
+	
+	<select id="selectListTotCnt" parameterType="planSearch" resultType="int">
+		<![CDATA[
+			SELECT 	COUNT(*) totcnt
+			FROM 	Plan
+		]]>	
+		<where>
+			<if test="period1 != null and period1 != ''">
+				ARRIVALDATE-DEPARTUREDATE+1 BETWEEN #{period1} AND
+				#{period2}
+			</if>
+			<if test="city != null and city != ''">
+				AND P.PLANNUM IN (SELECT DISTINCT T.PLANNUM FROM PLANTABLE T
+				JOIN PLACE W
+				ON T.PLACENUM = W.PLACENUM
+				WHERE W.CITY LIKE '%' || #{city} || '%')
+			</if>
+			<if test="membernum != null and membernum != ''">
+				AND P.PLANNUM IN (SELECT PLANNUM FROM LIKEPLAN
+				WHERE MEMBERNUM = #{membernum})
+			</if>
+			<if test="id != null and id != ''">
+				AND P.ID = #{id}
+			</if>
+			<if test="categorynum != null and categorynum != ''">
+				AND P.CATEGORYNUM = #{categorynum}
+			</if>
+			<if test="plannum_list != null and plannum_list != ''">
+				AND P.PLANNUM IN (${plannum_list})
+			</if>
+			<if test="isopen != null and isopen != ''">
+				AND ISOPEN = #{isopen}
+			</if>
+			<if test="state != null and state != ''">
+				AND STATE = #{state}
+			</if>
+		</where>		
+	</select>	
 
 	<select id="select" parameterType="planSearch" resultType="plan">
 			SELECT PLANNUM, PLANNAME, TO_CHAR(DEPARTUREDATE, 'yyyy/mm/dd') "departuredate", TO_CHAR(ARRIVALDATE, 'yyyy/mm/dd') "arrivaldate", PEOPLE, CATEGORYNUM, ISOPEN, STATE, WRITEDATE, ID
