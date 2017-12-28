@@ -78,6 +78,18 @@ public class PlanController {
 	
 	@RequestMapping("selectAll.do")
 	public String selectAll(PlanSearchVO vo, Model model, Paging paging) {
+		//기간 sql에 넣기위해 자르는과정
+				if(vo == null) {
+				} else if (vo.getPeriod1() != null) {
+					String day1 = vo.getPeriod1();
+					day1 = day1.replace("-", ",");
+					day1 = day1.replaceAll("day", "");
+					day1 = day1.replaceAll(" ", "");
+					String temp[] = day1.split(",");
+					vo.setPeriod1(temp[0]);
+					vo.setPeriod2(temp[1]);
+				} else {}
+		
 		//전체 건수
 		int total = planService.selectListTotCnt(vo);
 		paging.setTotalRecord(total);
@@ -90,7 +102,7 @@ public class PlanController {
 	}
 	
 	@RequestMapping("makePlan.do")
-	public String makePlan(PlanVO vo, HttpSession session) {
+	public String makePlan(PlanVO vo, HttpSession session, Model model) {
 		return "plan/makePlan";
 	}
 	
@@ -107,9 +119,26 @@ public class PlanController {
 	}
 	
 	@RequestMapping("modify.do") 
-	public String modify(PlanVO vo, Model model) {
-		model.addAttribute("vo", vo);
-		return "plan/makePlan";
+	public String modify(PlanSearchVO vo, Model model) {
+		PlanVO s_vo = planService.select(vo);
+		
+		try {
+			SimpleDateFormat format = new SimpleDateFormat("yyyy/mm/dd");  
+			String departure = s_vo.getDeparturedate(); 
+			String arrival = s_vo.getArrivaldate(); 
+			
+			Date day1 = format.parse(departure);
+			Date day2 = format.parse(arrival);
+			long l_day = day2.getTime() - day1.getTime();
+			int day = (int) (l_day/86400000) + 1;
+			
+			s_vo.setDay(Integer.toString(day));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		model.addAttribute("old_vo" , s_vo);
+		return "plan/ModifyPlan";
 	}
 	
 	@RequestMapping("myUpdate.do") 

@@ -6,11 +6,13 @@
 	String old_plannum = "no";
 	String catenum = "";
 	String isopen = "";
-	PlanVO old_vo = (PlanVO) request.getAttribute("vo");
+	String old_day = "3";
+	PlanVO old_vo = (PlanVO) request.getAttribute("old_vo");
 	if(old_vo != null) {
 		catenum = old_vo.getCategorynum();
 		isopen = old_vo.getIsopen();
 		old_plannum = old_vo.getPlannum();
+		old_day = old_vo.getDay();
 	}
 %>
 <!DOCTYPE html>
@@ -703,8 +705,7 @@ function savePlan() {
 
 function saveTable() {
 	var parameter = []; 
-	//★★★day구해야!!
-	var day = 3;
+	var day = "<%=old_day%>";
 	var tds = new Array();
 	var divs = new Array();
 	

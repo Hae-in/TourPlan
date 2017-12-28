@@ -739,6 +739,14 @@ function dayCheck() {
 				}
 			
 				//포스트도 함께 삭제
+				for(z=0; z<$("#storyTab div[id^='postDay']:last span").length; z++) {
+					var willDelTemp = $("#storyTab div[id^='postDay']:last span:eq(" + z + ")").attr("id");
+					var willDelPostNum = new Array();
+					willDelPostNum = willDelTemp.split("m");
+					
+					postAutoDel(willDelPostNum[1]);
+					
+				}
 				$("#storyTab div[id^='postDay']:last").remove();
 			}
 		} else { $("#day").val(last_day); }
@@ -838,6 +846,20 @@ dialog = $( "#dialog-form" ).dialog({
         }
       }
     });
+
+function postAutoDel(postnumber) {
+	$.ajax({
+    	url         : '../postAjax/delete'
+		,type        : 'POST'
+		,dataType    : 'json'
+		,data		: { postnum : postnumber }
+		,success     : function(data,status) {
+		    if (status =="success") {
+			  	alert("post 삭제 성공 ");
+	   	   } else { alert("에러발생 관리자에게 문의하세요") }
+	   	}
+	});
+}
 
 $(function () {
 // Modal 띄우기 위한 버튼
