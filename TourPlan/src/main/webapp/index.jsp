@@ -9,4 +9,5 @@
 	//response.sendRedirect("post/select.do?plannum=2");
 	response.sendRedirect("main/main.do");
 	//https://developers.google.com/maps/documentation/javascript/examples/directions-waypoints
+	//https://developers.google.com/maps/documentation/directions/intro
 %>

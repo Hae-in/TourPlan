@@ -529,12 +529,13 @@ div#redips-drag #table1 div {
 <script type="text/javascript">
 var isSave = false;
 var dayCheckNum = 0;
+var copy_num = 0;
 //WebSocket start -----------------------------------
 	var xhttp = new XMLHttpRequest();
 	
 	//★★★포트바꿔야!
 	var webSocket = new WebSocket(
-			'ws://localhost:80/tourplan/websocket/sharePlan.do');
+			'ws://localhost:8090/tourplan/websocket/sharePlan.do');
 	webSocket.onerror = function(event) {
 		onError(event)
 	};
@@ -557,7 +558,8 @@ var dayCheckNum = 0;
 				
 				//복제품 속성부여
 				$(copy_div).attr("class", 'redips-drag');
-				$(copy_div).attr("id", $(div).attr("id") + msg.copynum);
+				$(copy_div).attr("id", $(div).attr("id") + copy_num);
+				copy_num += 1;
 				
 				//복제품 변수에 담기
 				var idid = $(copy_div).attr("id"); 
@@ -573,8 +575,8 @@ var dayCheckNum = 0;
 				var div = $("#"+ msg.tdid + " div");
 				var arr = new Array();
 				arr = div.attr("id").split("_");
-				var id = arr[0] + "_" + arr[1] + "_" + msg.copynum;
-				
+				var id = arr[0] + "_" + arr[1] + "_" + copy_num;
+				copy_num += 1;
 				div.attr("id", id)
 				console.log("자식있는 아이디값 : " + id);
 			}

@@ -64,21 +64,6 @@
 	
 	function searchRegionFunction() {
 		var input, filter, table, tr, td;
-		/* input = document.getElementById("searchInput-region");
-		filter = input.value.toUpperCase();
-		table = document.getElementById("table1");
-		tr = table.getElementsByTagName("tr"); 
-		
-		for (i = 0; i < tr.length; i++) {
-			td = tr[i].getElementsByTagName("td")[0];
-			if (td) {
-				if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
-					tr[i].style.display = "";
-				} else {
-					tr[i].style.display = "none";
-				}
-			}       
-		}*/
 		
 		input = $("#searchInput-region");
 		filter = input.val().toUpperCase();
@@ -484,7 +469,7 @@ div#redips-drag #table1 div {
 					<div id="googleMap" style="width: 100%; height: 400px;"></div>
   						  <div id="right-panel"><div>
     					 <div id="directions-panel"></div>
-					<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC6-5na3Y2gJSt31kHSeSWZqp3VM1hvgJg&callback=initMap"></script>
+					<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC6-5na3Y2gJSt31kHSeSWZqp3VM1hvgJg&libraries=places&callback=initMap"></script>
 					<div id="planList">
 						<div id="right" style="overflow-x: scroll;">
 							<table id="table2">
@@ -517,6 +502,7 @@ div#redips-drag #table1 div {
 				</div>
 				<div id="divBtns">
 					<button type="button" onclick="savePlan();">저장하기</button>
+					<input type="text" id="cal_dis" placeholder="day">
 					<button type="submit" id="submit">거리계산</button>
 					<button type="button">취소</button>
 				</div>
@@ -894,61 +880,80 @@ $(function () {
 	});
 })
 
+var map;
 //구글맵스
 function initMap() {
-	var t3, t4, t5, t6;
-        var directionsService = new google.maps.DirectionsService;
-        var directionsDisplay = new google.maps.DirectionsRenderer;
-        var map = new google.maps.Map(document.getElementById('googleMap'), {
-          zoom: 6,
-          center: {lat: 41.85, lng: -87.65}
-        });
-        directionsDisplay.setMap(map);
+    var directionsService = new google.maps.DirectionsService;
+    var directionsDisplay = new google.maps.DirectionsRenderer;
+    map = new google.maps.Map(document.getElementById('googleMap'), {
+      zoom: 6,
+      center: {lat: 41.85, lng: -87.65}
+    });
+    directionsDisplay.setMap(map);
 
-        document.getElementById('submit').addEventListener('click', function() {
-          calculateAndDisplayRoute(directionsService, directionsDisplay);
-        });
-      }
+    document.getElementById('submit').addEventListener('click', function() {
+ 	   calculateAndDisplayRoute(directionsService, directionsDisplay);
+    	});
+    }
 
 	//★★★자바스크립트 parseDouble() 대체할것?
       function calculateAndDisplayRoute(directionsService, directionsDisplay) {
         var waypts = [];
-        var checkboxArray = $("[day='2'] div");
-        var t1 = parseFloat(checkboxArray.attr("lat"));
-        var t2 = parseFloat(checkboxArray.attr("lon"));
-    	t3 = parseFloat($("[day='1'] div:eq(0)").attr("lat"));
-        t4 = parseFloat($("[day='1'] div:eq(0)").attr("lon"));
-        t5 = parseFloat($("[day='3'] div:eq(0)").attr("lat"));
-        t6 = parseFloat($("[day='3'] div:eq(0)").attr("lon"));
-        console.log(t1 + " " + t2 + " " + t3 + " " + t4 + " " + t5 + " " + t6);
-        for (var i = 0; i < checkboxArray.length; i++) {
-            waypts.push({
-              location: {lat:t1, lng:t2},
-              stopover: true
-            });
-        }
- 
+        
+        var calcul_day = $("#cal_dis").val();
+        var count = $("[day='"+calcul_day+"'] div").length-1;
+        var first_div_lat = parseFloat($("[day='"+calcul_day+"'] div:eq(0)").attr("lat"));
+        var first_div_lng = parseFloat($("[day='"+calcul_day+"'] div:eq(0)").attr("lon"));
+        var last_div_lat = parseFloat($("[day='"+calcul_day+"'] div:eq("+count+")").attr("lat")); 
+        var last_div_lng = parseFloat($("[day='"+calcul_day+"'] div:eq("+count+")").attr("lon")); 
+    	var wayArr_lat = new Array();
+    	var wayArr_lng = new Array();
+    	for(i=1; i<$("[day='"+calcul_day+"'] div").length-1; i++) {
+    		wayArr_lat[i] = parseFloat($("[day='"+calcul_day+"'] div:eq("+i+")").attr("lat"));
+    		wayArr_lng[i] = parseFloat($("[day='"+calcul_day+"'] div:eq("+i+")").attr("lon"));
+    		
+    		waypts.push({
+                location: {lat:wayArr_lat[i],lng:wayArr_lng[i]},
+                stopover: true
+              });
+    	}
+    	
+    	console.log("first - lat : "+first_div_lat+", lng : "+first_div_lng);
+    	console.log("last - lat : "+last_div_lat+", lng : "+last_div_lng);
         directionsService.route({
-          origin: {lat:t3, lng:t4},
-          destination: {lat:t5, lng:t6},
+          origin: {lat:first_div_lat,lng:first_div_lng},
+          destination: {lat:last_div_lat,lng:last_div_lng},
           waypoints: waypts,
           optimizeWaypoints: true,
           travelMode: 'DRIVING'
         }, function(response, status) {
           if (status === 'OK') {
             directionsDisplay.setDirections(response);
+            console.log(response);
             var route = response.routes[0];
             var summaryPanel = document.getElementById('directions-panel');
             summaryPanel.innerHTML = '';
-            // For each route, display summary information.
             for (var i = 0; i < route.legs.length; i++) {
               var routeSegment = i + 1;
               summaryPanel.innerHTML += '<b>Route Segment: ' + routeSegment +
                   '</b><br>';
-              summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
-              summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
-              summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
+            	if(i == 0) {
+            		summaryPanel.innerHTML += $("[lat='"+first_div_lat+"']").contents().first().text() + ' to ';
+            		summaryPanel.innerHTML += $("[lat='"+wayArr_lat[1]+"']").contents().first().text() + '<br>';
+            		summaryPanel.innerHTML += route.legs[i].distance.text + ' ' + route.legs[i].duration.text + '<br><br>';
+            	}
+            	else if(i == route.legs.length-1) {
+            		summaryPanel.innerHTML += $("[lat='"+wayArr_lat[count-1]+"']").contents().first().text() + ' to ';
+            		summaryPanel.innerHTML += $("[lat='"+last_div_lat+"']").contents().first().text() + '<br>';
+            		summaryPanel.innerHTML += route.legs[i].distance.text + ' ' + route.legs[i].duration.text + '<br><br>';
+            	}
+            	else {
+            		summaryPanel.innerHTML += $("[lat='"+wayArr_lat[i]+"']").contents().first().text() + ' to ';
+            		summaryPanel.innerHTML += $("[lat='"+wayArr_lat[i+1]+"']").contents().first().text() + '<br>';
+            		summaryPanel.innerHTML += route.legs[i].distance.text + ' ' + route.legs[i].duration.text + '<br><br>';
+            	}
             }
+            
           } else {
             window.alert('Directions request failed due to ' + status);
           }

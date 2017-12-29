@@ -672,7 +672,7 @@ function savePlan() {
 
 function saveTable() {
 	var parameter = []; 
-	var day = post_day;
+	var day = $("#day").val();
 	var tds = new Array();
 	var divs = new Array();
 	

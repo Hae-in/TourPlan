@@ -8,12 +8,10 @@
 // create redips container
 var redips = {};
 
-
 // redips initialization
 redips.init = function () {
 	// reference to the REDIPS.drag object
 	var	rd = REDIPS.drag;
-	var num = 0;
 	// initialization
 	rd.init();
 	// REDIPS.drag settings
@@ -54,16 +52,15 @@ redips.init = function () {
 		var child2 = rd.objOld.childNodes[2].nodeValue;
 		arr2 = rd.objOld.getAttribute("id").split("_");
 		var placenum = arr2[1];
-		var copynum = num+1;
 		
-		send("insert", tr, copynum, placenum, child1, child2, "");
+		send("insert", tr, "", placenum, child1, child2, "");
 	}
 	
 	// after element is deleted from the timetable, print message 
 	rd.event.deleted = function () {
 		if(rd.objOld.className.indexOf('redips-clone') > -1) { console.log("복제된"); }
 		else {
-			var rmid = rd.objOld.getAttribute("id");
+			var rmid = rd.obj.getAttribute("id");
 			
 			send("delete", rmid, "", "", "", "", "");
 		}

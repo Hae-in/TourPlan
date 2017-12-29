@@ -150,7 +150,7 @@
 		<div class="collapse navbar-collapse" id="navbarResponsive">
 			<ul class="navbar-nav ml-auto">
 				<li class="nav-item"><a class="nav-link"
-					href="../plan/selectAll.do">여행일정</a></li>
+					href="../plan/selectAll.do?isopen=1&state=1">여행일정</a></li>
 				<li class="nav-item"><a class="nav-link" href="../place/selectAll.do">명소</a></li>
 				<li class="nav-item"><a class="nav-link" href="../helpdesk/selectAll.do">고객센터</a></li>
 				<li class="nav-item"><a class="nav-link" href="../planTable/makePlan.do">일정만들기</a></li>

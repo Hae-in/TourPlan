@@ -59,18 +59,6 @@
 
 </head>
 <body>
-
-	<!-- Page Content -->
-	<div class="container">
-
-		<!-- Page Heading/Breadcrumbs -->
-		<h1 class="mt-4 mb-3">일정</h1>
-
-		<ol class="breadcrumb">
-			<li class="breadcrumb-item"><a href="<c:url value='/'/>">Home</a></li>
-			<li class="breadcrumb-item">일정</li>
-		</ol>
-
 		<form action="../plan/selectAll.do" method="post" id="frm">
 			<!-- Content Row -->
 			<div class="row">
@@ -154,8 +142,6 @@
 			<!-- /.row -->
 		</form>
 
-	</div>
-	<!-- /.container -->
 </body>
 </html>
 
