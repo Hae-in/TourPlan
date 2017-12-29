@@ -178,6 +178,7 @@ if('${planSearchVO.period1}' != '') {
 	$("input:radio[name='categorynum']:input[value='${planSearchVO.categorynum}']").prop("checked", "true");
 	$("[name='period1']").val( '${planSearchVO.period1}' );
 	$("[name='period2']").val( '${planSearchVO.period2}' );
+	$( "#slider-range" ).slider( "option", "values", [${planSearchVO.period1},${planSearchVO.period2}] );
 	$("[name='city']").val( '${planSearchVO.city}' );
 }
 else {}

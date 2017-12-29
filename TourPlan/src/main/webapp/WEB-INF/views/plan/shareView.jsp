@@ -534,7 +534,7 @@ var dayCheckNum = 0;
 	
 	//★★★포트바꿔야!
 	var webSocket = new WebSocket(
-			'ws://localhost:8090/tourplan/websocket/sharePlan.do');
+			'ws://localhost:80/tourplan/websocket/sharePlan.do');
 	webSocket.onerror = function(event) {
 		onError(event)
 	};
@@ -804,6 +804,8 @@ function dayCheck() {
 			}
 		} else { $("#day").val(last_day); }
 	} else if(form_day == last_day) {
+	} else if($("#day").val() > 31) {
+		alert('최대 31일까지 가능합니다');
 	} else {
 		alert('숫자만 입력가능합니다');
 		$("#day").val("1");

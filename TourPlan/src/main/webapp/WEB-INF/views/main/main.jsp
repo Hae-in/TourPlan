@@ -32,18 +32,8 @@
 				<div class="carousel-item active"
 					style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/1/14/Nirmal_Hriday.JPG?resize=660%2C330')">
 					<div class="carousel-caption d-none d-md-block">
-						<h3>자신을 돌아보는 봉사활동 여행</h3>
+						<h3><a href="../theme/theme1.do"></a>자신을 돌아보는 봉사활동 여행</h3>
 						<p>마더 테레사 하우스, 콜카타, 인도</p>
-					</div>
-				</div>
-
-				<div class="carousel-item"
-					style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/1/14/Nirmal_Hriday.JPG?resize=660%2C330')">
-					<div class="carousel-caption d-none d-md-block">
-						<h3>
-							<a href="../theme/theme1.do">여행자의 마지막 로망, 빙하</a>
-						</h3>
-						<p>깔라파테, 아르헨티나</p>
 					</div>
 				</div>
 
@@ -68,23 +58,23 @@
 				</div>
 
 				<div class="carousel-item"
-					style="background-image: url('https://d1ljaggyrdca1l.cloudfront.net/wp-content/uploads/2017/03/Game-Drive-at-Serengeti-National-Park--1600x900.jpg?resize=660%2C330')">
-					<div class="carousel-caption d-none d-md-block">
-						<h3>
-							<a href="../theme/theme4.do">야생, 야생, 야생</a>
-						</h3>
-						<p>세렝게티 국립공원, 탄자니아</p>
-					</div>
-				</div>
-
-				<div class="carousel-item"
 					style="background-image: url('https://radseason-cvujcydfqolrrrg.netdna-ssl.com/wp-content/uploads/2017/04/You-will-prove-to-yourself-that-persistence-overcomes-resistance-as-you-take-your-final-step-atop-of-the-Annapurna-Base-Camp.jpg?resize=660%2C330')">
 					<div class="carousel-caption d-none d-md-block">
-						<h3>내 생애 단 한 번, 히말라야 트레킹</h3>
+						<h3><a href="../theme/theme4.do">내 생애 단 한 번, 히말라야 트레킹</a></h3>
 						<p>안나푸르나 베이스캠프, 네팔</p>
 					</div>
 				</div>
 
+				<div class="carousel-item"
+					style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/1/14/Nirmal_Hriday.JPG?resize=660%2C330')">
+					<div class="carousel-caption d-none d-md-block">
+						<h3>
+							여행자의 마지막 로망, 빙하
+						</h3>
+						<p>깔라파테, 아르헨티나</p>
+					</div>
+				</div>
+				
 				<div class="carousel-item"
 					style="background-image: url('http://www.ultimatebali.com/wp-content/uploads/2015/11/Best-Surf-Spots-in-Bali.jpg?resize=660%2C330')">
 					<div class="carousel-caption d-none d-md-block">
@@ -111,46 +101,6 @@
 
 				<div class="carousel-item"
 					style="background-image: url('https://media.timeout.com/images/103444978/image.jpg?resize=660%2C330')">
-					<div class="carousel-caption d-none d-md-block">
-						<h3>혼자여도 나는 좋아</h3>
-						<p>뉴욕, 미국</p>
-					</div>
-				</div>
-
-				<div class="carousel-item"
-					style="background-image: url('https://media.architecturaldigest.com/photos/5699802bc6772b7614567435/2:1/w_2560/new-york-city-guide.jpg?resize=660%2C330')">
-					<div class="carousel-caption d-none d-md-block">
-						<h3>혼자여도 나는 좋아</h3>
-						<p>뉴욕, 미국</p>
-					</div>
-				</div>
-
-				<div class="carousel-item"
-					style="background-image: url('https://dly4mho8u118u.cloudfront.net/wp-content/uploads/2017/08/31074922/NYC-1380.jpg?resize=660%2C330')">
-					<div class="carousel-caption d-none d-md-block">
-						<h3>혼자여도 나는 좋아</h3>
-						<p>뉴욕, 미국</p>
-					</div>
-				</div>
-
-				<div class="carousel-item"
-					style="background-image: url('https://cdn.vox-cdn.com/thumbor/Nn3ccBgKHED9Ia4uP7apC_1LRT8=/0x53:1000x616/1600x900/cdn.vox-cdn.com/uploads/chorus_image/image/49152533/shutterstock_99855551.0.jpg?resize=660%2C330')">
-					<div class="carousel-caption d-none d-md-block">
-						<h3>혼자여도 나는 좋아</h3>
-						<p>뉴욕, 미국</p>
-					</div>
-				</div>
-
-				<div class="carousel-item"
-					style="background-image: url('https://i.ytimg.com/vi/Cxb6btMB6J8/maxresdefault.jpg?resize=660%2C330')">
-					<div class="carousel-caption d-none d-md-block">
-						<h3>혼자여도 나는 좋아</h3>
-						<p>뉴욕, 미국</p>
-					</div>
-				</div>
-
-				<div class="carousel-item"
-					style="background-image: url('https://www.nycgo.com/images/venues/152/tripadvisortimessquare_taggeryanceyiv_5912__x_large.jpg?resize=660%2C330')">
 					<div class="carousel-caption d-none d-md-block">
 						<h3>혼자여도 나는 좋아</h3>
 						<p>뉴욕, 미국</p>
@@ -190,14 +140,6 @@
 				</div>
 
 				<div class="carousel-item"
-					style="background-image: url('https://cdn2.i-scmp.com/sites/default/files/styles/landscape/public/images/methode/2016/10/24/fb5026ea-95de-11e6-89e7-0e47003bc2df_1280x720.jpg?itok=di6QMD-g?resize=660%2C330')">
-					<div class="carousel-caption d-none d-md-block">
-						<h3>나는야~ 밤의 나그네</h3>
-						<p>마카오, 중국</p>
-					</div>
-				</div>
-
-				<div class="carousel-item"
 					style="background-image: url('http://www.santiagochiletour.cl/wp-content/uploads/2017/07/concha-y-toro-santiago-chile-tour.jpg?resize=660%2C330')">
 					<div class="carousel-caption d-none d-md-block">
 						<h3>악마의 술을 마시러 갈테야</h3>
@@ -218,14 +160,6 @@
 					<div class="carousel-caption d-none d-md-block">
 						<h3>과거로 타임슬립</h3>
 						<p>아바나, 쿠바</p>
-					</div>
-				</div>
-
-				<div class="carousel-item"
-					style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/1/14/Nirmal_Hriday.JPG?resize=660%2C330')">
-					<div class="carousel-caption d-none d-md-block">
-						<h3>자신을 돌아보는 봉사활동 여행</h3>
-						<p>마더 테레사 하우스, 콜카타, 인도</p>
 					</div>
 				</div>
 
