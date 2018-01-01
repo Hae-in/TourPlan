@@ -160,11 +160,18 @@
 				</c:if>
 				
 				<c:if test="${!(empty sessionScope.memberid) }">
-				<li class="nav-item"><a class="nav-link" id="menuMy" href="../member/select.do?membernum=<%=membernum%>">Mypage</a></li>
-				<li class="nav-item"><a class="nav-link" id="menuLogout" style="cursor: pointer;">로그아웃</a></li>
+				<c:choose>
+					<c:when test="${sessionScope.state == '9'}">
+						<li class="nav-item"><a class="nav-link" href="../admin/plan.do">관리자</a></li>
+						<li class="nav-item"><a class="nav-link" id="menuLogout" style="cursor: pointer;">로그아웃</a></li>
+					</c:when>
+					<c:when test="${sessionScope.state != '9'}">
+						<li class="nav-item"><a class="nav-link" id="menuMy" href="../member/select.do?membernum=<%=membernum%>">Mypage</a></li>
+						<li class="nav-item"><a class="nav-link" id="menuLogout" style="cursor: pointer;">로그아웃</a></li>
+					</c:when>
+				</c:choose>
 				</c:if>
 				
-				<li class="nav-item"><a class="nav-link" href="../admin/plan.do">관리자</a></li>
 				<!-- <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPortfolio" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">로그인</a>
 						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownPortfolio"> 
 						<a class="dropdown-item" href="portfolio-1-col.html">로그인</a> 

@@ -101,7 +101,9 @@ public class PlanController {
 	}
 	
 	@RequestMapping("selectLike.do")
-	public String selectLike(PlanSearchVO vo, Model model, HttpServletRequest request) {
+	public String selectLike(PlanSearchVO vo, Model model, HttpServletRequest request, HttpSession session) {
+		String mem_num = (String) session.getAttribute("membernum");
+		vo.setMembernum(mem_num);
 		model.addAttribute("planList", planService.selectAll(vo));
 		return "member/myPage/likeplan";
 	}

@@ -51,6 +51,8 @@ public class HomeController {
 		
 		//plan Search
 		PlanSearchVO p_vo = new PlanSearchVO();
+		p_vo.setFirst(1);
+		p_vo.setLast(4);
 		p_vo.setPlan_sort("likecount");
 		model.addAttribute("planList",  planService.selectAll(p_vo));
 		
