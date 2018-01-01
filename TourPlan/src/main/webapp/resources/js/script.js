@@ -44,6 +44,8 @@ redips.init = function () {
 	};
 	
 	rd.event.clonedDropped = function() {
+		rd.obj.lastChild.setAttribute("type", "text");
+		
 		var arr = new Array();
 		var arr2 = new Array();
 		var tr = rd.td.target.getAttribute("id");

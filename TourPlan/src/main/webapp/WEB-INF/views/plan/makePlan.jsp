@@ -15,6 +15,7 @@
 	$(function(){
 		document.getElementById("defaultOpen").click();
 		
+		//왼쪽 장소목록 테이블 출력
 		$.ajax({
 			url : "<%=request.getContextPath()%>/placeAjax/selectAll.do",
 			dataType : "json",
@@ -23,7 +24,7 @@
 				
 				for (i = 0; i < data.length; i++) {
 					console.log(data[i].imagename);
-					$("#tbody").append("<tr><td class='redips-mark lunch'><img width='100px;' height='65px;' src='../resources/images/"+(data[i].imagename == null ? "null.jpg" : data[i].imagename) +"'></td><td class='dark'><div lon='"+data[i].lon+"' lat='"+data[i].lat+"' id='place_" + data[i].placenum + "_"+i+"' class='redips-drag redips-clone'>"+data[i].placename+"<br>"+data[i].city+", " +data[i].country+"</div></td></tr>");
+					$("#tbody").append("<tr><td class='redips-mark lunch'><img width='100px;' height='65px;' src='../resources/images/"+(data[i].imagename == null ? "null.jpg" : data[i].imagename) +"'></td><td class='dark'><div lon='"+data[i].lon+"' lat='"+data[i].lat+"' id='place_" + data[i].placenum + "_"+i+"' class='redips-drag redips-clone'>"+data[i].placename+"<br>"+data[i].city+", " +data[i].country+"<br><input class='stay' type='hidden' placeholder='몇 분' value='30' onchange='stayCheck(this);'></div></td></tr>");
 				}
 			}
 		});
@@ -32,6 +33,7 @@
 			console.log($(this).text());
 		});
 		
+		//오른쪽 일정테이블 칸만큼 post쓰기 생성
 		var post_day = $("#day").val();
 		for(i=1; i<=post_day; i++) {
 			var day_div = "<div id='postDay" + i + "' style='border: 1px solid red;'><font size='5'><b>" + i + " Day</b></font>";
@@ -48,6 +50,7 @@
 		
 	});
 	
+	////[스토리][일정표] 탭 나눔
 	function openTab(evt, tabName) {
 		var i, tabcontent, tablinks;
 		tabcontent = document.getElementsByClassName("tabcontent");
@@ -62,6 +65,7 @@
 		evt.currentTarget.className += " active";
 	}
 	
+	//장소 검색 함수
 	function searchRegionFunction() {
 		var input, filter, table, tr, td;
 		
@@ -80,6 +84,7 @@
 		}
 	}
 	
+	//달력으로 day추출
 	function getDate() {
 		var depDate = $("#departuredate").val().split('-');
 		var arrDate = $("#arrivaldate").val().split('-');
@@ -265,7 +270,7 @@ input:checked+.slider:before {
 	opacity: 0.7;
 	filter: alpha(opacity=70);
 	width: 180px;	/* table1 td item size */
-	height: 50px;
+	height: 60px;
 	line-height: 20px;
 	border: 1px solid #555;
 	border-radius: 3px;
@@ -347,6 +352,12 @@ div#redips-drag #table1 div {
 .del_a {
 	cursor: pointer;
 	color: red;
+}
+
+.stay {
+	font-size: 11px;
+	width: 50px;
+	height: 15px;
 }
 </style>
 </head>
@@ -496,7 +507,7 @@ div#redips-drag #table1 div {
 										</tr>
 								</tbody>
 							</table>
-							<a href="#" style="display: inline;"> </a>
+							<div id="addTr" style="border: 1px solid blue;">칸 추가하기</div>
 						</div>
 					</div>
 				</div>
@@ -529,6 +540,7 @@ function f5check() {
 	else {}
 }
 
+//Plan image
 function imageAdd(){
 	if($("#upload img").length == 0) {
 		$("#frm_img").ajaxForm({
@@ -571,6 +583,7 @@ function imageAdd(){
 	}
 }
 
+//일정저장
 function savePlan() {
 	if(memberId == "null") {
 		alert('로그인이 필요합니다!');
@@ -633,9 +646,10 @@ function saveTable() {
 	var day = $("#day").val();
 	var tds = new Array();
 	var divs = new Array();
+	var t = $("#table2 td:last").attr("tr");
 	
 		for(i=1; i<=day; i++) {
-			for(j=0; j<9; j++) {
+			for(j=0; j<=t; j++) {
 				var p = {};
 			
 				if($("[day='"+i+"'][tr='"+j+"'] div").length == 0) { }
@@ -644,6 +658,7 @@ function saveTable() {
 				var div_id = $("[day='"+i+"'][tr='"+j+"'] div").attr("id");
 				var divide_place = div_id.split("_")[1];
 				var postnum = $("#"+i+"a"+j).attr("postnum");
+				var stay_time = $("[day='"+i+"'][tr='"+j+"'] div input").val();
 				
 				p.day = i;
 				p.tr = j;
@@ -651,14 +666,10 @@ function saveTable() {
 				p.plannum = plannum;
 				p.fix = "0";
 				p.sortnum = "5";
-				p.staytime = "30";
+				p.staytime = stay_time;
 				p.postnum = postnum;
 				
 				parameter.push(p);
-				//이후 컨트롤러에서 plantable insert후 plannum, plantablenum을 함께 넘겨 post의 plantablenum에 update
-				//그러면 select할때 plannum,plantablenum으로 가져올 수 있음
-				//만약 2개이상이라면? VO에 배열넣을수있나? 
-				//$("#post"+i+"a"+tr)의 포스트num을 가져와야
 			}
 		}
 	}
@@ -710,22 +721,24 @@ function dayCheck() {
 	console.log("dayCheck실행");
 	var last_day = parseInt($("#table2 tr:eq(2) td").length);
 	var form_day = parseInt($("#day").val());
+	var t = $("#table2 td:last").attr("tr");
 	
 	if($("#day").val() <= 0) {
 		alert("0이하는 설정할 수 없습니다.");
 		$("#day").val("1");
 	} else if(form_day > last_day) {
 		var sub = form_day - last_day;
+		
 		for(i=1; i<=sub; i++) {
 			$("#table2 tr:eq(0)").append("<td class='redips-mark dark'>Day"+(last_day+i)+"</td>");
-			for(j=0; j<9; j++) {
-				var append_td = "<td id='" + (last_day+i) + "a" + j + "' day='" + (last_day+i) + "' tr='" + j + "'></td>"
+			for(j=0; j<=t; j++) {
+				var append_td = "<td id='" + (last_day+i) + "a" + j + "' day='" + (last_day+i) + "' tr='" + j + "'></td>";
 				$("#table2 tr:eq(" + (j+1) + ")").append(append_td);
 			}
 			
 			//포스트도 함께 추가
 			var day_div = "<div id='postDay"+(last_day+i)+"' style='border: 1px solid red;'><font size='5'><b>" + (last_day+i) + " Day</b></font>"
-			for(j=0; j<9; j++) {
+			for(j=0; j<=t; j++) {
 				day_div += "<div id='post"+(last_day+i)+"a"+j+"'></div><button id='"+(last_day+i)+"b"+j+"' class='postbtn' style='display:none;'>포스트쓰기</button>"
 			}
 			day_div += "</div>";
@@ -736,7 +749,7 @@ function dayCheck() {
 			var sub = last_day - form_day;
 			for(i=1; i<=sub; i++) {
 				$("#table2 tr:eq(0) td:last").remove();
-				for(j=0; j<9; j++) {
+				for(j=0; j<=t; j++) {
 					$("#table2 tr:eq(" + (j+1) + ") td:last").remove();
 				}
 			
@@ -750,6 +763,16 @@ function dayCheck() {
 	} else {
 		alert('숫자만 입력가능합니다');
 		$("#day").val("1");
+	}
+}
+
+function stayCheck(obj) {
+	var regTest = /[0-9]/g;
+	var st_time = obj.value;
+	
+	if(!regTest.test(st_time)) {
+		alert("분단위 숫자만 입력가능합니다");
+		obj.value = 5;
 	}
 }
 
@@ -778,7 +801,7 @@ function firstFunc() {
 	}
 }
 
-//insert Ajax & 포스트 추가ui
+//insert Ajax & 포스트 추가
 function postAdd(){
 	var param = '';
 	if($("#frm1").css("display") != "none") {
@@ -878,10 +901,29 @@ $(function () {
 	   		}
 		});
 	});
+	
+	$(document).on('click', '#addTr', function(e) {
+		e.stopImmediatePropagation();
+		var add = "<tr>";
+		var d = $("#day").val();
+		var t = parseInt($("#table2 td:last").attr("tr")) + 1;
+		
+		for(i=1; i<=d; i++) {
+			add += "<td id='"+i+"a"+t+"' day='"+i+"' tr='"+t+"'></td>";
+			
+			//포스트도 함께 추가
+			var postAdd = "<div id='post"+i+"a"+t+"'></div><button id='"+i+"b"+t+"' class='postbtn' style='display:none;'>포스트쓰기</button>";
+			$("#postDay"+i).append(postAdd);
+		}
+		add += "</tr>";
+		
+		$("#table2").append(add);
+	});
 })
 
-var map;
 //구글맵스
+var map;
+
 function initMap() {
     var directionsService = new google.maps.DirectionsService;
     var directionsDisplay = new google.maps.DirectionsRenderer;
@@ -955,7 +997,7 @@ function initMap() {
             }
             
           } else {
-            window.alert('Directions request failed due to ' + status);
+            window.alert('에러발생 관리자에게 문의하세요 : ' + status);
           }
         });
       }

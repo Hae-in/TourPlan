@@ -3,7 +3,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <% 
-	response.setHeader("P3P","CP='CAO PSA CONi OTR OUR DEM ONL'"); 
 	PlanVO vo = (PlanVO) request.getAttribute("vo");
 	String catenum = vo.getCategorynum();
 	String isopen = vo.getIsopen();
@@ -29,7 +28,7 @@ var plannum = <%=vo.getPlannum()%>;
 			dataType : "json",
 			success : function(data) {
 				for (i = 0; i < data.length; i++) {
-					$("#tbody").append("<tr><td><img width='100px;' src='../resources/images/"+(data[i].imagename == null ? "null.jpg" : data[i].imagename) +"'></td><td class='dark'><div id='place_" + data[i].placenum + "_" + "' class='redips-drag redips-clone'>"+data[i].placename+"<br>"+data[i].city+", " +data[i].country+"</div></td></tr>");
+					$("#tbody").append("<tr><td><img width='100px;' src='../resources/images/"+(data[i].imagename == null ? "null.jpg" : data[i].imagename) +"'></td><td class='dark'><div id='place_" + data[i].placenum + "_" + "' class='redips-drag redips-clone'>"+data[i].placename+"<br>"+data[i].city+", " +data[i].country+"<br><input class='stay' type='hidden' placeholder='몇 분' value='30' onchange='stayCheck(this);'></div></td></tr>");
 				}
 			}
 		});
@@ -77,7 +76,7 @@ var plannum = <%=vo.getPlannum()%>;
 									break;
 								}
 							}
-							var div = "<div id='place_" + data[i].placenum + "_" + data[i].plantablenum + "' class='redips-drag'>" + data_place[j].placename + "<br>" + data_place[j].city + ", " + data_place[j].country+ "</div>";
+							var div = "<div id='place_" + data[i].placenum + "_" + data[i].plantablenum + "' class='redips-drag'>" + data_place[j].placename + "<br>" + data_place[j].city + ", " + data_place[j].country+ "<br><input class='stay' type='text' placeholder='몇 분' value='"+data[i].staytime+"' onchange='stayCheck(this);'></div>";
 							 $(div).appendTo($("#" + data[i].day + "a" + data[i].tr));
 							 
 							$("#post"+ data[i].day + "a" + data[i].tr).append("<div style='border: solid 1px orange;'>" + data_place[j].placename + "<br>" + data_place[j].city + ", " + data_place[j].country +  "</div>");
@@ -385,6 +384,12 @@ div#redips-drag #table1 div {
 	background-color: #DC4C46;
 	color: #fff;
 }
+
+.stay {
+	font-size: 11px;
+	width: 50px;
+	height: 15px;
+}
 </style>
 </head>
 <body>
@@ -535,7 +540,7 @@ var copy_num = 0;
 	
 	//★★★포트바꿔야!
 	var webSocket = new WebSocket(
-			'ws://localhost:8090/tourplan/websocket/sharePlan.do');
+			'ws://localhost:80/tourplan/websocket/sharePlan.do');
 	webSocket.onerror = function(event) {
 		onError(event)
 	};
@@ -550,7 +555,6 @@ var copy_num = 0;
 		switch (msg.type) {
 		case "insert":
 			if($("#"+ msg.tdid + " div").length == 0) {
-				console.log("노자식");
 				
 				//복제
 				var div = $("#place_" + msg.placenum + "_").get(0);
@@ -562,8 +566,9 @@ var copy_num = 0;
 				copy_num += 1;
 				
 				//복제품 변수에 담기
-				var idid = $(copy_div).attr("id"); 
+				var idid = $(copy_div).attr("id");
 				var parent = $("#"+ msg.tdid).get(0);
+				copy_div.lastChild.setAttribute("type", "text");
 				
 				//복제품 부모에게 이동
 				REDIPS.drag.moveObject({
@@ -612,6 +617,11 @@ var copy_num = 0;
 				$("#departuredate").val(msg.copynum);
 				$("#arrivaldate").val(msg.placenum);
 			}
+			break;
+		case "stayCheck":
+			var td_id = msg.tdid;
+			var st_time = msg.copynum;
+			$("#"+td_id+" input").val(st_time);
 			break;
 		}
 
@@ -816,6 +826,19 @@ function dayCheck() {
 	send("dayCheck", ddd, $("#departuredate").val(), $("#arrivaldate").val(), "", "", "");
 }
 
+function stayCheck(obj) {
+	var regTest = /[0-9]/g;
+	var st_time = obj.value;
+	var Tdid = $(obj).parent().parent().attr("id");
+	
+	if(!regTest.test(st_time)) {
+		alert("분단위 숫자만 입력가능합니다");
+		obj.value = 5;
+		send("stayCheck", Tdid, 5, "", "", "", "");
+	} else {
+		send("stayCheck", Tdid, st_time, "", "", "", "");
+	}
+}
 </script>
 </body>
 </html>

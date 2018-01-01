@@ -2,7 +2,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <% 
-	response.setHeader("P3P","CP='CAO PSA CONi OTR OUR DEM ONL'"); 
 	PlanVO vo = (PlanVO) request.getAttribute("plan");
 	String catenum = vo.getCategorynum();
 	String isopen = vo.getIsopen();
@@ -15,9 +14,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>투어플랜(TourPlan)-일정만들기 상세</title>
-<script type="text/javascript" src="<c:url value='/'/>resources/js/header.js"></script>
 <script type="text/javascript" src="<c:url value='/'/>resources/js/redips-drag-min.js?v=<%=System.currentTimeMillis()%>"></script>
-<script type="text/javascript" src="<c:url value='/'/>resources/js/script.js?v=<%=System.currentTimeMillis()%>"></script>
+<script type="text/javascript" src="<c:url value='/'/>resources/js/drag2.js"></script>
 <script src='<c:url value='/'/>resources/js/jquery.form.min.js'></script>
 <script>
 var plannum = "<%=vo.getPlannum()%>";
@@ -53,13 +51,62 @@ $(function(){
 								img = "<img id='topimg' src='<c:url value='/'/>resources/images/" + data[0].imagename + "' width='100%'>";
 								$(img).appendTo($("#imageBody"));
 							}
+							
+							/***************************일정표 및 스토리 틀*************************/
+							//[일정표]최상단 Day1, Day2, Day3..
+							var post_day = $("#day").text();
+							var table_top = "<tr>";
+							for(d=1; d<=post_day; d++) {
+								table_top += "<td class='redips-mark dark'>Day" + d + "</td>";	
+							} 
+							table_top += "</tr>";
+							$("#table2").append(table_top);
+							
+							//[일정표]그 이하 tr, td 일정만큼 틀 추가
+							var last_tr = data[0].tr;
+							for(j=0; j<=last_tr; j++) {
+								var table_td = "<tr>";
+								for(i=1; i<=post_day; i++) {
+									table_td += "<td id="+i+"a"+j+"></td>";
+								}
+								table_td += "</tr>";
+								$("#table2").append(table_td);
+							}
+							
+							//[스토리]post 테이블 칸만큼 틀 추가
+							for(i=1; i<=post_day; i++) {
+								var day_div = "<div id='postDay" + i + "' style='border: 1px solid red;'><font size='5'><b>" + i + " Day</b></font>";
+								for(j=0; j<=last_tr; j++) {
+									day_div += "<div id='post"+i+"a"+j+"'></div>";
+								}
+								day_div += "</div>";
+								$("#storyTab").append(day_div);
+							}
+							
+							//[스토리]처음 Post목록 불러오는 ajax
+							var param_post = "plannum="+plannum;
+							$.getJSON("../postAjax/selectPost", param_post, function(data,status){
+								if(status =="success" ) {
+									if( data.length > 0) {
+										for(i=0; i<data.length; i++) {
+											var div = "<div style='border: 1px solid grey; padding: 5px; margin: 5px; width: fit-content;'>" + data[i].post + "</div>"
+											$("#post" + data[i].day + "a" + data[i].tr).append(div);
+										}
+									}
+								} else {
+									alert(status);
+								}
+							})
+							/***************************일정표 및 스토리 틀*************************/
+							
+							//[일정표]만들어진 tr,td에 데이터넣기
 							for(i=0; i<data.length; i++) {
 								for(j=0; j<data_place.length; j++) {
 									if(data[i].placenum == data_place[j].placenum) {
 										break;
 									}
 								}
-								var div = "<div id='place_" + data[i].placenum + "_" + data[i].plantablenum + "' class='redips-drag'>" + data_place[j].placename + "<br>" + data_place[j].city + ", " + data_place[j].country+ "</div>";
+								var div = "<div id='place_" + data[i].placenum + "_" + data[i].plantablenum + "' class='redips-drag'>" + data_place[j].placename + "<br>" + data_place[j].city + ", " + data_place[j].country+ "<br>" + data[i].staytime + "분</div>";
 								 $(div).appendTo($("#" + data[i].day + "a" + data[i].tr));
 								 
 								 $("#post"+ data[i].day + "a" + data[i].tr).append("<div style='border: solid 1px orange;'>" + data_place[j].placename + "<br>" + data_place[j].city + ", " + data_place[j].country +  "</div>");
@@ -73,37 +120,8 @@ $(function(){
 			}
 		});
 		
-		var post_day = $("#day").text();
-		for(i=1; i<=post_day; i++) {
-			var day_div = "<div id='postDay" + i + "' style='border: 1px solid red;'><font size='5'><b>" + i + " Day</b></font>";
-			var table_td = "<td class='redips-mark dark'>Day" + i + "</td>";
-			$("#table2 tr:eq(0)").append(table_td);
-			for(j=0; j<9; j++) {
-				day_div += "<div id='post"+i+"a"+j+"'></div>";
-				//<button id='"+i+","+j+"' class='postbtn' style='display:none;'>포스트쓰기</button>
-				table_td = "<td id="+i+"a"+j+"></td>"
-				$("#table2 tr:eq("+(j+1)+")").append(table_td);
-			}
-			day_div += "</div>";
-			$("#storyTab").append(day_div);
-		}
-		
-		//처음 Post목록 불러오는 ajax
-		var param_post = "plannum="+plannum;
-		$.getJSON("../postAjax/selectPost", param_post, function(data,status){
-			if(status =="success" ) {
-				if( data.length > 0) {
-					for(i=0; i<data.length; i++) {
-						var div = "<div style='border: 1px solid grey; padding: 5px; margin: 5px; width: fit-content;'>" + data[i].post + "</div>"
-						$("#post" + data[i].day + "a" + data[i].tr).append(div);
-					}
-				}
-			} else {
-				alert(status);
-			}
-		})	
 });
-	
+	//[스토리][일정표] 탭 나눔
 	function openTab(evt, tabName) {
 		var i, tabcontent, tablinks;
 		tabcontent = document.getElementsByClassName("tabcontent");
@@ -376,7 +394,6 @@ div#redips-drag #table1 div {
 </style>
 </head>
 <body>
-
 <!-- Modal -->
   <div class="modal fade" id="imageModal" role="dialog">
     <div class="modal-dialog modal-lg">
@@ -407,7 +424,7 @@ div#redips-drag #table1 div {
 						<td id="day">${plan.day}</td>
 						<td>${plan.people}</td>
 						<td>
-							<select id="sel" name="categorynum">
+							<select id="sel" name="categorynum" disabled>
         						<option value="11">나홀로여행</option>
 								<option value="12">친구와여행</option>
   				 				<option value="13">가족여행</option>
@@ -449,7 +466,6 @@ div#redips-drag #table1 div {
 					<button class="tablinks" onclick="openTab(event, 'planTab')" id="defaultOpen">지도/일정표</button>
 				</div>
 				<div id="storyTab" class="tabcontent">
-					스토리
 				</div>
 				<div id="planTab" class="tabcontent">
 					<div id="googleMap" style="width: 100%; height: 400px;"></div>
@@ -467,26 +483,6 @@ div#redips-drag #table1 div {
 						<div id="right">
 							<table id="table2" border="1">
 								<tbody>
-									<tr>
-									</tr>
-									<tr>
-										</tr>
-										<tr>
-										</tr>
-										<tr>
-										</tr>
-										<tr>
-										</tr>
-										<tr>
-										</tr>
-										<tr>
-										</tr>
-										<tr>
-										</tr>
-										<tr>
-										</tr>
-										<tr>
-										</tr>
 								</tbody>
 							</table>
 						</div>

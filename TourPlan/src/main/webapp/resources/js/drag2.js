@@ -50,6 +50,8 @@ redips.init = function () {
 	};
 
 	rd.event.clonedDropped = function() {
+		rd.obj.lastChild.setAttribute("type", "text");
+		
 		var tr = rd.td.target.getAttribute("id");
 		var arr = new Array();
 		arr = tr.split("a");
@@ -58,7 +60,6 @@ redips.init = function () {
 		var child2 = rd.objOld.childNodes[2].nodeValue;
 		
 		$("#post"+tr).append("<div style='border: solid 1px orange;'>" + child1 + "<br>" + child2 + "</div>");
-		//$("#post"+tr).append("<button class='postbtn' onclick=\"postbtnClick('"+arr[0]+"','"+arr[1]+"');\">포스트쓰기</button>");
 		$("#post"+tr+"+button").css("display", "block");
 	}
 	
