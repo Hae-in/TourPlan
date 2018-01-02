@@ -11,6 +11,11 @@
 		</if> 	
 		SELECT P.PLANNUM, P.ID "userid", P.PLANNAME, P.STATE, NVL(likecount, '0') "likecount"
 		, (SELECT REALFILENAME FROM FILES WHERE TABLENAME='plan' AND TABLENUM = P.PLANNUM AND STATE=1 AND ROWNUM=1) AS imagename
+		<if test="membernumMy != null and membernumMy != ''">
+		, (SELECT LIKEPLANNUM FROM LIKEPLAN WHERE PLANNUM = P.PLANNUM
+		AND MEMBERNUM = #{membernumMy}) AS likemy
+		, p.writedate
+		</if>
 		FROM PLAN P LEFT OUTER JOIN
 		(SELECT PLANNUM,
 		COUNT(PLANNUM) AS likecount FROM LIKEPLAN GROUP BY PLANNUM) L

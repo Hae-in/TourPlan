@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib prefix="myTag" tagdir="/WEB-INF/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,6 +14,10 @@
 }
 </style>
 <script>
+function dolist(page){
+	document.frm.elements["page"].value = page
+	document.frm.submit();
+}
 	$(function() {
 		$("#slider-range")
 				.slider(
@@ -25,12 +30,24 @@
 								$("#amount").val(
 										"day" + ui.values[0] + " - day"
 												+ ui.values[1]);
+								$("[name='period1']").val(ui.values[0]);
+								$("[name='period2']").val(ui.values[1]);
 							}
 						});
 		$("#amount").val(
 				"day" + $("#slider-range").slider("values", 0) + " - day"
 						+ $("#slider-range").slider("values", 1));
 
+		if('${planSearchVO.period1}' != '') {
+			$("input:radio[name='plan_sort']:input[value='${planSearchVO.plan_sort}']").prop("checked", "true");
+			$("input:radio[name='categorynum']:input[value='${planSearchVO.categorynum}']").prop("checked", "true");
+			$( "#slider-range" ).slider( "values", [ ${planSearchVO.period1}, ${planSearchVO.period2} ] );
+			$("#amount").val("day${planSearchVO.period1} - day${planSearchVO.period2}")
+			$("[name='period1']").val( '${planSearchVO.period1}' );
+			$("[name='period2']").val( '${planSearchVO.period2}' );
+			$("[name='city']").val( '${planSearchVO.city}' );
+		} else {}
+		
 		$(".likemy").click(function(){		
 			var plannum = $(this).attr('plannum');
 			var likeplannum = $(this).attr('likeplannum');
@@ -59,7 +76,8 @@
 
 </head>
 <body>
-		<form action="../plan/selectAll.do" method="post" id="frm">
+		<form action="../plan/selectAll.do" method="post" id="frm" name="frm">
+		<input type="hidden" name="page" value="1">
 			<!-- Content Row -->
 			<div class="row">
 				<!-- Sidebar Column -->
@@ -145,6 +163,7 @@
 			</div>
 			<!-- /.row -->
 		</form>
+	<myTag:paging paging="${paging}" jsfunc="dolist"/> 
 </body>
 </html>
 

@@ -25,7 +25,7 @@ table td {
 			url : '../adminAjax/select',
 			editurl: "../plan/adminUpdate.do",
 			datatype : "json",
-			colNames : [ '일정번호', '아이디', '일정이름', '좋아요수' ],
+			colNames : [ '일정번호', '아이디', '일정이름', '상태', '등록일' ],
 			colModel : [ {
 				name : 'plannum',
 				index : 'plannum',
@@ -46,9 +46,19 @@ table td {
 				width : 100,
 				editable : true
 			}, {
-				name : 'likecount',
-				index : 'likecount',
-				width : 15,
+				name : 'state',
+				index : 'state',
+				width : 30,
+				align : "center",
+				editable : true,
+				formatter:'select', 
+				formatoptions: {
+					value : "0:기본;1:승인;2:승인대기;3:차단"
+				}
+			}, {
+				name : 'writedate',
+				index : 'writedate',
+				width : 30,
 				align : "center"
 			} ],
 			editable : true,
@@ -60,7 +70,10 @@ table td {
 			rowList : [ 10, 20, 30 ],
 			pager : '#pager2',
 			viewrecords : true,
-			caption : "일정관리"
+			caption : "일정관리",  
+			onSelectRow: function(rowid, status, e) {  			
+				//location.href="../plan/select.do?plannum=" + rowid;
+			}
 		});
 		jQuery("#list2").jqGrid('navGrid', '#pager2', {
 			edit : true,

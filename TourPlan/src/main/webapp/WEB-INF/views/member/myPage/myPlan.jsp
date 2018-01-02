@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib prefix="myTag" tagdir="/WEB-INF/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,9 +14,12 @@
 }
 </style>
 <script>
+function dolist(page){
+	document.frm.elements["page"].value = page
+	document.frm.submit();
+}
 	$(function() {
-		$("#slider-range")
-				.slider(
+		$("#slider-range").slider(
 						{
 							range : true,
 							min : 1,
@@ -25,12 +29,26 @@
 								$("#amount").val(
 										"day" + ui.values[0] + " - day"
 												+ ui.values[1]);
+								$("[name='period1']").val(ui.values[0]);
+								$("[name='period2']").val(ui.values[1]);
 							}
 						});
 		$("#amount").val(
 				"day" + $("#slider-range").slider("values", 0) + " - day"
 						+ $("#slider-range").slider("values", 1));
 
+		if('${planSearchVO.period1}' != '') {
+			$("input:radio[name='plan_sort']:input[value='${planSearchVO.plan_sort}']").prop("checked", "true");
+			$("input:radio[name='categorynum']:input[value='${planSearchVO.categorynum}']").prop("checked", "true");
+			$("input:radio[name='isopen']:input[value='${planSearchVO.isopen}']").prop("checked", "true");
+			$("input:radio[name='state']:input[value='${planSearchVO.state}']").prop("checked", "true");
+			$( "#slider-range" ).slider( "values", [ ${planSearchVO.period1}, ${planSearchVO.period2} ] );
+			$("#amount").val("day${planSearchVO.period1} - day${planSearchVO.period2}")
+			$("[name='period1']").val( '${planSearchVO.period1}' );
+			$("[name='period2']").val( '${planSearchVO.period2}' );
+			$("[name='city']").val( '${planSearchVO.city}' );
+		} else {}
+		
 		$(".likemy").click(function(){		
 			var plannum = $(this).attr('plannum');
 			var likeplannum = $(this).attr('likeplannum');
@@ -53,8 +71,19 @@
 				}				
 			});
 		});
-	
 	});
+	
+function confc(plannum) {
+	console.log("함수실행");
+	$.ajax({
+		url : "../planAjax/confirm?plannum="+plannum,
+		dataType : "json",
+		success : function(data) {
+			alert('승인요청되었습니다');
+			$("#conf").attr("display", "none");
+		}
+	});
+}
 
 function modalOn(p_num) {
 	$("#pNum").val(p_num);
@@ -101,7 +130,8 @@ function modalOn(p_num) {
   </div>
 <!-- Modal End -->
 
-		<form action="../plan/selectMade.do" method="post" id="frm">
+		<form action="../plan/selectMade.do" method="post" id="frm" name="frm">
+		<input type="hidden" name="page" value="1">
 			<input type="hidden" name="id" value="<%=session.getAttribute("memberid")%>">
 			<!-- Content Row -->
 			<div class="row">
@@ -110,8 +140,8 @@ function modalOn(p_num) {
 					<div class="list-group">
 						<div class="list-group-item">
 							정렬<br /> 
-							<span><input type="radio" name="plan_sort" value="" checked> 최신순</span>
-							<span><input type="radio" name="plan_sort" value="likecount">인기순</span>
+							<span><input type="radio" id="rd" name="plan_sort" value="" checked><label for="rd">최신순</label></span>
+							<span><input type="radio" id="rd0" name="plan_sort" value="likecount"><label for="rd0">인기순</label></span>
 						</div>
 						<div class="list-group-item">
 							카테고리<br />
@@ -136,8 +166,9 @@ function modalOn(p_num) {
 						<div class="list-group-item">
 						<div id="slider-range" style="margin: 10px"></div>
 							기간<br /> 
-							<label for="amount"></label> <input type="text" name="period1" id="amount" readonly 
+							<label for="amount"></label> <input type="text" id="amount" readonly 
 							style="background-color: transparent; border: 0; color: #f6931f; font-weight: bold;">
+							<input type="hidden" name="period1" value="1"><input type="hidden" name="period2" value="7">
 						</div>
 						<div class="list-group-item">
 							공개여부<br />
@@ -147,7 +178,7 @@ function modalOn(p_num) {
 						<div class="list-group-item">
 							공유신청<br />
 							<input type="radio" id="rd10" name="state" value="1"><label for="rd10">승인된 일정</label>
-							<input type="radio" id="rd11" name="state" value="0"><label for="rd11">승인대기 일정</label>
+							<input type="radio" id="rd11" name="state" value="2"><label for="rd11">승인대기 일정</label>
 						</div>
 						<div class="list-group-item">
 							도시<br /> <input type="text" name="city" style="width: 220px; margin: 5px;"/>
@@ -173,18 +204,22 @@ function modalOn(p_num) {
 									<div class="card-body">
 										<h4 class="card-title">
 											<c:if test="${sessionScope.membernum != null}">
-												<span class="likemy" plannum="${plan.plannum}"
-													likeplannum="${plan.likemy}"> 
+												<span class="likemy" plannum="${plan.plannum}" likeplannum="${plan.likemy}"> 
 													<c:if test="${plan.likemy != null}">♥</c:if> 
 												 	<c:if test="${plan.likemy == null}">♡</c:if>
 												</span>
 											</c:if>
 											<a href="../plan/select.do?plannum=${plan.plannum}">${plan.planname}</a>
 										</h4>
-											<c:if test="${plan.state == '0'}">
-												<a href="../plan/myUpdate.do?plannum=${plan.plannum}" style="border: 1px solid black;">이 일정 수정하기</a>
-												<a href="#" style="border: 1px solid red;">승인요청</a>
-											</c:if>
+											<c:choose>
+												<c:when test="${plan.state == '0'}">
+													<a href="../plan/myUpdate.do?plannum=${plan.plannum}" style="border: 1px solid black;">이 일정 수정하기</a>
+													<div id="conf" onclick="confc('${plan.plannum}');" style="border: 1px solid red; cursor: pointer;">승인요청</div>
+												</c:when>
+												<c:when test="${plan.state == '2'}">
+													<div>승인대기중</div>
+												</c:when>
+											</c:choose>
 										<p class="card-text">
 											<%-- ${i.lat}${i.lon}${i.addr}${i.city}${i.country} --%>
 										</p>
@@ -199,6 +234,8 @@ function modalOn(p_num) {
 			</div>
 			<!-- /.row -->
 		</form>
+		
+		<myTag:paging paging="${paging}" jsfunc="dolist"/> 
 </body>
 </html>
 

@@ -6,6 +6,7 @@ public class PlanSearchVO extends PlanVO {
 	private String plan_sort;
 	private String city;
 	private String membernum;
+	private String membernumMy;
 	private String plannum_list;
 	private String keyword;
 	int first;	//firstIndex
@@ -65,5 +66,19 @@ public class PlanSearchVO extends PlanVO {
 	public void setKeyword(String keyword) {
 		this.keyword = keyword;
 	}
+	public String getMembernumMy() {
+		return membernumMy;
+	}
+	public void setMembernumMy(String membernumMy) {
+		this.membernumMy = membernumMy;
+	}
+	@Override
+	public String toString() {
+		return "PlanSearchVO [period1=" + period1 + ", period2=" + period2 + ", plan_sort=" + plan_sort + ", city="
+				+ city + ", membernum=" + membernum + ", membernumMy=" + membernumMy + ", plannum_list=" + plannum_list
+				+ ", keyword=" + keyword + ", first=" + first + ", last=" + last + "]";
+	}
+	
+	
 }
 
