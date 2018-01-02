@@ -96,12 +96,12 @@ function dolist(page){
 				<div class="col-lg-4 mb-4">
 					<div class="list-group">
 						<div class="list-group-item">
-							정렬<br /> 
+							<font size="4px">정렬</font><br /> 
 							<span><input type="radio" id="rd" name="plan_sort" value="" checked><label for="rd">최신순</label></span>
 							<span><input type="radio" id="rd0" name="plan_sort" value="likecount"><label for="rd0">인기순</label></span>
 						</div>
 						<div class="list-group-item">
-							카테고리<br />
+							<font size="4px">카테고리</font><br />
 							<table>
 								<tr>
 									<td><span><input type="radio" id="rd1" name="categorynum" value="" checked> <label for="rd1"> 전체</label></span></td> 
@@ -121,19 +121,19 @@ function dolist(page){
 							</table>
 						</div>
 						<div class="list-group-item">
+						<font size="4px">기간</font><br /> 
 						<div id="slider-range" style="margin: 10px"></div>
-							기간<br /> 
 							<label for="amount"></label> <input type="text" id="amount" readonly 
 							style="background-color: transparent; border: 0; color: #f6931f; font-weight: bold;">
 						</div>
 						<input type="hidden" name="period1" value="1"><input type="hidden" name="period2" value="7">
 						<div class="list-group-item">
-							도시<br /> <input type="text" name="city" style="width: 220px; margin: 5px;"/>
+						<font size="4px">도시</font><br /> <input type="text" name="city" style="width: 220px; margin: 5px;"/>
 						</div>
 						<!-- 일반검색은 state=1, isopen=1 -->
 						<input type="hidden" name="state" value="1">
 						<input type="hidden" name="isopen" value="1">
-						<button type="submit">검색</button>
+						<button type="submit" style="cursor: pointer; height: 40px;">검색</button>
 					</div>
 				</div>
 				<!-- Content Column -->

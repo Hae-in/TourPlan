@@ -8,6 +8,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>투어플랜(TourPlan)-일정만들기 상세</title>
+<link href="<c:url value='/'/>resources/admin-thema/css/sb-admin.min.css" rel="stylesheet">
 <script type="text/javascript" src="../resources/js/redips-drag-min.js"></script>
 <script type="text/javascript" src="../resources/js/drag2.js"></script>
 <script src='<c:url value='/'/>resources/js/jquery.form.min.js'></script>
@@ -36,7 +37,7 @@
 		//오른쪽 일정테이블 칸만큼 post쓰기 생성
 		var post_day = $("#day").val();
 		for(i=1; i<=post_day; i++) {
-			var day_div = "<div id='postDay" + i + "' style='border: 1px solid red;'><font size='5'><b>" + i + " Day</b></font>";
+			var day_div = "<div id='postDay" + i + "' class='post_day'><font size='5'><b>" + i + " Day</b></font>";
 			var table_td = "<td class='redips-mark dark'>Day" + i + "</td>";
 			$("#table2 tr:eq(0)").append(table_td);
 			for(j=0; j<9; j++) {
@@ -145,10 +146,11 @@ body {
     flex: 4;
 }
 
-#planName {
-	width: 100%;
-	height: 50px;
-	margin-bottom: 20px;
+#planname {
+	width: 80%;
+	height: 45px;
+	margin-bottom: 5px;
+	font-size: 18px;
 }
 
 /*공개여부*/
@@ -311,6 +313,11 @@ div#redips-drag #table1 div {
 	background-color: #e0e0e0;
 }
 
+div.dark:hover {
+	background-color: #cccccc;
+}
+    
+
 .button_container{
 	padding-top: 10px;
 	text-align: right;
@@ -359,6 +366,70 @@ div#redips-drag #table1 div {
 	width: 50px;
 	height: 15px;
 }
+
+.topTable {
+	width: 80%;
+}
+
+.topTable td {
+	padding: 2px;
+	text-align: center;
+	vertical-align: inherit;
+}
+
+.topTr {
+	padding: 2px;
+	background-color: #e0e0e0;
+}
+
+.btn-default {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 15px;
+  font-weight: normal;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: #555;
+  background-color: #fff;
+  border-color: #ccc;
+}
+.btn-default:hover {
+  color: #333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+
+.post_day {
+	border-bottom: 1px solid #212529;
+}
+
+.post_content {
+	padding: 2px;
+}
+
+.post_loc {
+	margin: 5px;
+    padding: 0 5px 0 5px;
+    border-bottom: 1px solid #555;
+    font-weight: 550;
+    width: 30%;
+}
+.postbtn {
+	display: block;
+    border: 1px solid transparent;
+    background: gold;
+    border-radius: 10px;
+    padding: 8px 12px;
+    margin: 10px;
+    cursor: pointer;
+}
+
+.postbtn:hover {
+    background: #ffc107;
+}
 </style>
 </head>
 <body onunload="f5check();">
@@ -403,11 +474,10 @@ div#redips-drag #table1 div {
 <!-- Modal End -->
 
 	<div class="header">
-		<input type="text" id="planname" value="${vo.planname}"/>
+		<input type="text" id="planname" name="planname" value="${vo.planname}" placeholder="제목과 간단한 소개"/>
 		<div class="divContents">
-			<div>
-				<table border="1">
-					<tr>
+				<table class="topTable" border="1">
+					<tr class="topTr">
 						<td>출발일</td><td>도착일</td><td>day</td><td>인원</td><td>여행테마</td><td>공개여부</td><td>이미지</td>
 					</tr>
 					<tr>
@@ -426,26 +496,23 @@ div#redips-drag #table1 div {
 			  				</select>
 			  			</td>
 						<td>
-							<div>
 								<label class="switch"> 
 									<input id="isopen_ck" type="checkbox" name="is" value="1"><span class="slider round"></span>
 								</label>
 									<!-- ★★★form넘기기전 confirm해야 -->
 									<input type="hidden" id="isopen" name="isopen" value="0">
-							</div>
 						</td>
 						<td>
 							<!-- 이미지 업로드 -->
 							<div id="upload"></div>
 							<form id="frm_img" method="post" enctype="multipart/form-data">
-      							<input type="file" name="uploadFile" style="border: 1px solid grey"><br />
+      							<input type="file" name="uploadFile" style="border: 1px solid grey; width: 70%;">
       							<button type="button" onclick="imageAdd();">업로드</button>
   							</form>
 							<!-- 이미지 업로드 -->			
 						</td>
 					</tr>
 				</table>
-			</div>
 		</div>
 	</div>
 	<div id="redips-drag">
@@ -454,7 +521,7 @@ div#redips-drag #table1 div {
 				<div id="left">
 					<div id="innerLeft">
 						<input type="text" class="searchInput" id="searchInput-region" onkeyup="searchRegionFunction()" placeholder="Search.." title="Type in a name">
-						<table id="trashTb">
+						<table id="trashTD">
 							<tr><td class="redips-trash" title="Trash" id="trashTD"><h3><strong>Trash</strong></h3></td></tr>
 						</table>
 						<table id="table1" border="1">
@@ -465,7 +532,8 @@ div#redips-drag #table1 div {
 								
 							</tbody>
 						</table>
-						<button id="newPlaceBtn">새장소등록</button>
+						<br>
+						<button id="newPlaceBtn" class="btn-default">새장소등록</button>
 					</div>
 				</div>
 			</div>
@@ -482,7 +550,7 @@ div#redips-drag #table1 div {
     					 <div id="directions-panel"></div>
 					<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC6-5na3Y2gJSt31kHSeSWZqp3VM1hvgJg&libraries=places&callback=initMap"></script>
 					<div id="planList">
-						<div id="right" style="overflow-x: scroll;">
+						<div id="right">
 							<table id="table2">
 								<tbody>
 									<tr>
@@ -507,17 +575,16 @@ div#redips-drag #table1 div {
 										</tr>
 								</tbody>
 							</table>
-							<div id="addTr" style="border: 1px solid blue;">칸 추가하기</div>
+							<div id="addTr" class="dark" style="text-align: center; cursor: pointer;">칸 추가하기</div>
 						</div>
 					</div>
 				</div>
-				<div id="divBtns">
-					<button type="button" onclick="savePlan();">저장하기</button>
+			</div>
+				<div id="divBtns" style="padding: 10px 0 10px 0;">
+					<button class="btn btn-primary" type="button" onclick="savePlan();">저장하기</button>
 					<input type="text" id="cal_dis" placeholder="day">
 					<button type="submit" id="submit">거리계산</button>
-					<button type="button">취소</button>
 				</div>
-			</div>
 		</div>
 	</div>
 	
@@ -737,9 +804,9 @@ function dayCheck() {
 			}
 			
 			//포스트도 함께 추가
-			var day_div = "<div id='postDay"+(last_day+i)+"' style='border: 1px solid red;'><font size='5'><b>" + (last_day+i) + " Day</b></font>"
+			var day_div = "<div id='postDay"+(last_day+i)+"' class='post_day''><font size='5'><b>" + (last_day+i) + " Day</b></font>"
 			for(j=0; j<=t; j++) {
-				day_div += "<div id='post"+(last_day+i)+"a"+j+"'></div><button id='"+(last_day+i)+"b"+j+"' class='postbtn' style='display:none;'>포스트쓰기</button>"
+				day_div += "<div id='post"+(last_day+i)+"a"+j+"' class='post_content'></div><button id='"+(last_day+i)+"b"+j+"' class='postbtn' style='display:none;'>포스트쓰기</button>"
 			}
 			day_div += "</div>";
 			$("#storyTab").append(day_div);
@@ -912,7 +979,7 @@ $(function () {
 			add += "<td id='"+i+"a"+t+"' day='"+i+"' tr='"+t+"'></td>";
 			
 			//포스트도 함께 추가
-			var postAdd = "<div id='post"+i+"a"+t+"'></div><button id='"+i+"b"+t+"' class='postbtn' style='display:none;'>포스트쓰기</button>";
+			var postAdd = "<div id='post"+i+"a"+t+"' class='post_content'></div><button id='"+i+"b"+t+"' class='postbtn' style='display:none;'>포스트쓰기</button>";
 			$("#postDay"+i).append(postAdd);
 		}
 		add += "</tr>";

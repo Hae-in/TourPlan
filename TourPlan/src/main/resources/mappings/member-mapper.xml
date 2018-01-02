@@ -9,7 +9,7 @@
 	</select>
 	
 	<select id="select" parameterType="memberSearch" resultType="member">
-		select membernum, id, password, to_char(regdate, 'yyyy/mm/dd'), state, nickname from member
+		select membernum, id, password, to_char(regdate, 'yyyy/mm/dd') "regdate", state, nickname from member
 		<where>
 			<if test="membernum != null and membernum != ''">
 				membernum = #{membernum}
@@ -50,10 +50,10 @@
 		update member
 		<set>
 			<if test="password != null and password != ''">
-				password = #{password}
+				password = #{password},
 			</if>
 			<if test="state != null and state != ''">
-				state = #{state}
+				state = #{state},
 			</if>
 			<if test="nickname != null and nickname != ''">
 				nickname = #{nickname}

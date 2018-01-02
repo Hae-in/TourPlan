@@ -11,10 +11,10 @@
 		</if> 	
 		SELECT P.PLANNUM, P.ID "userid", P.PLANNAME, P.STATE, NVL(likecount, '0') "likecount"
 		, (SELECT REALFILENAME FROM FILES WHERE TABLENAME='plan' AND TABLENUM = P.PLANNUM AND STATE=1 AND ROWNUM=1) AS imagename
+		, P.WRITEDATE "writedate"
 		<if test="membernumMy != null and membernumMy != ''">
 		, (SELECT LIKEPLANNUM FROM LIKEPLAN WHERE PLANNUM = P.PLANNUM
 		AND MEMBERNUM = #{membernumMy}) AS likemy
-		, p.writedate
 		</if>
 		FROM PLAN P LEFT OUTER JOIN
 		(SELECT PLANNUM,
@@ -146,8 +146,8 @@
 	</insert>
 	
 	<insert id="insertShare" parameterType="map">
-		INSERT INTO SHAREPLAN (SHARENUM, PLANNUM, MEMBER1, MEMBER2, MEMBER3, WRITER)
-		VALUES (shareplan_seq.nextVal, #{plannum}, #{member1}, #{member2}, #{member3}, #{writer})
+		INSERT INTO SHAREPLAN (SHARENUM, PLANNUM, MEMBER1, MEMBER2, MEMBER3, WRITER, MEMBER1NICK, MEMBER2NICK, MEMBER3NICK, WRITERNICK)
+		VALUES (shareplan_seq.nextVal, #{plannum}, #{member1}, #{member2}, #{member3}, #{writer}, #{member1nick}, #{member2nick}, #{member3nick}, #{writernick})
 	</insert>
 
 	<update id="update" parameterType="plan">
@@ -178,6 +178,13 @@
 		WHERE PLANNUM = #{plannum}
 	</update>
 
+	<delete id="shareDelete" parameterType="plan">
+		<![CDATA[
+		DELETE FROM SHAREPLAN
+		WHERE PLANNUM = #{plannum}
+		]]>
+	</delete>
+	
 	<delete id="delete" parameterType="plan">
 		<![CDATA[
 		DELETE FROM PLAN

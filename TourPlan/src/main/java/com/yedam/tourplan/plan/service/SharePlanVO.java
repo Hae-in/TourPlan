@@ -8,6 +8,10 @@ public class SharePlanVO {
 	private String member2;
 	private String member3;
 	private String keyword;
+	private String writernick;
+	private String member1nick;
+	private String member2nick;
+	private String member3nick;
 	
 	public String getSharenum() {
 		return sharenum;
@@ -50,5 +54,29 @@ public class SharePlanVO {
 	}
 	public void setKeyword(String keyword) {
 		this.keyword = keyword;
+	}
+	public String getWriternick() {
+		return writernick;
+	}
+	public void setWriternick(String writernick) {
+		this.writernick = writernick;
+	}
+	public String getMember1nick() {
+		return member1nick;
+	}
+	public void setMember1nick(String member1nick) {
+		this.member1nick = member1nick;
+	}
+	public String getMember2nick() {
+		return member2nick;
+	}
+	public void setMember2nick(String member2nick) {
+		this.member2nick = member2nick;
+	}
+	public String getMember3nick() {
+		return member3nick;
+	}
+	public void setMember3nick(String member3nick) {
+		this.member3nick = member3nick;
 	}
 }

@@ -391,6 +391,43 @@ div#redips-drag #table1 div {
 	color: #fff;
 }
 
+#innerLeft {
+	text-align: center;
+    border: 1px solid #e0e0e0;
+   	padding: 10px;
+    background: whitesmoke;
+    border-radius: 10px;
+}
+
+.btn-default {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 15px;
+  font-weight: normal;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: #555;
+  background-color: #fff;
+  border-color: #ccc;
+}
+.btn-default:hover {
+  color: #333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+  text-decoration:none;
+}
+.topTable {
+	width: 80%;
+}
+#planname {
+	width: 80%;
+	height: 45px;
+	margin-bottom: 5px;
+	font-size: 18px;
+}
 </style>
 </head>
 <body>
@@ -415,7 +452,7 @@ div#redips-drag #table1 div {
 		<input type="text" id="planName" placeholder="${plan.planname}"/>
 		<div class="divContents">
 			<div>
-				<table border="1">
+				<table class="topTable" border="1">
 					<tr>
 						<td>출발일</td><td>일수</td><td>인원</td><td>여행테마</td><td>이미지</td>
 					</tr>
@@ -446,17 +483,11 @@ div#redips-drag #table1 div {
 			<div class="column divNav" style="background-color:#aaa;">
 				<div id="left">
 					<div id="innerLeft">
-						<div id="profile">
-							<c:if test="${not empty m_picture}">
-								<img src="<c:url value='/'/>resources/images/${m_picture[0].realfilename}" width='100px' height='100px' style='border-radius: 20px;'>
-							</c:if>
-						</div>
-						<c:if test="${not empty writer}">
-							사용자 정보 : ${writer.id}<br>
-							${writer.nickname}
-						</c:if>
-						<!-- ★★★ report 넣어야함-->
-						<a href="#"><font color='red'>잘못된 일정 신고하기</font></a>
+						<c:if test="${not empty m_picture}">
+							<img src="<c:url value='/'/>resources/images/${m_picture[0].realfilename}" width='100px' height='100px' style='border-radius: 20px;'>
+						</c:if><br>
+						<font size="4">${writer.nickname}</font><br><hr>
+						<a href="#"><font color='#e60000'>▶잘못된 일정 신고하기</font></a></td>
 					</div>
 				</div>
 			</div>
@@ -488,8 +519,9 @@ div#redips-drag #table1 div {
 						</div>
 					</div>
 				</div>
+				<br>
 				<div id="divBtns">
-					<a href="../plan/modify.do?plannum=<%=vo.getPlannum()%>" style="cursor: pointer; background: white;">이 일정 참고하기</a>
+					<a href="../plan/modify.do?plannum=<%=vo.getPlannum()%>" class="btn-default">이 일정 참고하기</a>
 				</div>
 			</div>
 		</div>

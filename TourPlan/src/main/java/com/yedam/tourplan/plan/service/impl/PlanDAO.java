@@ -57,6 +57,11 @@ public class PlanDAO {
 		return mybatis.selectList("PlanDAO.selectShare", vo);
 	}
 	
+	//공유상태 delete
+	public int shareDelete(SharePlanVO vo) {
+		return mybatis.delete("PlanDAO.shareDelete", vo);
+	}
+	
 	/* 임시------------------------------------------------------*/
 	public PlanVO selectSeq(PlanVO vo) {
 		return mybatis.selectOne("PlanDAO.selectSeq", vo);

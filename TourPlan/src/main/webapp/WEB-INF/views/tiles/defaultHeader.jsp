@@ -46,7 +46,7 @@
         <div class="modal-body">
         
          <form id="frmModal">
-         <table border="0" width="170px" align="center" cellspacing="10" cellpadding="5">
+         <table style="border: 0px; width:200px; text-align:center;" align="center" cellspacing="10" cellpadding="5">
             <tr>
                 <td><input type="email" name="id" id="id" placeholder="아이디"></td>
             </tr>
@@ -152,7 +152,7 @@
         <div class="modal-body">
         
          <form id="frmModal3">
-         <table border="0" width="170px" align="center" cellspacing="10" cellpadding="5">
+         <table style="border:0px; width:200px; text-align:center;" align="center" cellspacing="10" cellpadding="5">
          
             <tr>
                 <td align="center"><input type="email" name="pwCk" id="pwCk" placeholder="이메일 주소"></td>

@@ -33,6 +33,11 @@
 	
 	<delete id="delete">
 		delete from likeplan
-		where likeplannum = #{likeplannum}
+		<if test="likeplannum != null and likeplannum != ''">
+			where likeplannum = #{likeplannum}
+		</if>
+		<if test="plannum != null and plannum != ''">
+			where plannum = #{plannum}
+		</if>
 	</delete>
 </mapper>

@@ -61,6 +61,11 @@ public class PlanServiceImpl implements PlanService {
 	public int selectListTotCnt(PlanSearchVO vo) {
 		return planDAO.selectListTotCnt(vo);
 	}
+
+	@Override
+	public int deleteShare(SharePlanVO vo) {
+		return planDAO.shareDelete(vo);
+	}
 	
 	//임시
 	

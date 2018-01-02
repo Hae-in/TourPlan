@@ -44,7 +44,6 @@ redips.init = function () {
 			$("#post"+tr).append(child);
 		}
 		$("#post"+tr+"+button").css("display", "block");
-		//$("#post"+x_tr).empty();
 		$("#post"+x_tr+"+button").css("display", "none");
 		}
 	};
@@ -59,7 +58,7 @@ redips.init = function () {
 		var child1 = rd.objOld.childNodes[0].nodeValue;
 		var child2 = rd.objOld.childNodes[2].nodeValue;
 		
-		$("#post"+tr).append("<div style='border: solid 1px orange;'>" + child1 + "<br>" + child2 + "</div>");
+		$("#post"+tr).append("<div class='post_loc'>" + child1 + "<br>" + child2 + "</div>");
 		$("#post"+tr+"+button").css("display", "block");
 	}
 	
@@ -68,6 +67,7 @@ redips.init = function () {
 		var x_tr = rd.td.previous.getAttribute("id");
 		
 		$("#post"+x_tr).empty();
+		$("#post"+x_tr+"+button").hide();
 	};
 	
 	// if any element is clicked, then make all subjects in timetable visible
