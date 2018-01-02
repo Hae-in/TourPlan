@@ -432,6 +432,26 @@ div#redips-drag #table1 div {
 </head>
 <body>
 <!-- Modal -->
+  <div class="modal fade" id="report_Modal" role="dialog">
+    <div class="modal-dialog modal-md">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">신고하기</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div id="report_m_body" class="modal-body">
+        	신고사유<br>
+        	<textarea style="width: -webkit-fill-available;"></textarea><br>
+        	<button>신고하기</button> <button type="button" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- Modal End -->
+
+<!-- Modal -->
   <div class="modal fade" id="imageModal" role="dialog">
     <div class="modal-dialog modal-lg">
     
@@ -487,7 +507,7 @@ div#redips-drag #table1 div {
 							<img src="<c:url value='/'/>resources/images/${m_picture[0].realfilename}" width='100px' height='100px' style='border-radius: 20px;'>
 						</c:if><br>
 						<font size="4">${writer.nickname}</font><br><hr>
-						<a href="#"><font color='#e60000'>▶잘못된 일정 신고하기</font></a></td>
+						<a style="cursor: pointer;" data-toggle="modal" data-target="#report_Modal"><font color='#e60000'>▶잘못된 일정 신고하기</font></a>
 					</div>
 				</div>
 			</div>
