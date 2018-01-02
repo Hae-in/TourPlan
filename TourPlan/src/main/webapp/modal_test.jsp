@@ -14,24 +14,22 @@
 <script>
 	function modal_iframe(title, url, width, height) {
 		$("#dialog-form").html("");
-		$("#dialog-form").append("<iframe src='" + url + "' width='" + width + "' height='" + width + "' ></iframe>");
+		$("#dialog-form").append("<iframe src='" + url + "' width='98%' height='98%' frameborder='0'></iframe>");
 		dialog.dialog("open");
 	}
 	var dialog;
 	$(function() {
 		dialog = $("#dialog-form").dialog({
 			autoOpen : false,
-			height : 100,
-			width : 100,
+			height : 800,
+			width : 1000,
 			modal : true
 		});
 	});
 </script>
 </head>
 <body>
-
-
-	<div id="dialog-form">111</div>
+<div id="dialog-form"></div>
 
 	<div id="users-contain" class="ui-widget">
 		<h1>Existing Users:</h1>

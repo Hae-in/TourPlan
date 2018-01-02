@@ -56,6 +56,11 @@ public class PlaceServiceImpl implements PlaceService {
 	public List<PlaceVO> selectAllAdmin(PlaceVO place) {
 		return placeDAO.selectAllAdmin(place);
 	}
+
+	@Override
+	public int updateState(PlaceVO place) {
+		return placeDAO.updateState(place);
+	}
 	
 	
 }

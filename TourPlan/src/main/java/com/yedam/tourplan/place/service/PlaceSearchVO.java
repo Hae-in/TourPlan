@@ -5,7 +5,14 @@ public class PlaceSearchVO extends PlaceVO {
 	int last;	//lastIndex
 	String keyword;
 	String sort;	
+	String mode;	//mypage, default
 	
+	public String getMode() {
+		return mode;
+	}
+	public void setMode(String mode) {
+		this.mode = mode;
+	}
 	public String getSort() {
 		return sort;
 	}

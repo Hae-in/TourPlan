@@ -33,6 +33,12 @@
 		categorynum = #{categorynum}
 		where placenum = #{placenum}
 	</update>
+	
+	<update id="updateState" parameterType="place">
+		update place set
+		state = #{state}
+		where placenum = #{placenum}
+	</update>
 
 	<delete id="delete">
 		delete from place
@@ -80,12 +86,15 @@
 			</if>
 			<if test="country != null and country != ''">
 				and country like '%' || #{country} || '%'
-			</if>
+			</if>			
 			<if test="membernum != null and membernum != ''">
 				and (state = '1' or membernum = #{membernum})
 			</if>
 			<if test="membernum == null or membernum == ''">
 				and state = '1'
+			</if>
+			<if test="mode == 'mypage' and membernum != null and membernum != ''">
+				and membernum = #{membernum}
 			</if>
 		</where>
 		<if test="sort != null and sort != ''">
