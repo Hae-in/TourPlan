@@ -23,6 +23,10 @@ public class PlaceDAO {
 		return mybatis.update("PlaceDAO.update", place);
 	}
 	
+	public int updateState(PlaceVO place) {
+		return mybatis.update("PlaceDAO.updateState", place);
+	}
+	
 	public int delete(PlaceVO place) {
 		return mybatis.delete("PlaceDAO.delete", place);
 	}	

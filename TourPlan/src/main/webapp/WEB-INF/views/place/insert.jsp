@@ -77,7 +77,6 @@
 </head>
 <body>
 <form action="insert.do" method="post" enctype="multipart/form-data">
-<input type="hidden" name="membernum" value="1">
 	<table>		
 			<tr>
 				<th>명소이름	</th>

@@ -58,6 +58,7 @@ public class PlaceController {
 		) throws IllegalStateException, IOException {
 		
 		if(request.getParameter("action").equals("insert")) {
+			vo.setMembernum((String)session.getAttribute("membernum"));
 			placeService.insert(vo);
 		} else {
 			placeService.update(vo);			

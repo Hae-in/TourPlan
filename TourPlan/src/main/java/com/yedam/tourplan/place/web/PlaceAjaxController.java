@@ -37,12 +37,17 @@ public class PlaceAjaxController {
 	public void updateAdmin(PlaceVO vo, HttpServletRequest request) {
 		String oper = request.getParameter("oper");
 		if(oper.equals("edit")) {
-			placeService.update(vo);			
+			placeService.updateState(vo);			
 		} else if(oper.equals("add")) {
 			placeService.insert(vo);
 		} else if(oper.equals("del")) {
-			vo.setPlacenum(request.getParameter("id"));
-			placeService.delete(vo);
+			System.out.println(request.getParameter("id"));
+			String ids[] = request.getParameter("id").split(",");
+			for (int i = 0; i < ids.length; i++) {
+				System.out.println("삭제행 : " + ids[i]);
+				vo.setPlacenum(ids[i]);
+				placeService.delete(vo);
+			}			
 		}
 	}
 	
