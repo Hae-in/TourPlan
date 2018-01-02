@@ -7,6 +7,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>일정 조회</title>
+<script src="../resources/thema/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <style>
 .list-group-item span {
 	display: inline-block;
@@ -71,6 +72,8 @@ function dolist(page){
 				}				
 			});
 		});
+		
+
 	});
 	
 function confc(plannum) {
@@ -85,12 +88,27 @@ function confc(plannum) {
 	});
 }
 
-function modalOn(p_num) {
-	$("#pNum").val(p_num);
-	$('#shareModal').modal('show');
-}
-</script>
+$(document).on("click", '.shareA', function(e) {
+	e.stopImmediatePropagation();
+	var p_num = $(this).attr("plannum");
+		$("#pNum").val(p_num);
+		$('#shareModal').modal('show');
+});
 
+$(document).on("click", '.del_confirm', function(e) {
+	e.stopImmediatePropagation();
+	var p_num = $(this).attr("plannum");
+	if(confirm("정말 삭제 하시겠습니까?")) {
+		location.href = "../plan/delete.do?plannum="+p_num;
+	} else {}
+});
+
+</script>
+<style>
+.del_confirm {
+	cursor: pointer;
+}
+</style>
 </head>
 <body>
 
@@ -192,7 +210,7 @@ function modalOn(p_num) {
 						<c:forEach items="${planList}" var="plan">
 							<div class="col-lg-6 portfolio-item">
 								<div class="card h-100">
-								<a style="cursor: pointer;" onclick="modalOn('${plan.plannum}');">실시간공유하기</a>
+								<a class="shareA" style="cursor: pointer;" plannum="${plan.plannum}">실시간공유하기</a>
 								<a href="../plan/select.do?plannum=${plan.plannum}">
 									<c:if test="${not empty plan.imagename}">
 										<img class="card-img-top" src="<c:url value='/'/>resources/images/${plan.imagename}" alt="" width="348" height="250"> 
@@ -213,7 +231,8 @@ function modalOn(p_num) {
 										</h4>
 											<c:choose>
 												<c:when test="${plan.state == '0'}">
-													<a href="../plan/myUpdate.do?plannum=${plan.plannum}" style="border: 1px solid black;">이 일정 수정하기</a>
+													<a href="../plan/myUpdate.do?plannum=${plan.plannum}" style="border: 1px solid black;">수정하기</a>
+													<a class="del_confirm" plannum="${plan.plannum}" style="border: 1px solid black;">삭제하기</a>
 													<div id="conf" onclick="confc('${plan.plannum}');" style="border: 1px solid red; cursor: pointer;">승인요청</div>
 												</c:when>
 												<c:when test="${plan.state == '2'}">

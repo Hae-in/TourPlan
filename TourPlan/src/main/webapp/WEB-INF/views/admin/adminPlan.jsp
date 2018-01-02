@@ -10,10 +10,11 @@
 	href='<c:url value='/'/>resources/js/jquery-ui.min.css'>
 <link rel="stylesheet"
 	href='<c:url value='/'/>resources/js/css/ui.jqgrid.css'>
-<script src='<c:url value='/'/>resources/js/jquery-3.2.1.min.js'></script>
 <script src='<c:url value='/'/>resources/js/jquery.jqGrid.min.js'></script>
 <script src='<c:url value='/'/>resources/js/i18n/grid.locale-kr.js'></script>
-<script src='<c:url value='/'/>resources/js/jquery-ui.min.js'></script>
+<script>
+	$.jgrid.defaults.responsive = true;
+</script>
 <style>
 table td {
 	font-size: large;
@@ -31,34 +32,35 @@ table td {
 				index : 'plannum',
 				id : 'plannum',
 				key : true,
-				editable : true,
 				width : 15,
 				align : "center",
-				
+				formatter:formatOpt
 			}, {
 				name : 'userid',
 				index : 'userid',
-				width : 30,
-				editable : true
+				width : 45,
 			}, {
 				name : 'planname',
 				index : 'planname',
 				width : 100,
-				editable : true
 			}, {
 				name : 'state',
 				index : 'state',
 				width : 30,
 				align : "center",
-				editable : true,
 				formatter:'select', 
 				formatoptions: {
-					value : "0:기본;1:승인;2:승인대기;3:차단"
+					value : "0:기본;1:승인;2:승인대기;3:차단;"
+				},
+				editable : true,
+				edittype : "select",
+				editoptions : {
+					value : "0:대기;1:승인;2:승인대기;3:차단;"
 				}
 			}, {
 				name : 'writedate',
 				index : 'writedate',
-				width : 30,
+				width : 60,
 				align : "center"
 			} ],
 			editable : true,
@@ -70,10 +72,7 @@ table td {
 			rowList : [ 10, 20, 30 ],
 			pager : '#pager2',
 			viewrecords : true,
-			caption : "일정관리",  
-			onSelectRow: function(rowid, status, e) {  			
-				//location.href="../plan/select.do?plannum=" + rowid;
-			}
+			caption : "일정관리"  
 		});
 		jQuery("#list2").jqGrid('navGrid', '#pager2', {
 			edit : true,
@@ -103,6 +102,10 @@ table td {
             }
         });
 		
+		
+		function formatOpt(cellvalue, options, rowObject){      
+			return '<a href="../plan/select.do?plannum='+cellvalue+'" style="color: red;">'+cellvalue+'</a>'; 
+		}
 	});
 </script>
 </head>

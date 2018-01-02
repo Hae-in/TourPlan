@@ -18,6 +18,8 @@ public interface PlanService {
 	public int insertShare(Map<String, String> map);
 	//공유상태 select
 	public List<SharePlanVO> selectShare(SharePlanVO vo);
+	//공유상태 delete
+	public int deleteShare(SharePlanVO vo);
 	
 	//임시
 	public PlanVO selectSeq(PlanVO vo);

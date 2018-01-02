@@ -16,8 +16,6 @@
 <link href="<c:url value='/'/>resources/thema/css/modern-business.css" rel="stylesheet">
 <link href="<c:url value='/'/>resources/css/style.css" rel="stylesheet">
 <link rel="stylesheet" href='<c:url value='/'/>resources/js/jquery-ui.min.css'>
-<script src='<c:url value='/'/>resources/js/jquery-3.2.1.min.js'></script>
-<script src='<c:url value='/'/>resources/js/jquery-ui.min.js'></script>
 <script src="../resources/thema/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
