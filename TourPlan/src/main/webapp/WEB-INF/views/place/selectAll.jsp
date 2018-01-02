@@ -13,11 +13,45 @@
 }
 </style>
 <script>
-function dolist(page){
-	document.frm.elements["page"].value = page
-	document.frm.submit();
-}
 	$(function() {
+		categoryListRadio("category", "${param.categorynum}");
+			
+		$(".likemy").click(placeLike);
+		
+		$("#keyword").autocomplete({
+			minLength : 0,
+			source : function(request, response) {
+				$.ajax({
+					url : "../placeAjax/selectAllKeyword.do",
+					dataType : "json",
+					data : {
+						keyword : request.term
+					},
+					success : function(data) {
+						response(data);
+					}
+				});
+			},
+			focus : function(event, ui) {
+				$("#keyword").val(ui.item.country + " " + ui.item.city);
+				return false;
+			},
+			select : function(event, ui) {
+				$("input[name='country']").val(ui.item.country);
+				$("input[name='city']").val(ui.item.city);
+				document.frm.submit();
+				return false;
+			}
+		}).autocomplete("instance")._renderItem = function(ul, item) {
+			return $("<li>").append(
+					"<div>" + item.country + " " + item.city + "</div>")
+					.appendTo(ul);
+		};
+		//$("#keyword").keyup(placeKeywordAutoComplete2);
+		
+	});	
+	
+	function categoryListRadio(areaId, selectedVal) {
 		$.ajax({
 			url : "../categoryAjax/selectAll.do?group=1",
 			type : "json",
@@ -26,58 +60,63 @@ function dolist(page){
 				for (i = 0; i < data.length; i++) {
 					options += '<span><input type="radio" name="categorynum" value="' + data[i].categorynum + '"> ' + data[i].categoryname + '</span>';
 				}
-				$("#category").append(options);
-				$("input[name='categorynum']:input[value=${param.categorynum}]").attr("checked","checked");
+				$("#"+areaId).append(options);
+				$("input[name='categorynum']:input[value='"+selectedVal+"']").attr("checked","checked");
 			}
+		});	
+	}
+	
+	function placeLike(){		
+		var placenum = $(this).attr('placenum');
+		var likeplacenum = $(this).attr('likeplacenum');
+		var thisSave = $(this);			
+		$.ajax("../likeplaceAjax/insert.do",{
+			method: 'post',
+			data: { placenum: placenum, likeplacenum: likeplacenum },
+			dataType:'json',
+			success : function(data, status){
+				if(status=="success") {
+					thisSave.attr('likeplacenum',data.likeplacenum);	
+					if(data.likeplacenum == null || data.likeplacenum == "") {
+						thisSave.text("♡");
+					} else {
+						thisSave.text("♥");
+					}
+				} else {
+					alert(status);	
+				}	
+			}				
 		});
-			
-		$(".likemy").click(function(){		
-			var placenum = $(this).attr('placenum');
-			var likeplacenum = $(this).attr('likeplacenum');
-			var thisSave = $(this);			
-			$.ajax("../likeplaceAjax/insert.do",{
+	}
+	
+/* 	function placeKeywordAutoComplete2(){
+		var keyword = $(this).val();
+		$("#keyword_result").text("");
+		if(keyword != "") {
+			$.ajax("../placeAjax/selectAllKeyword.do",{
 				method: 'post',
-				data: { placenum: placenum, likeplacenum: likeplacenum },
+				data: { keyword:keyword },
 				dataType:'json',
 				success : function(data, status){
 					if(status=="success") {
-						thisSave.attr('likeplacenum',data.likeplacenum);	
-						if(data.likeplacenum == null || data.likeplacenum == "") {
-							thisSave.text("♡");
-						} else {
-							thisSave.text("♥");
+						var options = "";
+						for (i = 0; i < data.length; i++) {
+							options += "<li><a href='#' onclick=''>" + data[i].country + " " + data[i].city + "</a></li>";
 						}
+						$("#keyword_result").append(options);
 					} else {
 						alert(status);	
 					}	
 				}				
-			});
-		});
-		
-		$("#city").keyup(function(){
-			var city = $("#city").val();
-			$("#keyword_result").text("");
-			if(city != "") {
-				$.ajax("../placeAjax/selectAll.do",{
-					method: 'post',
-					data: { city: city },
-					dataType:'json',
-					success : function(data, status){
-						if(status=="success") {
-							var options = "";
-							for (i = 0; i < data.length; i++) {
-								options += '<div>' + data[i].country + " / " + data[i].city + " / " + data[i].placename + '</div>';
-							}
-							$("#keyword_result").append(options);
-						} else {
-							alert(status);	
-						}	
-					}				
-				});	
-			}	
-		});
-		
-	});	
+			});	
+		}	
+	} */
+	
+	function dolist(page){
+		document.frm.elements["page"].value = page
+		document.frm.submit();
+	}
+	
 </script>
 </head>
 <body>
@@ -94,6 +133,8 @@ function dolist(page){
 
 		<form action="selectAll.do" method="post" id="frm" name="frm">
 		<input type="hidden" name="page" value="1">
+		<input type="hidden" name="country" value="${param.country}">
+		<input type="hidden" name="city" value="${param.city}">
 			<!-- Content Row -->
 			<div class="row">
 				<!-- Sidebar Column -->
@@ -110,8 +151,10 @@ function dolist(page){
 							<div id="category"></div>
 						</div>
 						<div class="list-group-item">
-							도시<br /> <input type="text" name="city" id="city">
-							<div id="keyword_result"></div>
+							국가 or 도시<br /> 
+							<div class="ui-widget">
+								<input type="text" name="keyword" id="keyword" value="${param.keyword}" size="12">
+							</div>
 						</div>
 						<input type="submit" value="검색">
 					</div>

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yedam.tourplan.likeplace.service.LikeplaceSearchVO;
 import com.yedam.tourplan.likeplace.service.LikeplaceService;
 import com.yedam.tourplan.likeplace.service.LikeplaceVO;
 
@@ -21,7 +22,7 @@ public class LikeplaceAjaxController {
 	
 	@RequestMapping("selectAll.do")
 	@ResponseBody
-	public List<LikeplaceVO> selectAll(LikeplaceVO vo) {
+	public List<LikeplaceVO> selectAll(LikeplaceSearchVO vo) {
 		return likeplaceService.selectAll(vo);
 	}
 	

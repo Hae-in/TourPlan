@@ -134,8 +134,19 @@ public class PlaceController {
 		place.setPlacenum(num);
 		files.setTablename("place");
 		files.setTablenum(num);
-		mv.addObject("place", placeService.select(place));
+		PlaceVO placeRs  = placeService.select(place);
+		mv.addObject("place", placeRs);
 		mv.addObject("files", filesService.selectAll(files));
+		
+		//place 같은 도시
+		PlaceSearchVO placelist = new PlaceSearchVO();
+		placelist.setFirst(1);
+		placelist.setLast(4);
+		placelist.setSort("likecnt");
+		placelist.setCity(placeRs.getCity());
+		System.out.println("도시 : "+placeRs.getCity());
+		mv.addObject("placeList", placeService.selectAll(placelist));
+		
 		mv.setViewName("place/select");
 		return mv;
 	}
@@ -152,5 +163,20 @@ public class PlaceController {
 		model.addAttribute("placeList", placeService.selectAll(vo));
 		model.addAttribute("paging", paging);
 		return "place/selectAll";
+	}	
+	
+	//마이페이지 > 내가 등록한 명소
+	@RequestMapping("selectAllMypage.do")
+	public String selectAllMypage(PlaceSearchVO vo, Model model, HttpSession session, Paging paging) {
+		//전체 건수
+		int total = placeService.selectListTotCnt(vo);
+		paging.setTotalRecord(total);
+		vo.setFirst(paging.getFirst());
+		vo.setLast(paging.getLast());	
+		vo.setMode("mypage");
+		vo.setMembernum((String)session.getAttribute("membernum"));
+		model.addAttribute("placeList", placeService.selectAll(vo));
+		model.addAttribute("paging", paging);
+		return "member/myPage/myPlace";
 	}	
 }
