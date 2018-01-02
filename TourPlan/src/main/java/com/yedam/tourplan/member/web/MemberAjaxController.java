@@ -154,7 +154,6 @@ public class MemberAjaxController {
 		return map;
 	}
 	
-<<<<<<< HEAD
 	@RequestMapping("passwordInit.do")
 	@ResponseBody
 	public boolean passwordInit(MemberSearchVO vo) {
@@ -183,7 +182,6 @@ public class MemberAjaxController {
 		return sb.toString();
 	}
 	
-=======
 	@RequestMapping("selectAll.do")
 	@ResponseBody
 	public List<MemberVO> selectAll(MemberSearchVO vo) {
@@ -203,5 +201,4 @@ public class MemberAjaxController {
 			memberService.delete(vo);
 		}
 	}	
->>>>>>> branch 'master' of https://github.com/JeonHyeJu/TourPlan.git
 }
