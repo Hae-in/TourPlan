@@ -13,10 +13,13 @@
 <title><tiles:getAsString name="title" /></title>
 <%-- <link href="<c:url value='/resources/css/layout.css' />" rel="stylesheet"></link> --%>
 <!-- Bootstrap core CSS -->
-<link href="../resources/thema/vendor/bootstrap/css/bootstrap.min.css"
-	rel="stylesheet">
-<!-- Custom styles for this template -->
-<link href="../resources/thema/css/modern-business.css" rel="stylesheet">
+<link href="<c:url value='/'/>resources/thema/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="<c:url value='/'/>resources/thema/css/modern-business.css" rel="stylesheet">
+<link href="<c:url value='/'/>resources/css/style.css" rel="stylesheet">
+<link rel="stylesheet" href='<c:url value='/'/>resources/js/jquery-ui.min.css'>
+<script src='<c:url value='/'/>resources/js/jquery-3.2.1.min.js'></script>
+<script src='<c:url value='/'/>resources/js/jquery-ui.min.js'></script>
+<script src="../resources/thema/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
 <!-- Navigation -->
@@ -38,7 +41,7 @@
         <!-- Sidebar Column -->
         <div class="col-lg-3 mb-4">
           <div class="list-group">
-            <a href="../member/select.do?membernum=<%=membernum%>" class="list-group-item">회원정보수정</a>
+            <a href="<c:url value='/'/>member/select.do?membernum=<%=membernum%>" class="list-group-item">회원정보수정</a>
             <a href="<c:url value='/'/>plan/selectMade.do?id=<%=memberid%>" class="list-group-item">내가 등록한 일정</a>
             <a href="<c:url value='/'/>#" class="list-group-item">내가 등록한 명소</a>
             <a href="<c:url value='/'/>plan/selectLike.do" class="list-group-item">좋아요일정</a>
@@ -58,8 +61,8 @@
     <!-- /.container -->
     
     <script>
-   		$('[href="'+document.location.pathname+'"]').addClass('active');
-   		var title = $('[href="'+document.location.pathname+'"]').text();
+   		$('[href^="'+document.location.pathname+'"]').addClass('active');
+   		var title = $('[href^="'+document.location.pathname+'"]').text();
    		$('.container > h1').append(title);
    		$('.breadcrumb').append('<li class="breadcrumb-item active">'+title+'</li>');
    	</script>

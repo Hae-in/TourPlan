@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yedam.tourplan.plan.service.PlanSearchVO;
 import com.yedam.tourplan.plan.service.PlanService;
 import com.yedam.tourplan.plan.service.PlanVO;
 
@@ -26,8 +27,8 @@ public class AdminAjaxController {
 	//전체조회
 	@RequestMapping("select")
 	@ResponseBody
-	public List<PlanVO> selectAll() {
-		return planService.selectAll(null);
+	public List<PlanVO> selectAll(PlanSearchVO vo) {
+		return planService.selectAll(vo);
 	}
 	
 }

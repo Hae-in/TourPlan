@@ -23,53 +23,57 @@ table td {
 <script>
 	$(function() {
 		jQuery("#list2").jqGrid({
-			url : '../placeAjax/selectAll.do',
-			editurl : '../placeAjax/dminUpdate.do',
+			url : '../placeAjax/selectAllAdmin.do',
+			editurl : '../placeAjax/updateAdmin.do',
 			datatype : "json",
-			colNames : [ '번호', '명소명', '작성자', '등록일', '상태' ],
+			colNames : [ '번호', '명소명', '상태', '등록일' ],
 			colModel : [ {
 				name : 'placenum',
 				index : 'placenum',
 				key : true,
-				hidden : true,
-				width : 15,
+				width : 20,
 				align : "center",
 				editable : true
 			}, {
-				name : 'title',
-				index : 'title',
-				width : 50,
+				name : 'placename',
+				index : 'placename',
 				editable : true
 			}, {
-				name : 'content',
-				index : 'content',
-				edittype : "textarea",
-				editoptions : {
-					rows : "2",
-					cols : "20"
+				name : 'state',
+				index : 'state',
+				width : 30,
+				align : "center",
+				formatter:'select', 
+				formatoptions: {
+					value : "0:대기;1:승인;3:차단"
 				},
-				width : 65,
-				editable : true
-			}, {
+				editable : true,
+				edittype : "select",
+				editoptions : {
+					value : "0:대기;1:승인;3:차단;"
+				}		
+			}, {				
 				name : 'writedate',
 				index : 'writedate',
-				width : 30,
+				width : 80,
+				align : "center"
 			} ],
 			editable : true,
 			autowidth : true,
 			height : "500px",
+			align : "center",
 			loadonce : true,
 			multiselect : true,
 			rowNum : 10,
 			rowList : [ 10, 20, 30 ],
 			pager : '#pager2',
 			viewrecords : true,
-			caption : "고객센터"
+			caption : "명소관리"
 		});
 
 		jQuery("#list2").jqGrid('navGrid', '#pager2', {
 			edit : true,
-			add : true,
+			add : false,
 			del : true
 		}, // options for the Edit Dialog
 			{

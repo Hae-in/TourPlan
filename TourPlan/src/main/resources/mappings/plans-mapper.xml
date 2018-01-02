@@ -48,7 +48,7 @@
 		</where>
 		<choose>
 			<when test="plan_sort != null and plan_sort != ''">
-				ORDER BY likecount DESC
+				ORDER BY NVL(likecount, '0') DESC
 			</when>
 			<otherwise>
 				ORDER BY writedate DESC

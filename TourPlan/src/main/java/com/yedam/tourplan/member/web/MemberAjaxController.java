@@ -154,6 +154,7 @@ public class MemberAjaxController {
 		return map;
 	}
 	
+<<<<<<< HEAD
 	@RequestMapping("passwordInit.do")
 	@ResponseBody
 	public boolean passwordInit(MemberSearchVO vo) {
@@ -182,4 +183,25 @@ public class MemberAjaxController {
 		return sb.toString();
 	}
 	
+=======
+	@RequestMapping("selectAll.do")
+	@ResponseBody
+	public List<MemberVO> selectAll(MemberSearchVO vo) {
+		return memberService.selectAll(vo);
+	}
+	
+	@RequestMapping("adminUpdate.do")
+	@ResponseBody
+	public void adminUpdate(MemberVO vo, HttpServletRequest request) {
+		String oper = request.getParameter("oper");
+		if(oper.equals("edit")) {
+			memberService.update(vo);			
+		} else if(oper.equals("add")) {
+			memberService.insert(vo);
+		} else if(oper.equals("del")) {
+			vo.setMembernum(request.getParameter("id"));
+			memberService.delete(vo);
+		}
+	}	
+>>>>>>> branch 'master' of https://github.com/JeonHyeJu/TourPlan.git
 }

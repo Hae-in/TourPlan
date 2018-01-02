@@ -8,12 +8,10 @@
 // create redips container
 var redips = {};
 
-
 // redips initialization
 redips.init = function () {
 	// reference to the REDIPS.drag object
 	var	rd = REDIPS.drag;
-	
 	// initialization
 	rd.init();
 	// REDIPS.drag settings
@@ -33,53 +31,40 @@ redips.init = function () {
 			var arr = new Array();
 			var arr2 = new Array();
 			var tr = rd.td.target.getAttribute("id");
-			var x_tr = rd.td.previous.getAttribute("id");
-			arr = tr.split("a");
-			var day = arr[0];
-			tr = arr[1];
+			var x_tr = rd.td.source.getAttribute("id");
 			
 			var child1 = rd.objOld.childNodes[0].nodeValue;
 			var child2 = rd.objOld.childNodes[2].nodeValue;
 			arr2 = rd.objOld.getAttribute("id").split("_");
 			var placenum = arr2[1];
-			var plantablenum = arr2[2];
 			
-			send("update", plantablenum, plannum, day, 30, 5, 0, tr, placenum, child1, child2, x_tr);
+			send("update", tr, "", placenum, child1, child2, x_tr);
 			
 		}
 	};
 	
 	rd.event.clonedDropped = function() {
+		rd.obj.lastChild.setAttribute("type", "text");
+		
 		var arr = new Array();
 		var arr2 = new Array();
 		var tr = rd.td.target.getAttribute("id");
-		arr = tr.split("a");
-		var day = arr[0];
-		tr = arr[1];
 		
 		var child1 = rd.objOld.childNodes[0].nodeValue;
 		var child2 = rd.objOld.childNodes[2].nodeValue;
 		arr2 = rd.objOld.getAttribute("id").split("_");
 		var placenum = arr2[1];
-		var plantablenum = arr2[2];
 		
-		send("insert", "", plannum, day, 30, 5, 0, tr, placenum, child1, child2, "");
+		send("insert", tr, "", placenum, child1, child2, "");
 	}
 	
 	// after element is deleted from the timetable, print message 
 	rd.event.deleted = function () {
 		if(rd.objOld.className.indexOf('redips-clone') > -1) { console.log("복제된"); }
 		else {
-			var arr2 = new Array();
-			var x_tr = rd.td.previous.getAttribute("id");
+			var rmid = rd.obj.getAttribute("id");
 			
-			arr2 = rd.objOld.getAttribute("id").split("_");
-			var placenum = arr2[1];
-			var plantablenum = arr2[2];
-			
-			console.log("plantablenum : " + plantablenum)
-			
-			send("delete", plantablenum, "", "", "", "", "", "", placenum, "", "", "");
+			send("delete", rmid, "", "", "", "", "");
 		}
 	};
 	

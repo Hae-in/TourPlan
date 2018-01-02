@@ -20,7 +20,7 @@ public class ReportDAO {
 		return mybatis.selectList("ReportDAO.selectAll", vo);
 	}
 
-	// insert Place
+/*	// insert Place
 	public boolean insertPlace(ReportVO vo) {
 		int r = mybatis.insert("ReportDAO.insertPlace", vo);
 		if (r>0)
@@ -36,7 +36,16 @@ public class ReportDAO {
 			return true;
 		else
 			return false;
-	}
+	}*/
+	
+	// insert
+	public boolean insert(ReportVO vo) {
+		int r = mybatis.insert("ReportDAO.insert", vo);
+		if (r>0)
+			return true;
+		else
+			return false;
+	}	
 	
 	// update
 	public boolean update(ReportVO vo) {

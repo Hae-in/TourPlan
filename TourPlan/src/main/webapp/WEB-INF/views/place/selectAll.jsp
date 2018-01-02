@@ -27,6 +27,7 @@ function dolist(page){
 					options += '<span><input type="radio" name="categorynum" value="' + data[i].categorynum + '"> ' + data[i].categoryname + '</span>';
 				}
 				$("#category").append(options);
+				$("input[name='categorynum']:input[value=${param.categorynum}]").attr("checked","checked");
 			}
 		});
 			
@@ -84,7 +85,7 @@ function dolist(page){
 	<div class="container">
 
 		<!-- Page Heading/Breadcrumbs -->
-		<h1 class="mt-4 mb-3">명소</h1>
+		<h1 class="mt-4 mb-3">명소 </h1>
 
 		<ol class="breadcrumb">
 			<li class="breadcrumb-item"><a href="<c:url value='/'/>">Home</a></li>
@@ -99,9 +100,10 @@ function dolist(page){
 				<div class="col-lg-3 mb-4">
 					<div class="list-group">
 						<div class="list-group-item">
-							정렬<br /> <span><input type="radio" name="sort"
-								value="likecnt"> 인기순 </span> <span><input type="radio"
-								name="sort" value="writedate"> 정렬순</span>
+							Total : ${paging.totalRecord}건<br/><br/>
+							정렬<br/>		 
+							<span><input type="radio" name="sort" value="likecnt" <c:if test="${param.sort == 'likecnt'}">checked="checked"</c:if>> 인기순 </span> 
+							<span><input type="radio" name="sort" value="writedate" <c:if test="${param.sort == 'writedate'}">checked="checked"</c:if>> 최신순</span>
 						</div>
 						<div class="list-group-item">
 							카테고리<br />
@@ -157,11 +159,9 @@ function dolist(page){
 						</c:forEach>
 					</div>
 					
-					
 					<myTag:paging paging="${paging}" jsfunc="dolist"/> 
 					
-					. <a href="form.do">신규..</a>
-
+					<a href="form.do">신규</a> 
 
 				</div>
 			</div>

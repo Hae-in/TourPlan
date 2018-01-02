@@ -9,7 +9,7 @@
 	</select>
 	
 	<select id="select" parameterType="memberSearch" resultType="member">
-		select * from member
+		select membernum, id, password, to_char(regdate, 'yyyy/mm/dd'), state, nickname from member
 		<where>
 			<if test="membernum != null and membernum != ''">
 				membernum = #{membernum}

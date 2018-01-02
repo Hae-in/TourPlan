@@ -51,17 +51,17 @@ public class PlanAjaxContorller {
 	@RequestMapping("insert")
 	@ResponseBody
 	public String insert(PlanVO vo) {
-		String image_num = vo.getImagename();
+		//String image_num = vo.getImagename();
 		planService.insert(vo);
 
 		PlanVO seq_vo = planService.selectSeq(null);
 		
-		//likecount가 0이되면 들어가지 않아 기본값 1을 줌
+		/*//likecount가 0이되면 들어가지 않아 기본값 1을 줌
 		LikeplanVO lp_vo = new LikeplanVO();
 		lp_vo.setplannum(seq_vo.getPlannum());
 		//lp_vo.setplannum(vo.getPlannum());
 		lp_vo.setMembernum("1");
-		likeplanService.insert(lp_vo);
+		likeplanService.insert(lp_vo);*/
 		
 		return seq_vo.getPlannum();
 	}

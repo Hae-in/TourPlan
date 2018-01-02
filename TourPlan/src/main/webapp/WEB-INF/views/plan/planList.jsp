@@ -19,8 +19,7 @@ function dolist(page){
 	document.frm.submit();
 }
 	$(function() {
-		$("#slider-range")
-				.slider(
+		$("#slider-range").slider(
 						{
 							range : true,
 							min : 1,
@@ -30,12 +29,24 @@ function dolist(page){
 								$("#amount").val(
 										"day" + ui.values[0] + " - day"
 												+ ui.values[1]);
+								$("[name='period1']").val(ui.values[0]);
+								$("[name='period2']").val(ui.values[1]);
 							}
 						});
 		$("#amount").val(
 				"day" + $("#slider-range").slider("values", 0) + " - day"
 						+ $("#slider-range").slider("values", 1));
 
+		if('${planSearchVO.period1}' != '') {
+			$("input:radio[name='plan_sort']:input[value='${planSearchVO.plan_sort}']").prop("checked", "true");
+			$("input:radio[name='categorynum']:input[value='${planSearchVO.categorynum}']").prop("checked", "true");
+			$( "#slider-range" ).slider( "values", [ ${planSearchVO.period1}, ${planSearchVO.period2} ] );
+			$("#amount").val("day${planSearchVO.period1} - day${planSearchVO.period2}")
+			$("[name='period1']").val( '${planSearchVO.period1}' );
+			$("[name='period2']").val( '${planSearchVO.period2}' );
+			$("[name='city']").val( '${planSearchVO.city}' );
+		} else {}
+		
 		$(".likemy").click(function(){		
 			var plannum = $(this).attr('plannum');
 			var likeplannum = $(this).attr('likeplannum');
@@ -60,6 +71,7 @@ function dolist(page){
 		});
 	
 	});
+	
 </script>
 
 </head>
@@ -85,8 +97,8 @@ function dolist(page){
 					<div class="list-group">
 						<div class="list-group-item">
 							정렬<br /> 
-							<span><input type="radio" name="plan_sort" value="" checked> 최신순</span>
-							<span><input type="radio" name="plan_sort" value="likecount">인기순</span>
+							<span><input type="radio" id="rd" name="plan_sort" value="" checked><label for="rd">최신순</label></span>
+							<span><input type="radio" id="rd0" name="plan_sort" value="likecount"><label for="rd0">인기순</label></span>
 						</div>
 						<div class="list-group-item">
 							카테고리<br />
@@ -111,9 +123,10 @@ function dolist(page){
 						<div class="list-group-item">
 						<div id="slider-range" style="margin: 10px"></div>
 							기간<br /> 
-							<label for="amount"></label> <input type="text" name="period1" id="amount" readonly 
+							<label for="amount"></label> <input type="text" id="amount" readonly 
 							style="background-color: transparent; border: 0; color: #f6931f; font-weight: bold;">
 						</div>
+						<input type="hidden" name="period1" value="1"><input type="hidden" name="period2" value="7">
 						<div class="list-group-item">
 							도시<br /> <input type="text" name="city" style="width: 220px; margin: 5px;"/>
 						</div>
@@ -160,8 +173,8 @@ function dolist(page){
 					</div>
 				</div>
 			</div>
+			</form>
 			<!-- /.row -->
-		</form>
 		
 		<myTag:paging paging="${paging}" jsfunc="dolist"/> 
 

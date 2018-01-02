@@ -23,6 +23,10 @@ public class PlaceDAO {
 		return mybatis.update("PlaceDAO.update", place);
 	}
 	
+	public int updateState(PlaceVO place) {
+		return mybatis.update("PlaceDAO.updateState", place);
+	}
+	
 	public int delete(PlaceVO place) {
 		return mybatis.delete("PlaceDAO.delete", place);
 	}	
@@ -33,7 +37,11 @@ public class PlaceDAO {
 
 	public List<PlaceVO> selectAll(PlaceSearchVO place) {
 		return mybatis.selectList("PlaceDAO.selectAll", place);
-	}	
+	}
+	
+	public List<PlaceVO> selectAllAdmin(PlaceVO place) {
+		return mybatis.selectList("PlaceDAO.selectAllAdmin", place);
+	}		
 	
 	public List<PlaceVO> selectPlace(PlaceSearchVO place) {
 		return mybatis.selectList("PlaceDAO.selectPlace", place);

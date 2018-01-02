@@ -19,8 +19,8 @@ public class ReportServiceImpl implements ReportService {
 	public List<ReportVO> selectAll(ReportSearchVO vo) {
 		return reportDAO.selectAll(null);
 	}
-
-	@Override
+	
+/*	@Override
 	public boolean insertPlace(ReportVO vo) {
 		return reportDAO.insertPlace(vo);
 	}
@@ -28,7 +28,12 @@ public class ReportServiceImpl implements ReportService {
 	@Override
 	public boolean insertPlan(ReportVO vo) {
 		return reportDAO.insertPlan(vo);
-	}
+	}*/
+	
+	@Override
+	public boolean insert(ReportVO vo) {
+		return reportDAO.insert(vo);
+	}	
 
 	@Override
 	public boolean update(ReportVO vo) {

@@ -101,17 +101,6 @@ function modalOn(p_num) {
   </div>
 <!-- Modal End -->
 
-	<!-- Page Content -->
-	<div class="container">
-
-		<!-- Page Heading/Breadcrumbs -->
-		<h1 class="mt-4 mb-3">일정</h1>
-
-		<ol class="breadcrumb">
-			<li class="breadcrumb-item"><a href="<c:url value='/'/>">Home</a></li>
-			<li class="breadcrumb-item">일정</li>
-		</ol>
-
 		<form action="../plan/selectMade.do" method="post" id="frm">
 			<input type="hidden" name="id" value="<%=session.getAttribute("memberid")%>">
 			<!-- Content Row -->
@@ -210,9 +199,6 @@ function modalOn(p_num) {
 			</div>
 			<!-- /.row -->
 		</form>
-
-	</div>
-	<!-- /.container -->
 </body>
 </html>
 

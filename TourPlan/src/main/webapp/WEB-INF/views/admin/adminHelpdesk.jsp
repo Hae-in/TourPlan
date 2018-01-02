@@ -30,26 +30,26 @@ table td {
 			colModel : [ {
 				name : 'num',
 				index : 'num',
-				key : true,
-				hidden : true,		
-				//editOption:{readonly:'readonly'},
+				key : true,				
 				width : 15,
 				align : "center",
-				editable : true
+				editable : true,
+				editOption:{readonly:'readonly'}
 			}, {
 				name : 'title',
 				index : 'title',
-				width : 50,
+				width : 200,
 				editable : true
 			}, {
 				name : 'content',
 				index : 'content',
+				hidden : true,
 				edittype : "textarea",
 				editoptions : {
 					rows : "2",
 					cols : "20"
 				},
-				width : 65,
+				width : 0,
 				editable : true
 			}, {
 				name : 'writedate',
@@ -91,7 +91,8 @@ table td {
 				closeAfterEdit : true,
 				errorTextFormat : function(data) {
 					return 'Error: ' + data.responseText
-				}
+				},
+				beforeInitData:function(){jQuery("#list2").jqGrid('setColProp', 'content', {hidden:false});}
 			},
 			// options for the Add Dialog
 			{
@@ -111,7 +112,8 @@ table td {
 				closeAfterAdd : true,
 				errorTextFormat : function(data) {
 					return 'Error: ' + data.responseText
-				}
+				},
+				beforeInitData:function(){jQuery("#list2").jqGrid('setColProp', 'content', {hidden:false});}
 			},
 			// options for the Delete Dailog
 			{
@@ -122,7 +124,7 @@ table td {
 					//return JSON.stringify({employee_id: postdata.id});
 					return "num="+postdata.id;
 				} */
-			});
+			});	
 
 	});
 </script>

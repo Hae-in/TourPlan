@@ -16,39 +16,51 @@
 	//$.jgrid.defaults.styleUI = 'Bootstrap';
 </script>
 <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script> -->
+<style>
+table td {
+	font-size: large;
+}
+</style>
 <script>
 	$(function() {
 		jQuery("#list2").jqGrid({
-			url : '../categoryAjax/selectAll.do',
-			editurl : '../categoryAjax/updateAdmin.do',
-			datatype : 'json',
-			colNames : [ '번호', '카테고리명', '구분' ],
+			url : '../memberAjax/selectAll.do',
+			editurl : '../memberAjax/adminUpdate.do',
+			datatype : "json",
+			colNames : [ '번호', '아이디', '별명', '상태', '가입일' ],
 			colModel : [ {
-				name : 'categorynum',
-				index : 'categorynum',
-				key : true,				
+				name : 'membernum',
+				index : 'membernum',
+				key : true,
 				width : 15,
 				align : "center",
 				editable : true,
-				editOption:{readonly:'readonly'}
+				editOption:{readonly:'readonly'}				
 			}, {
-				name : 'categoryname',
-				index : 'categoryname',
-				width : 50,
-				editable : true
+				name : 'id',
+				index : 'id',
+				width : 50
 			}, {
-				name : 'categorygroup',
-				index : 'categorygroup',
-				width : 65,
+				name : 'nickname',
+				index : 'nickname',
+				width : 30
+			}, {				
+				name : 'state',
+				index : 'state',
+				width : 30,
 				formatter:'select', 
 				formatoptions: {
-					value : "1:명소;2:일정"
+					value : "1:회원;2:차단;3:탈퇴;9:관리자"
 				},
 				editable : true,
 				edittype : "select",
 				editoptions : {
-					value : "1:명소;2:일정"
+					value : "1:회원;2:차단;3:탈퇴;9:관리자"
 				}
+			}, {
+				name : 'regdate',
+				index : 'regdate',
+				width : 30				
 			} ],
 			editable : true,
 			autowidth : true,
@@ -119,5 +131,6 @@
 <body>
 	<table id="list2"></table>
 	<div id="pager2"></div>
+
 </body>
 </html>

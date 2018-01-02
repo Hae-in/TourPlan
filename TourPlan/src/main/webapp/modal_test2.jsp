@@ -12,24 +12,28 @@
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
-	function modal_iframe(title, url, width, height) {
-		$("#dialog-form").html("");
-		$("#dialog-form").append("<iframe src='" + url + "' width='98%' height='98%' frameborder='0'></iframe>");
-		dialog.dialog("open");
-	}
 	var dialog;
 	$(function() {
+		$("#dialog-form").append("<div id='dialog-form'></div>");
 		dialog = $("#dialog-form").dialog({
 			autoOpen : false,
-			height : 800,
-			width : 1000,
+			height : 100,
+			width : 100,
 			modal : true
 		});
 	});
+	function modal_iframe(title, url, width, height) {
+		$("#dialog-form").html("");
+		$("#dialog-form").append("<iframe src='" + url + "' width='" + width + "' height='" + width + "' ></iframe>");
+		dialog.
+		dialog.dialog("open");
+	}	
 </script>
 </head>
 <body>
-<div id="dialog-form"></div>
+
+
+	
 
 	<div id="users-contain" class="ui-widget">
 		<h1>Existing Users:</h1>

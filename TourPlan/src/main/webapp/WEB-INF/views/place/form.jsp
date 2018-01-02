@@ -42,11 +42,15 @@
 </script>
 </head>
 <body>
-${place}
+<%-- <c:if test="${action == 'success'}">
+등록되었습니다.
+<script>$(parent.document).find('#upload-form').dialog('close');alert('제어 끝');</script>
+</c:if>
+ --%>
+ <%-- ${place} --%>
 <form action="form.do" method="post" enctype="multipart/form-data" id="frm">
 <input type="text" name="action" value="${empty param.num ? 'insert':'update'}">
 <input type="hidden" name="placenum" value="${place.placenum}">
-<input type="hidden" name="membernum" value="1">
 	<table>		
 			<tr>
 				<th>명소이름	</th>
