@@ -50,6 +50,11 @@ public class PlaceAjaxController {
 			}			
 		}
 	}
-	
+
+	@RequestMapping("selectAllKeyword.do")
+	@ResponseBody
+	public List<PlaceVO> selectAllKeyword(PlaceSearchVO vo) {
+		return placeService.selectAllKeyword(vo);
+	}
 
 }

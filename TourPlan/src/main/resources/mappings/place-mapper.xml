@@ -108,8 +108,7 @@
 		</if>
 	</select>
 
-	<select id="selectListTotCnt" parameterType="placeSearch"
-		resultType="int">
+	<select id="selectListTotCnt" parameterType="placeSearch" resultType="int">
 		<![CDATA[
 			select 	count(*) totcnt
 			from 	place
@@ -140,6 +139,17 @@
 		select *
 		from place
 		order by placenum desc
+	</select>
+	
+	<select id="selectAllKeyword" parameterType="placeSearch" resultType="place">
+		select country, city
+		from place
+		<where>
+			<if test="keyword != null and keyword != ''">
+				city like '%' || #{keyword} || '%' or country like '%' || #{keyword} || '%'
+			</if>
+		</where>
+		group by country, city
 	</select>
 
 	<select id="selectPlace" resultType="place">

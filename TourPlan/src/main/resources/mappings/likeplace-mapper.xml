@@ -9,7 +9,10 @@
 		where likeplacenum = #{likeplacenum}
 	</select>
 	
-	<select id="selectAll" parameterType="likeplace" resultType="likeplace">
+	<select id="selectAll" parameterType="likeplaceSearch" resultType="likeplace">
+		<if test="first != 0 and last != 0">
+			select b.* from ( select rownum rn, a.* from (
+		</if>
 		select * 
 		from likeplace
 		<where>
@@ -20,7 +23,25 @@
 				and membernum = #{membernum}
 			</if>
 		</where>
+		<if test="first != 0 and last != 0">
+			) a ) b where rn between #{first} and #{last}
+		</if>
 	</select>
+	
+	<select id="selectListTotCnt" parameterType="likeplaceSearch" resultType="int">
+		<![CDATA[
+			select 	count(*) totcnt
+			from 	likeplace
+		]]>
+		<where>
+			<if test="placenum != null">
+				placenum = #{placenum}
+			</if>		
+			<if test="membernum != null">
+				and membernum = #{membernum}
+			</if>
+		</where>
+	</select>	
 	
 	<insert id="insert" statementType="CALLABLE" parameterType="likeplace">
 <!-- 		insert into likeplace(likeplacenum, placenum, membernum)

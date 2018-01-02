@@ -107,8 +107,49 @@
 			<a href="delete.do?num=${place.placenum}">삭제</a> <a href="selectAll.do">목록</a>
 		</div>
 
-		<!-- Marketing Icons Section -->
 		<div class="row">
+			<c:forEach items="${placeList}" var="i">
+				<div class="col-lg-4 mb-4">
+					<div class="card h-100">
+						<a href="select.do?num=${i.placenum}"> <c:if
+								test="${not empty i.imagename}">
+								<img class="card-img-top"
+									src="<c:url value='/'/>resources/images/${i.imagename}"
+									alt="">
+							</c:if> <c:if test="${empty i.imagename}">
+								<img class="card-img-top" src="http://placehold.it/700x400"
+									alt="">
+							</c:if>
+						</a>
+						<div class="card-body">
+							<h4 class="card-title">										
+								<c:if test="${sessionScope.membernum != null}">
+									<span class="likemy" placenum="${i.placenum}" likeplacenum="${i.likemy}">
+									<c:if test="${i.likemy != null}">
+										♥
+									</c:if>
+									<c:if test="${i.likemy == null}">
+										♡
+									</c:if>
+									</span>
+								</c:if>	
+								<a href="select.do?num=${i.placenum}">${i.placename}</a>
+							</h4>
+							<p class="card-text">
+								<%-- ${i.lat}${i.lon}${i.addr}${i.city}${i.country} --%>											
+								${i.content}
+							</p>
+						</div>
+						<div class="card-footer text-muted">
+							Like Count : ${i.likecnt}
+						</div>
+					</div>
+				</div>
+			</c:forEach>
+		</div>
+		
+		<!-- Marketing Icons Section -->
+<!-- 		<div class="row">
 			<div class="col-lg-4 mb-4">
 				<div class="card h-100">
 					<h4 class="card-header">Card Title</h4>
@@ -148,11 +189,11 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> -->
 		<!-- /.row -->
 
 		<!-- Related Projects Row -->
-		<h3 class="my-4">Related Projects</h3>
+<!-- 		<h3 class="my-4">Related Projects</h3>
 
 		<div class="row">
 
@@ -180,7 +221,7 @@
 				</a>
 			</div>
 
-		</div>
+		</div> -->
 		<!-- /.row -->
 
 	</div>

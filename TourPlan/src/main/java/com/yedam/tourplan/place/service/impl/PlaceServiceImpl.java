@@ -61,6 +61,11 @@ public class PlaceServiceImpl implements PlaceService {
 	public int updateState(PlaceVO place) {
 		return placeDAO.updateState(place);
 	}
+
+	@Override
+	public List<PlaceVO> selectAllKeyword(PlaceSearchVO place) {
+		return placeDAO.selectAllKeyword(place);
+	}
 	
 	
 }
