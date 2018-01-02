@@ -58,20 +58,25 @@ public class MemberAjaxController {
 		}
 	}
 	
-	//셀렉트
+	//로그인 체크
 	@RequestMapping("select")
 	@ResponseBody
-	public boolean select(MemberSearchVO vo, HttpSession session, HttpServletRequest request, HttpServletResponse response) {
+	public HashMap<String, Object> select(MemberSearchVO vo, HttpSession session, HttpServletRequest request, HttpServletResponse response) {
 		MemberVO m_vo = memberService.select(vo);
+		HashMap<String, Object> map = new HashMap<String, Object>();
 		if (m_vo != null) {
 			session.setAttribute("memberid", m_vo.getId());
 			session.setAttribute("membernum", m_vo.getMembernum());
 			session.setAttribute("nickname", m_vo.getNickname());
 			session.setAttribute("state", m_vo.getState());
-			return true;
+		
+			map.put("result", true);
+			map.put("nickname",  m_vo.getNickname());
+			
 		} else {
-			return false;
+			map.put("result", false);
 		}
+		return map;
 	}
 	
 	
@@ -148,4 +153,33 @@ public class MemberAjaxController {
 
 		return map;
 	}
+	
+	@RequestMapping("passwordInit.do")
+	@ResponseBody
+	public boolean passwordInit(MemberSearchVO vo) {
+		System.out.println(getRandomPassword(10));
+		vo.setPassword(getRandomPassword(10));
+		return memberService.update(vo);
+	}
+	
+	public String getRandomPassword(int len ) {
+		char[] charSet = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 
+									  'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 
+									  'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 
+									  'U', 'V', 'W', 'X', 'Y', 'Z', 
+									  '!', '@', '#', '$', '%', '^', '&', '*' };
+		int idx = 0;
+		StringBuffer sb = new StringBuffer();
+		
+		System.out.println("charSet.length :::: "+charSet.length);
+		
+		for (int i=0; i<len; i++) {
+			idx= (int) (charSet.length * Math.random()); //44 * 생성된 난수를  Int로 추출(소수점 제거)
+			System.out.println("idx :::: "+idx);
+			sb.append(charSet[idx]);
+		}
+
+		return sb.toString();
+	}
+	
 }
