@@ -109,7 +109,7 @@
               <p>이비자, 스페인</p>
             </div></a>
           </div>
-          
+           
      	  <div class="carousel-item" style="background-image: url('https://s-media-cache-ak0.pinimg.com/originals/93/53/2c/93532c98eea715836a65d95f68be1247.jpg?resize=660%2C330')">
             <a href="../theme/theme2.do"><div class="carousel-caption d-none d-md-block">
               <h3>과거로 타임슬립</h3>
