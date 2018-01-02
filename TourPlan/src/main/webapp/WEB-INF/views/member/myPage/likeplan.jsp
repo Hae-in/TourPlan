@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib prefix="myTag" tagdir="/WEB-INF/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,6 +14,10 @@
 }
 </style>
 <script>
+function dolist(page){
+	document.frm.elements["page"].value = page
+	document.frm.submit();
+}
 	$(function() {
 		$("#slider-range")
 				.slider(
@@ -25,12 +30,24 @@
 								$("#amount").val(
 										"day" + ui.values[0] + " - day"
 												+ ui.values[1]);
+								$("[name='period1']").val(ui.values[0]);
+								$("[name='period2']").val(ui.values[1]);
 							}
 						});
 		$("#amount").val(
 				"day" + $("#slider-range").slider("values", 0) + " - day"
 						+ $("#slider-range").slider("values", 1));
 
+		if('${planSearchVO.period1}' != '') {
+			$("input:radio[name='plan_sort']:input[value='${planSearchVO.plan_sort}']").prop("checked", "true");
+			$("input:radio[name='categorynum']:input[value='${planSearchVO.categorynum}']").prop("checked", "true");
+			$( "#slider-range" ).slider( "values", [ ${planSearchVO.period1}, ${planSearchVO.period2} ] );
+			$("#amount").val("day${planSearchVO.period1} - day${planSearchVO.period2}")
+			$("[name='period1']").val( '${planSearchVO.period1}' );
+			$("[name='period2']").val( '${planSearchVO.period2}' );
+			$("[name='city']").val( '${planSearchVO.city}' );
+		} else {}
+		
 		$(".likemy").click(function(){		
 			var plannum = $(this).attr('plannum');
 			var likeplannum = $(this).attr('likeplannum');
@@ -59,7 +76,8 @@
 
 </head>
 <body>
-		<form action="../plan/selectAll.do" method="post" id="frm">
+		<form action="../plan/selectLike.do" method="post" id="frm" name="frm">
+		<input type="hidden" name="page" value="1">
 			<!-- Content Row -->
 			<div class="row">
 				<!-- Sidebar Column -->
@@ -67,8 +85,8 @@
 					<div class="list-group">
 						<div class="list-group-item">
 							정렬<br /> 
-							<span><input type="radio" name="plan_sort" value="" checked> 최신순</span>
-							<span><input type="radio" name="plan_sort" value="likecount">인기순</span>
+							<span><input type="radio" id="rd" name="plan_sort" value="" checked><label for="rd">최신순</label></span>
+							<span><input type="radio" id="rd0" name="plan_sort" value="likecount"><label for="rd0">인기순</label></span>
 						</div>
 						<div class="list-group-item">
 							카테고리<br />
@@ -93,8 +111,9 @@
 						<div class="list-group-item">
 						<div id="slider-range" style="margin: 10px"></div>
 							기간<br /> 
-							<label for="amount"></label> <input type="text" name="period1" id="amount" readonly 
+							<label for="amount"></label> <input type="text" id="amount" readonly 
 							style="background-color: transparent; border: 0; color: #f6931f; font-weight: bold;">
+							<input type="hidden" name="period1" value="1"><input type="hidden" name="period2" value="7">
 						</div>
 						<div class="list-group-item">
 							도시<br /> <input type="text" name="city" style="width: 220px; margin: 5px;"/>
@@ -119,8 +138,7 @@
 									<div class="card-body">
 										<h4 class="card-title">
 											<c:if test="${sessionScope.membernum != null}">
-												<span class="likemy" plannum="${plan.plannum}"
-													likeplannum="${plan.likemy}"> 
+												<span class="likemy" plannum="${plan.plannum}" likeplannum="${plan.likemy}"> 
 													<c:if test="${plan.likemy != null}">♥</c:if> 
 												 	<c:if test="${plan.likemy == null}">♡</c:if>
 												</span>
@@ -141,7 +159,7 @@
 			</div>
 			<!-- /.row -->
 		</form>
-
+	<myTag:paging paging="${paging}" jsfunc="dolist"/> 
 </body>
 </html>
 

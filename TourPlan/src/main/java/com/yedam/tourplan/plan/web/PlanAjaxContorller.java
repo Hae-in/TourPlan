@@ -51,18 +51,8 @@ public class PlanAjaxContorller {
 	@RequestMapping("insert")
 	@ResponseBody
 	public String insert(PlanVO vo) {
-		//String image_num = vo.getImagename();
 		planService.insert(vo);
-
 		PlanVO seq_vo = planService.selectSeq(null);
-		
-		/*//likecount가 0이되면 들어가지 않아 기본값 1을 줌
-		LikeplanVO lp_vo = new LikeplanVO();
-		lp_vo.setplannum(seq_vo.getPlannum());
-		//lp_vo.setplannum(vo.getPlannum());
-		lp_vo.setMembernum("1");
-		likeplanService.insert(lp_vo);*/
-		
 		return seq_vo.getPlannum();
 	}
 	
@@ -76,6 +66,15 @@ public class PlanAjaxContorller {
 		else
 			return null;
 		
+	}
+	
+	//plan 승인요청
+	@RequestMapping("confirm")
+	@ResponseBody
+	public String confirm(PlanVO vo) {
+		vo.setState("2");
+		planService.update(vo);
+		return "true";
 	}
 	
 	// 이미지 등록

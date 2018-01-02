@@ -153,8 +153,7 @@ function dolist(page){
 									<div class="card-body">
 										<h4 class="card-title">
 											<c:if test="${sessionScope.membernum != null}">
-												<span class="likemy" plannum="${plan.plannum}"
-													likeplannum="${plan.likemy}"> 
+												<span class="likemy" plannum="${plan.plannum}" likeplannum="${plan.likemy}"> 
 													<c:if test="${plan.likemy != null}">♥</c:if> 
 												 	<c:if test="${plan.likemy == null}">♡</c:if>
 												</span>
@@ -162,7 +161,6 @@ function dolist(page){
 											<a href="../plan/select.do?plannum=${plan.plannum}">${plan.planname}</a>
 										</h4>
 										<p class="card-text">
-											<%-- ${i.lat}${i.lon}${i.addr}${i.city}${i.country} --%>
 										</p>
 									</div>
 									<div class="card-footer text-muted">Like Count :

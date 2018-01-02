@@ -77,13 +77,18 @@ public class PlanController {
 	}
 	
 	@RequestMapping("selectAll.do")
-	public String selectAll(PlanSearchVO vo, Model model, Paging paging) {
+	public String selectAll(PlanSearchVO vo, Model model, Paging paging, HttpSession session) {
 		//전체 건수
 		int total = planService.selectListTotCnt(vo);
 		paging.setTotalRecord(total);
 		vo.setFirst(paging.getFirst());
 		vo.setLast(paging.getLast());	
 		
+		if(session.getAttribute("membernum") == null) {}
+		else {
+			String mem_num = (String) session.getAttribute("membernum");
+			vo.setMembernumMy(mem_num);
+		}
 		model.addAttribute("planList", planService.selectAll(vo));
 		model.addAttribute("paging", paging);
 		return "plan/planList";
@@ -95,16 +100,36 @@ public class PlanController {
 	}
 	
 	@RequestMapping("selectMade.do")
-	public String selectMade(PlanSearchVO vo, Model model) {
+	public String selectMade(PlanSearchVO vo, Model model, Paging paging, HttpSession session) {
+		String mem_id = (String) session.getAttribute("memberid");
+		vo.setId(mem_id);
+		
+		//전체 건수
+		int total = planService.selectListTotCnt(vo);
+		paging.setTotalRecord(total);
+		vo.setFirst(paging.getFirst());
+		vo.setLast(paging.getLast());
+		
+		
 		model.addAttribute("planList", planService.selectAll(vo));
+		model.addAttribute("paging", paging);
 		return "member/myPage/myPlan";
 	}
 	
 	@RequestMapping("selectLike.do")
-	public String selectLike(PlanSearchVO vo, Model model, HttpServletRequest request, HttpSession session) {
+	public String selectLike(PlanSearchVO vo, Model model, Paging paging, HttpSession session) {
 		String mem_num = (String) session.getAttribute("membernum");
 		vo.setMembernum(mem_num);
+		vo.setMembernumMy(mem_num);
+		
+		//전체 건수
+		int total = planService.selectListTotCnt(vo);
+		paging.setTotalRecord(total);
+		vo.setFirst(paging.getFirst());
+		vo.setLast(paging.getLast());
+				
 		model.addAttribute("planList", planService.selectAll(vo));
+		model.addAttribute("paging", paging);
 		return "member/myPage/likeplan";
 	}
 	
@@ -220,7 +245,7 @@ public class PlanController {
 	}
 	
 	@RequestMapping("selectShare.do")
-	public String selectShare(SharePlanVO s_vo, Model model, HttpServletRequest request, HttpSession session) {
+	public String selectShare(SharePlanVO s_vo, Model model, Paging paging, HttpSession session) {
 		s_vo.setKeyword((String) session.getAttribute("membernum"));
 		List<SharePlanVO> list = planService.selectShare(s_vo);
 		String str = "";
@@ -236,8 +261,17 @@ public class PlanController {
 		PlanSearchVO vo = new PlanSearchVO();
 		vo.setPlannum_list(str);
 		
+		//전체 건수
+		int total = planService.selectListTotCnt(vo);
+		paging.setTotalRecord(total);
+		vo.setFirst(paging.getFirst());
+		vo.setLast(paging.getLast());
+		
+		String mem_num = (String) session.getAttribute("membernum");
+		vo.setMembernumMy(mem_num);
+		
 		model.addAttribute("planList", planService.selectAll(vo));
-		//return "member/myPage/likeplan";
+		model.addAttribute("paging", paging);
 		return "member/myPage/myShare";
 	}
 }
