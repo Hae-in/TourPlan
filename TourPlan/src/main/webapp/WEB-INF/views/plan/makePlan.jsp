@@ -990,16 +990,18 @@ $(function () {
 
 //구글맵스
 var map;
+var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+var labelIndex = 0;
 
 function initMap() {
     var directionsService = new google.maps.DirectionsService;
     var directionsDisplay = new google.maps.DirectionsRenderer;
     map = new google.maps.Map(document.getElementById('googleMap'), {
       zoom: 6,
-      center: {lat: 41.85, lng: -87.65}
+      center: {lat: 37.249289, lng: 127.076645}
     });
     directionsDisplay.setMap(map);
-
+    
     document.getElementById('submit').addEventListener('click', function() {
  	   calculateAndDisplayRoute(directionsService, directionsDisplay);
     	});
@@ -1067,6 +1069,15 @@ function initMap() {
             window.alert('에러발생 관리자에게 문의하세요 : ' + status);
           }
         });
+      }
+	
+      function addMarker(location) {
+    	  var marker = new google.maps.Marker({
+    	     position: location,
+    	     label: labels[labelIndex++ % labels.length],
+    	     map: map
+      	});
+    	map.setCenter(location);
       }
 </script>
 	

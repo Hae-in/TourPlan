@@ -10,4 +10,5 @@
 	response.sendRedirect("main/main.do");
 	//https://developers.google.com/maps/documentation/javascript/examples/directions-waypoints
 	//https://developers.google.com/maps/documentation/directions/intro
+	//https://developers.google.com/maps/documentation/javascript/reference
 %>
