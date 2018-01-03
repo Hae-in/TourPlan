@@ -50,6 +50,7 @@ redips.init = function () {
 		rd.obj.lastChild.setAttribute("type", "text");
 		
 		var tr = rd.td.target.getAttribute("id");
+		var day = rd.td.target.getAttribute("day");
 		var arr = new Array();
 		arr = tr.split("a");
 		
@@ -60,7 +61,7 @@ redips.init = function () {
 		var temp2 = parseFloat(rd.obj.getAttribute("lon"));
 		var loc = { lat:temp1, lng:temp2 };
 		addMarker(loc);*/
-		myMap(rd.obj.getAttribute("lat"), rd.obj.getAttribute("lon"));
+		myMap(rd.obj.getAttribute("lat"), rd.obj.getAttribute("lon"), day);
 		
 		$("#post"+tr).append("<div class='post_loc'>" + child1 + "<br>" + child2 + "</div>");
 		$("#post"+tr+"+button").css("display", "block");

@@ -27,7 +27,7 @@ var plannum = <%=vo.getPlannum()%>;
 			dataType : "json",
 			success : function(data) {
 				for (i = 0; i < data.length; i++) {
-					$("#tbody").append("<tr><td><img width='100px;' src='../resources/images/"+(data[i].imagename == null ? "null.jpg" : data[i].imagename) +"'></td><td class='dark'><div id='place_" + data[i].placenum + "_" + "' class='redips-drag redips-clone'>"+data[i].placename+"<br>"+data[i].city+", " +data[i].country+"<br><input class='stay' type='hidden' placeholder='몇 분' value='30' onchange='stayCheck(this);'></div></td></tr>");
+					$("#tbody").append("<tr><td><img width='100px;' src='../resources/images/"+(data[i].imagename == null ? "null.jpg" : data[i].imagename) +"'></td><td class='dark'><div name='loc_"+data[i].lat+"_"+data[i].lon+"' id='place_" + data[i].placenum + "_" + "' class='redips-drag redips-clone'>"+data[i].placename+"<br>"+data[i].city+", " +data[i].country+"<br><input class='stay' type='hidden' placeholder='몇 분' value='30' onchange='stayCheck(this);'></div></td></tr>");
 				}
 			}
 		});
@@ -426,16 +426,7 @@ div#redips-drag #table1 div {
 				</div>
 				<div id="planTab" class="tabcontent">
 					<div id="googleMap" style="width: 100%; height: 400px;"></div>
-					<script>
-						function myMap() {
-							var mapProp = {
-								center : new google.maps.LatLng(51.508742, -0.120850),
-								zoom : 5,
-							};
-							var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
-						}
-					</script>
-					<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC6-5na3Y2gJSt31kHSeSWZqp3VM1hvgJg&callback=myMap"></script>
+					<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC6-5na3Y2gJSt31kHSeSWZqp3VM1hvgJg&libraries=places&callback=initMap"></script>
 					<div id="planList">
 						<div id="right">
 							<table id="table2" border="1">
@@ -465,10 +456,26 @@ div#redips-drag #table1 div {
 						</div>
 					</div>
 				</div>
-				<div id="divBtns">
-					<button type="button" onclick="savePlan();">저장하기</button>
-					<button type="button">취소</button>
-				</div>
+				<div id="divBtns" style="padding: 10px 0 10px 0;">
+				<table style="width:100%">
+					<tr>
+						<td style="width: 50%;">
+						<span>
+						<select id="travel_mode" style="height:30px; width:18%;">
+					      <option value="DRIVING">자동차</option>
+					      <option value="WALKING">도보</option>
+					      <option value="TRANSIT">대중교통</option>
+					    </select>
+						<input type="text" id="cal_dis" placeholder="day" style="width: 8%;">
+						<button type="submit" id="submit" class="cal_btn" style="width: 70%;">거리계산</button>
+					</span>
+					</td>	
+					<td style="width: 50%;">
+						<button class="btn btn-primary" type="button" onclick="savePlan();" style="width: 100%; cursor: pointer;">저장하기</button></td>
+					</tr>
+				</table>
+			</div>
+			<div id="directions-panel"></div>
 			</div>
 		</div>
 	</div>
@@ -489,7 +496,6 @@ div#redips-drag #table1 div {
     </div>
   </div>
 <!-- Modal End -->
-
 <script type="text/javascript">
 var isSave = false;
 var dayCheckNum = 0;
@@ -499,7 +505,7 @@ var copy_num = 0;
 	
 	//★★★포트바꿔야!
 	var webSocket = new WebSocket(
-			'ws://localhost:80/tourplan/websocket/sharePlan.do');
+			'ws://localhost:8090/tourplan/websocket/sharePlan.do');
 	webSocket.onerror = function(event) {
 		onError(event)
 	};
@@ -517,8 +523,14 @@ var copy_num = 0;
 				
 				//복제
 				var div = $("#place_" + msg.placenum + "_").get(0);
-				console.log(div);
 				var copy_div = REDIPS.drag.cloneObject(div, true);
+				var loc = $(copy_div).attr("name");
+				var loc_arr = new Array();
+				loc_arr = loc.split("_");
+				var temp1 = parseFloat(loc_arr[1]);
+				var temp2 = parseFloat(loc_arr[2]);
+				var day = $("#"+ msg.tdid).attr("day");
+				myMap(temp1, temp2, day);
 				
 				//복제품 속성부여
 				$(copy_div).attr("class", 'redips-drag');
@@ -538,12 +550,20 @@ var copy_num = 0;
 				
 			} else {
 				var div = $("#"+ msg.tdid + " div");
+				
+				var loc = div.attr("name");
+				var loc_arr = new Array();
+				loc_arr = loc.split("_");
+				var temp1 = parseFloat(loc_arr[1]);
+				var temp2 = parseFloat(loc_arr[2]);
+				var day = $("#"+ msg.tdid).attr("day");
+				myMap(temp1, temp2, day);
+				
 				var arr = new Array();
 				arr = div.attr("id").split("_");
 				var id = arr[0] + "_" + arr[1] + "_" + copy_num;
 				copy_num += 1;
-				div.attr("id", id)
-				console.log("자식있는 아이디값 : " + id);
+				div.attr("id", id);
 			}
 			break;
 			
@@ -791,6 +811,145 @@ function stayCheck(obj) {
 		send("stayCheck", Tdid, st_time, "", "", "", "");
 	}
 }
+
+
+//구글맵스
+var map;
+var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+var labelIndex = 0;
+var MarkersArray = [];
+var co= [];
+var co2= [];
+var co3= [];
+var Coordinates = [];
+var color;
+var travelPathArray = [];
+var t_mode;
+
+function initMap() {
+    var directionsService = new google.maps.DirectionsService;
+    var directionsDisplay = new google.maps.DirectionsRenderer;
+    map = new google.maps.Map(document.getElementById('googleMap'), {
+      zoom: 6,
+      center: {lat: 37.249289, lng: 127.076645}
+    });
+    directionsDisplay.setMap(map);
+    
+    document.getElementById('submit').addEventListener('click', function() {
+ 	   calculateAndDisplayRoute(directionsService, directionsDisplay);
+    	});
+    }
+
+      function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+        var waypts = [];
+        
+        t_mode = $("#travel_mode").val();
+        var calcul_day = $("#cal_dis").val();
+        var count = $("[day='"+calcul_day+"'] div").length-1;
+        
+        var first_name = $("[day='"+calcul_day+"'] div:eq(0)").attr("name");
+        var first_arr = new Array();
+        first_arr = first_name.split("_");
+        var last_name = $("[day='"+calcul_day+"'] div:eq("+count+")").attr("name");
+        var last_arr = new Array();
+        last_arr = last_name.split("_");
+        
+        var first_div_lat = parseFloat(first_arr[1]);
+        var first_div_lng = parseFloat(first_arr[2]);
+        var last_div_lat = parseFloat(last_arr[1]); 
+        var last_div_lng = parseFloat(last_arr[2]); 
+    	var wayArr_lat = new Array();
+    	var wayArr_lng = new Array();
+    	for(i=1; i<$("[day='"+calcul_day+"'] div").length-1; i++) {
+    		var way_name = $("[day='"+calcul_day+"'] div:eq("+i+")").attr("name");
+    		var way_arr = new Array();
+    		way_arr = way_name.split("_");
+    		
+    		wayArr_lat[i] = parseFloat(way_arr[1]);
+    		wayArr_lng[i] = parseFloat(way_arr[2]);
+    		
+    		waypts.push({
+                location: {lat:wayArr_lat[i],lng:wayArr_lng[i]},
+                stopover: true
+              });
+    	}
+    	
+        directionsService.route({
+          origin: {lat:first_div_lat,lng:first_div_lng},
+          destination: {lat:last_div_lat,lng:last_div_lng},
+          waypoints: waypts,
+          optimizeWaypoints: true,
+          travelMode: t_mode
+        }, function(response, status) {
+          if (status === 'OK') {
+            directionsDisplay.setDirections(response);
+            //console.log(response);
+            var route = response.routes[0];
+            var summaryPanel = document.getElementById('directions-panel');
+            summaryPanel.innerHTML = '';
+            for (var i = 0; i < route.legs.length; i++) {
+              var routeSegment = i + 1;
+              summaryPanel.innerHTML += '<b>최적경로: ' + routeSegment +
+                  '</b><br>';
+            	if(i == 0) {
+            		summaryPanel.innerHTML += $("[lat='"+first_div_lat+"']").contents().first().text() + ' to ';
+            		summaryPanel.innerHTML += $("[lat='"+wayArr_lat[1]+"']").contents().first().text() + ' ';
+            		summaryPanel.innerHTML += route.legs[i].distance.text + ' ' + route.legs[i].duration.text + '<br>';
+            	}
+            	else if(i == route.legs.length-1) {
+            		summaryPanel.innerHTML += $("[lat='"+wayArr_lat[count-1]+"']").contents().first().text() + ' to ';
+            		summaryPanel.innerHTML += $("[lat='"+last_div_lat+"']").contents().first().text() + ' ';
+            		summaryPanel.innerHTML += route.legs[i].distance.text + ' ' + route.legs[i].duration.text + '<br>';
+            	}
+            	else {
+            		summaryPanel.innerHTML += $("[lat='"+wayArr_lat[i]+"']").contents().first().text() + ' to ';
+            		summaryPanel.innerHTML += $("[lat='"+wayArr_lat[i+1]+"']").contents().first().text() + ' ';
+            		summaryPanel.innerHTML += route.legs[i].distance.text + ' ' + route.legs[i].duration.text + '<br>';
+            	}
+            }
+            
+          } else {
+            window.alert('에러발생 관리자에게 문의하세요 : ' + status);
+          }
+        });
+      }
+	
+      function addMarker(location) {
+    	  var marker = new google.maps.Marker({
+    	     position: location,
+    	     label: labels[labelIndex++ % labels.length],
+    	     map: map
+      	});
+    	map.setCenter(location);
+      }
+      
+      function myMap(lat, lon, day) {
+    	  if(day=='1') { Coordinates = co; color = "#FF0000"; }
+    	  else if(day == '2') { Coordinates = co2; color = "#33cc33"; }
+    	  else if(day == '3') { Coordinates = co3; color = "#0000ff"; }
+    	  else {}
+			var mapLocation = new google.maps.LatLng(lat, lon); // 지도에서 가운데로 위치할 위도와 경도
+			var markLocation = new google.maps.LatLng(lat, lon);
+			var marker = new google.maps.Marker({
+			    position: markLocation,
+			});
+			Coordinates.push(markLocation);
+			MarkersArray.push(marker);
+			flightPath();
+			for(i = 0; i < MarkersArray.length; i++) {
+				MarkersArray[i].setMap(map);
+			}
+			map.setCenter(markLocation);
+		}
+		function flightPath(){
+			var flightPath = new google.maps.Polyline({
+				path: Coordinates,
+				strokeColor: color,
+				strokeOpacity: 0.5,
+				strokeWeight: 3
+			});
+			flightPath.setMap(map);
+		}
 </script>
 </body>
 </html>

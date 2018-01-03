@@ -315,8 +315,13 @@ div#redips-drag #table1 div {
 	background-color: #e0e0e0;
 }
 
+div.dark{
+	color: #f8f9fa;
+	background-color: #818182;
+}
+
 div.dark:hover {
-	background-color: #cccccc;
+	background-color: #818182a8;
 }
     
 
@@ -431,6 +436,19 @@ div.dark:hover {
 
 .postbtn:hover {
     background: #ffc107;
+}
+
+.cal_btn {
+	cursor: pointer;
+    background-color: #ddd;
+    border: 1px solid #ddd;
+    padding: .375rem .75rem;
+    border-radius: .25rem;
+}
+
+.cal_btn:hover {
+	background-color: #ccc;
+	transition: background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
 </style>
 </head>
@@ -582,11 +600,25 @@ div.dark:hover {
 					</div>
 				</div>
 			</div>
-				<div id="divBtns" style="padding: 10px 0 10px 0;">
-					<button class="btn btn-primary" type="button" onclick="savePlan();">저장하기</button>
-					<input type="text" id="cal_dis" placeholder="day">
-					<button type="submit" id="submit">거리계산</button>
-				</div>
+			<div id="divBtns" style="padding: 10px 0 10px 0;">
+				<table style="width:100%">
+					<tr>
+						<td style="width: 50%;">
+						<span>
+						<select id="travel_mode" style="height:30px; width:18%;">
+					      <option value="DRIVING">자동차</option>
+					      <option value="WALKING">도보</option>
+					      <option value="TRANSIT">대중교통</option>
+					    </select>
+						<input type="text" id="cal_dis" placeholder="day" style="width: 8%;">
+						<button type="submit" id="submit" class="cal_btn" style="width: 70%;">거리계산</button>
+					</span>
+					</td>	
+					<td style="width: 50%;">
+						<button class="btn btn-primary" type="button" onclick="savePlan();" style="width: 100%; cursor: pointer;">저장하기</button></td>
+					</tr>
+				</table>
+			</div>
 		</div>
 	</div>
 	
@@ -611,43 +643,47 @@ function f5check() {
 
 //Plan image
 function imageAdd(){
-	if($("#upload img").length == 0) {
-		$("#frm_img").ajaxForm({
-			dataType:"json",
-			data : {plannum: planNum},
-			url:'../planAjax/insertImage',
-			success: function(result, textStatus){
-				if(result.code == 'success') {
-					alert("등록되었습니다.");
-					var post = "<img src='<c:url value='/'/>resources/images/" + result.imageName + "' width='100px'>";
-					$(post).appendTo($("#upload"));
-					image_num = result.imageNum;
-				}
-			},
-			error: function(){
-				alert("파일업로드 중 오류가 발생하였습니다.");
-				return;
-			}
-		}).submit();
+	if(planNum == "") {
+		alert('일정이 먼저 저장되어야 합니다!');
 	} else {
-		$("#frm_img").ajaxForm({
-			dataType:"json",
-			data : {plannum: planNum,
-					planname: "otherUp"},
-			url:'../planAjax/insertImage',
-			success: function(result, textStatus){
-				if(result.code == 'success') {
-					alert("등록되었습니다.");
-					var post = "<img src='<c:url value='/'/>resources/images/" + result.imageName + "' width='100px'>";
-					$("#upload").empty();
-					$(post).appendTo($("#upload"));
+		if($("#upload img").length == 0) {
+			$("#frm_img").ajaxForm({
+				dataType:"json",
+				data : {plannum: planNum},
+				url:'../planAjax/insertImage',
+				success: function(result, textStatus){
+					if(result.code == 'success') {
+						alert("등록되었습니다.");
+						var post = "<img src='<c:url value='/'/>resources/images/" + result.imageName + "' width='100px'>";
+						$(post).appendTo($("#upload"));
+						image_num = result.imageNum;
+					}
+				},
+				error: function(){
+					alert("파일업로드 중 오류가 발생하였습니다.");
+					return;
 				}
-			},
-			error: function(){
-				alert("파일업로드 중 오류가 발생하였습니다.");
-				return;
-			}
-		}).submit();
+			}).submit();
+		} else {
+			$("#frm_img").ajaxForm({
+				dataType:"json",
+				data : {plannum: planNum,
+						planname: "otherUp"},
+				url:'../planAjax/insertImage',
+				success: function(result, textStatus){
+					if(result.code == 'success') {
+						alert("등록되었습니다.");
+						var post = "<img src='<c:url value='/'/>resources/images/" + result.imageName + "' width='100px'>";
+						$("#upload").empty();
+						$(post).appendTo($("#upload"));
+					}
+				},
+				error: function(){
+					alert("파일업로드 중 오류가 발생하였습니다.");
+					return;
+				}
+			}).submit();
+		}
 	}
 }
 
@@ -666,7 +702,7 @@ function savePlan() {
 	console.log("makePlan의 param값 : " + param2);
 	
 	if(isSave == true) {
-		param2 += "&plannum=" + plannum;
+		param2 += "&plannum=" + planNum;
 		$.ajax({
 		    url         : '../planAjax/update'
 	   		,type        : 'GET'
@@ -677,7 +713,6 @@ function savePlan() {
 		    	   	if(data.length > 0) {
 		    		   	alert("수정 성공");
 		    	   		alert("update한 plannum : " + data);
-		    	   		plannum = data;
 		    	   		saveTable();
 		    	   		}
 	   		   else {
@@ -826,8 +861,8 @@ function dayCheck() {
 			}
 		} else { $("#day").val(last_day); }
 	} else if(form_day == last_day) {
-	} else if($("#day").val() > 31) {
-		alert('최대 31일까지 가능합니다');
+	} else if($("#day").val() > 7) {
+		alert('최대 7일까지 가능합니다');
 	} else {
 		alert('숫자만 입력가능합니다');
 		$("#day").val("1");
@@ -994,8 +1029,13 @@ var map;
 var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 var labelIndex = 0;
 var MarkersArray = [];
-var Coordinates= [];
+var co= [];
+var co2= [];
+var co3= [];
+var Coordinates;
+var color;
 var travelPathArray = [];
+var t_mode;
 
 function initMap() {
     var directionsService = new google.maps.DirectionsService;
@@ -1011,10 +1051,10 @@ function initMap() {
     	});
     }
 
-	//★★★자바스크립트 parseDouble() 대체할것?
       function calculateAndDisplayRoute(directionsService, directionsDisplay) {
         var waypts = [];
         
+        t_mode = $("#travel_mode").val();
         var calcul_day = $("#cal_dis").val();
         var count = $("[day='"+calcul_day+"'] div").length-1;
         var first_div_lat = parseFloat($("[day='"+calcul_day+"'] div:eq(0)").attr("lat"));
@@ -1033,39 +1073,37 @@ function initMap() {
               });
     	}
     	
-    	console.log("first - lat : "+first_div_lat+", lng : "+first_div_lng);
-    	console.log("last - lat : "+last_div_lat+", lng : "+last_div_lng);
         directionsService.route({
           origin: {lat:first_div_lat,lng:first_div_lng},
           destination: {lat:last_div_lat,lng:last_div_lng},
           waypoints: waypts,
           optimizeWaypoints: true,
-          travelMode: 'DRIVING'
+          travelMode: t_mode
         }, function(response, status) {
           if (status === 'OK') {
             directionsDisplay.setDirections(response);
-            console.log(response);
+            //console.log(response);
             var route = response.routes[0];
             var summaryPanel = document.getElementById('directions-panel');
             summaryPanel.innerHTML = '';
             for (var i = 0; i < route.legs.length; i++) {
               var routeSegment = i + 1;
-              summaryPanel.innerHTML += '<b>Route Segment: ' + routeSegment +
+              summaryPanel.innerHTML += '<b>최적경로: ' + routeSegment +
                   '</b><br>';
             	if(i == 0) {
             		summaryPanel.innerHTML += $("[lat='"+first_div_lat+"']").contents().first().text() + ' to ';
-            		summaryPanel.innerHTML += $("[lat='"+wayArr_lat[1]+"']").contents().first().text() + '<br>';
-            		summaryPanel.innerHTML += route.legs[i].distance.text + ' ' + route.legs[i].duration.text + '<br><br>';
+            		summaryPanel.innerHTML += $("[lat='"+wayArr_lat[1]+"']").contents().first().text() + ' ';
+            		summaryPanel.innerHTML += route.legs[i].distance.text + ' ' + route.legs[i].duration.text + '<br>';
             	}
             	else if(i == route.legs.length-1) {
             		summaryPanel.innerHTML += $("[lat='"+wayArr_lat[count-1]+"']").contents().first().text() + ' to ';
-            		summaryPanel.innerHTML += $("[lat='"+last_div_lat+"']").contents().first().text() + '<br>';
-            		summaryPanel.innerHTML += route.legs[i].distance.text + ' ' + route.legs[i].duration.text + '<br><br>';
+            		summaryPanel.innerHTML += $("[lat='"+last_div_lat+"']").contents().first().text() + ' ';
+            		summaryPanel.innerHTML += route.legs[i].distance.text + ' ' + route.legs[i].duration.text + '<br>';
             	}
             	else {
             		summaryPanel.innerHTML += $("[lat='"+wayArr_lat[i]+"']").contents().first().text() + ' to ';
-            		summaryPanel.innerHTML += $("[lat='"+wayArr_lat[i+1]+"']").contents().first().text() + '<br>';
-            		summaryPanel.innerHTML += route.legs[i].distance.text + ' ' + route.legs[i].duration.text + '<br><br>';
+            		summaryPanel.innerHTML += $("[lat='"+wayArr_lat[i+1]+"']").contents().first().text() + ' ';
+            		summaryPanel.innerHTML += route.legs[i].distance.text + ' ' + route.legs[i].duration.text + '<br>';
             	}
             }
             
@@ -1084,7 +1122,11 @@ function initMap() {
     	map.setCenter(location);
       }
       
-      function myMap(lat, lon) {
+      function myMap(lat, lon, day) {
+    	  if(day=='1') { Coordinates = co; color = "#FF0000"; }
+    	  else if(day == '2') { Coordinates = co2; color = "#33cc33"; }
+    	  else if(day == '3') { Coordinates = co3; color = "#0000ff"; }
+    	  else {}
 			var mapLocation = new google.maps.LatLng(lat, lon); // 지도에서 가운데로 위치할 위도와 경도
 			var markLocation = new google.maps.LatLng(lat, lon);
 			var marker = new google.maps.Marker({
@@ -1099,17 +1141,17 @@ function initMap() {
 			map.setCenter(markLocation);
 		}
 		function flightPath(){
-			for (i in travelPathArray){
+			/* for (i in travelPathArray){
 				travelPathArray[i].setMap(null);
-			}
+			} */
 			var flightPath = new google.maps.Polyline({
 				path: Coordinates,
-				strokeColor: "#FF0000",
-				strokeOpacity: 0.3,
-				strokeWeight: 2
+				strokeColor: color,
+				strokeOpacity: 0.5,
+				strokeWeight: 3
 			});
 			flightPath.setMap(map);
-			travelPathArray.push(flightPath);
+			//travelPathArray.push(flightPath);
 		}
 </script>
 	

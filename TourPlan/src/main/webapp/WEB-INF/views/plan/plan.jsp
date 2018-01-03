@@ -67,7 +67,7 @@ $(function(){
 							for(j=0; j<=last_tr; j++) {
 								var table_td = "<tr>";
 								for(i=1; i<=post_day; i++) {
-									table_td += "<td id="+i+"a"+j+"></td>";
+									table_td += "<td id="+i+"a"+j+" day="+i+" tr="+j+"></td>";
 								}
 								table_td += "</tr>";
 								$("#table2").append(table_td);
@@ -106,21 +106,31 @@ $(function(){
 										break;
 									}
 								}
-								var div = "<div id='place_" + data[i].placenum + "_" + data[i].plantablenum + "' class='redips-drag'>" + data_place[j].placename + "<br>" + data_place[j].city + ", " + data_place[j].country+ "<br>" + data[i].staytime + "분</div>";
+								var div = "<div lon='"+data_place[j].lon+"' lat='"+data_place[j].lat+"' id='place_" + data[i].placenum + "_" + data[i].plantablenum + "' class='redips-drag'>" + data_place[j].placename + "<br>" + data_place[j].city + ", " + data_place[j].country+ "<br>" + data[i].staytime + "분</div>";
 								 $(div).appendTo($("#" + data[i].day + "a" + data[i].tr));
 								 
 								 $("#post"+ data[i].day + "a" + data[i].tr).append("<div style='border: solid 1px orange;'>" + data_place[j].placename + "<br>" + data_place[j].city + ", " + data_place[j].country +  "</div>");
 							}
+							
+							for(f=0; f<$("#table2 div").length; f++) {
+								var day = $("#table2 div:eq("+f+")").parent().attr("day");
+								var lat = parseFloat($("#table2 div:eq("+f+")").attr("lat"));
+								var lng = parseFloat($("#table2 div:eq("+f+")").attr("lon"));
+
+								myMap(lat, lng, day);
+							}
+						
 						}
 					} else {
 						alert(status);
 					}
 				});
-				
 			}
 		});
 		
+		
 });
+
 	//[스토리][일정표] 탭 나눔
 	function openTab(evt, tabName) {
 		var i, tabcontent, tablinks;
@@ -422,7 +432,7 @@ div#redips-drag #table1 div {
 .topTable {
 	width: 80%;
 }
-#planname {
+#planName {
 	width: 80%;
 	height: 45px;
 	margin-bottom: 5px;
@@ -520,16 +530,7 @@ div#redips-drag #table1 div {
 				</div>
 				<div id="planTab" class="tabcontent">
 					<div id="googleMap" style="width: 100%; height: 400px;"></div>
-					<script>
-						function myMap() {
-							var mapProp = {
-								center : new google.maps.LatLng(51.508742, -0.120850),
-								zoom : 5,
-							};
-							var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
-						}
-					</script>
-					<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC6-5na3Y2gJSt31kHSeSWZqp3VM1hvgJg&callback=myMap"></script>
+					<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC6-5na3Y2gJSt31kHSeSWZqp3VM1hvgJg&libraries=places&callback=initMap"></script>
 					<div id="planList">
 						<div id="right">
 							<table id="table2" border="1">
@@ -540,11 +541,148 @@ div#redips-drag #table1 div {
 					</div>
 				</div>
 				<br>
-				<div id="divBtns">
-					<a href="../plan/modify.do?plannum=<%=vo.getPlannum()%>" class="btn-default">이 일정 참고하기</a>
-				</div>
+				<div id="divBtns" style="padding: 10px 0 10px 0;">
+				<table style="width:100%">
+					<tr>
+						<td style="width: 50%;">
+						<span>
+						<select id="travel_mode" style="height:30px; width:18%;">
+					      <option value="DRIVING">자동차</option>
+					      <option value="WALKING">도보</option>
+					      <option value="TRANSIT">대중교통</option>
+					    </select>
+						<input type="text" id="cal_dis" placeholder="day" style="width: 8%;">
+						<button type="submit" id="submit" class="cal_btn" style="width: 70%;">거리계산</button>
+					</span>
+					</td>	
+					<td style="width: 50%;">
+						<a href="../plan/modify.do?plannum=<%=vo.getPlannum()%>" class="btn-default">이 일정 참고하기</a>
+						<!-- <button class="btn btn-primary" type="button" onclick="savePlan();" style="width: 100%; cursor: pointer;">저장하기</button></td> -->
+					</tr>
+				</table>
+			</div>
+				<div id="directions-panel"></div>
 			</div>
 		</div>
 	</div>
+<script>
+//구글맵스
+var map;
+var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+var labelIndex = 0;
+var MarkersArray = [];
+var co= [];
+var co2= [];
+var co3= [];
+var Coordinates;
+var color;
+var travelPathArray = [];
+var t_mode;
+
+function initMap() {
+    var directionsService = new google.maps.DirectionsService;
+    var directionsDisplay = new google.maps.DirectionsRenderer;
+    map = new google.maps.Map(document.getElementById('googleMap'), {
+      zoom: 8,
+      center: {lat: 37.249289, lng: 127.076645}
+    });
+    directionsDisplay.setMap(map);
+    
+    document.getElementById('submit').addEventListener('click', function() {
+ 	   calculateAndDisplayRoute(directionsService, directionsDisplay);
+    	});
+    }
+
+      function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+        var waypts = [];
+        
+        t_mode = $("#travel_mode").val();
+        var calcul_day = $("#cal_dis").val();
+        var count = $("[day='"+calcul_day+"'] div").length-1;
+        var first_div_lat = parseFloat($("[day='"+calcul_day+"'] div:eq(0)").attr("lat"));
+        var first_div_lng = parseFloat($("[day='"+calcul_day+"'] div:eq(0)").attr("lon"));
+        var last_div_lat = parseFloat($("[day='"+calcul_day+"'] div:eq("+count+")").attr("lat")); 
+        var last_div_lng = parseFloat($("[day='"+calcul_day+"'] div:eq("+count+")").attr("lon")); 
+    	var wayArr_lat = new Array();
+    	var wayArr_lng = new Array();
+    	for(i=1; i<$("[day='"+calcul_day+"'] div").length-1; i++) {
+    		wayArr_lat[i] = parseFloat($("[day='"+calcul_day+"'] div:eq("+i+")").attr("lat"));
+    		wayArr_lng[i] = parseFloat($("[day='"+calcul_day+"'] div:eq("+i+")").attr("lon"));
+    		
+    		waypts.push({
+                location: {lat:wayArr_lat[i],lng:wayArr_lng[i]},
+                stopover: true
+              });
+    	}
+    	
+        directionsService.route({
+          origin: {lat:first_div_lat,lng:first_div_lng},
+          destination: {lat:last_div_lat,lng:last_div_lng},
+          waypoints: waypts,
+          optimizeWaypoints: true,
+          travelMode: t_mode
+        }, function(response, status) {
+          if (status === 'OK') {
+            directionsDisplay.setDirections(response);
+            //console.log(response);
+            var route = response.routes[0];
+            var summaryPanel = document.getElementById('directions-panel');
+            summaryPanel.innerHTML = '';
+            for (var i = 0; i < route.legs.length; i++) {
+              var routeSegment = i + 1;
+              summaryPanel.innerHTML += '<b>최적경로: ' + routeSegment +
+                  '</b><br>';
+            	if(i == 0) {
+            		summaryPanel.innerHTML += $("[lat='"+first_div_lat+"']").contents().first().text() + ' to ';
+            		summaryPanel.innerHTML += $("[lat='"+wayArr_lat[1]+"']").contents().first().text() + ' ';
+            		summaryPanel.innerHTML += route.legs[i].distance.text + ' ' + route.legs[i].duration.text + '<br>';
+            	}
+            	else if(i == route.legs.length-1) {
+            		summaryPanel.innerHTML += $("[lat='"+wayArr_lat[count-1]+"']").contents().first().text() + ' to ';
+            		summaryPanel.innerHTML += $("[lat='"+last_div_lat+"']").contents().first().text() + ' ';
+            		summaryPanel.innerHTML += route.legs[i].distance.text + ' ' + route.legs[i].duration.text + '<br>';
+            	}
+            	else {
+            		summaryPanel.innerHTML += $("[lat='"+wayArr_lat[i]+"']").contents().first().text() + ' to ';
+            		summaryPanel.innerHTML += $("[lat='"+wayArr_lat[i+1]+"']").contents().first().text() + ' ';
+            		summaryPanel.innerHTML += route.legs[i].distance.text + ' ' + route.legs[i].duration.text + '<br>';
+            	}
+            }
+            
+          } else {
+            window.alert('에러발생 관리자에게 문의하세요 : ' + status);
+          }
+        });
+      }
+	
+      function myMap(lat, lon, day) {
+    	  console.log('myMap실행'+lat+" "+lon+" "+day);
+    	  if(day=='1') { Coordinates = co; color = "#FF0000"; }
+    	  else if(day == '2') { Coordinates = co2; color = "#33cc33"; }
+    	  else if(day == '3') { Coordinates = co3; color = "#0000ff"; }
+    	  else {}
+			var mapLocation = new google.maps.LatLng(lat, lon); // 지도에서 가운데로 위치할 위도와 경도
+			var markLocation = new google.maps.LatLng(lat, lon);
+			var marker = new google.maps.Marker({
+			    position: markLocation,
+			});
+			Coordinates.push(markLocation);
+			MarkersArray.push(marker);
+			flightPath();
+			for(i = 0; i < MarkersArray.length; i++) {
+				MarkersArray[i].setMap(map);
+			}
+			map.setCenter(markLocation);
+		}
+		function flightPath(){
+			var flightPath = new google.maps.Polyline({
+				path: Coordinates,
+				strokeColor: color,
+				strokeOpacity: 0.5,
+				strokeWeight: 3
+			});
+			flightPath.setMap(map);
+		}
+</script>
 </body>
 </html>
