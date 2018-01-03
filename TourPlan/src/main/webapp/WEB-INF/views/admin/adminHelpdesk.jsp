@@ -46,8 +46,8 @@ table td {
 				hidden : true,
 				edittype : "textarea",
 				editoptions : {
-					rows : "2",
-					cols : "20"
+					rows : "5",
+					cols : "35"
 				},
 				width : 0,
 				editable : true

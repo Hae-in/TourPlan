@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.yedam.tourplan.common.StringUtil;
 import com.yedam.tourplan.helpdesk.service.HelpdeskSearchVO;
 import com.yedam.tourplan.helpdesk.service.HelpdeskService;
 import com.yedam.tourplan.helpdesk.service.HelpdeskVO;
@@ -39,7 +40,16 @@ public class HelpdeskServiceImpl implements HelpdeskService {
 
 	@Override
 	public List<HelpdeskVO> selectAll(HelpdeskSearchVO vo) {
-		return helpdeskDAO.selectAll(vo);
+		
+		List<HelpdeskVO> list = helpdeskDAO.selectAll(vo);
+		for (int i = 0; i < list.size(); i++) {
+			try {
+				list.get(i).setContent(StringUtil.addEnter(list.get(i).getContent()));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return list;
 	}
 
 }

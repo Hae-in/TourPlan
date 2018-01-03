@@ -37,6 +37,10 @@ public class MemberDAO {
 			return mybatis.update("MemberDAO.update", vo);
 		}
 		
+		public int updatePw(MemberVO vo) {
+			return mybatis.update("MemberDAO.updatePw", vo);
+		}
+		
 		public int delete(MemberVO vo) {
 			return mybatis.delete("MemberDAO.delete", vo);
 		}

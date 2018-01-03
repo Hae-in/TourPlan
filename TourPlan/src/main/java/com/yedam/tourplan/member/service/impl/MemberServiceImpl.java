@@ -54,6 +54,17 @@ public class MemberServiceImpl implements MemberService{
 			return false;
 		}
 	}
+	
+	@Override
+	public boolean updatePw(MemberVO vo) {
+		int r=memberDAO.updatePw(vo);
+		if(r>0) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 
 	@Override
 	public boolean delete(MemberVO vo) {
