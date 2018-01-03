@@ -111,7 +111,7 @@ body {
 
 /* Style the header */
 .header {
-    background-color: #f1f1f1;
+    background-color: #fff;
     padding: 50px;
     /* text-align: center; */
     /* margin-left: 300px; */
@@ -243,7 +243,9 @@ input:checked+.slider:before {
 }
 
 .tab button.active {
-    background-color: #ccc;
+    background-color: #ff8f00;
+	color: #fff;
+	font-weight: bold;
 }
 
 .tabcontent {

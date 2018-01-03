@@ -139,7 +139,7 @@
 	</div>
 	<div id="redips-drag">
 		<div class="footer">
-			<div class="column divNav" style="background-color: #aaa;">
+			<div class="column divNav" style="background-color: whitesmoke;">
 				<div id="left">
 					<div id="innerLeft">
 						<input type="text" class="searchInput" id="searchInput-region"
@@ -166,7 +166,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="column divMain" style="background-color: #bbb;">
+			<div class="column divMain" style="background-color: whitesmoke;">
 				<div class="tab">
 					<button class="tablinks" onclick="openTab(event, 'storyTab')">스토리</button>
 					<button class="tablinks" onclick="openTab(event, 'planTab')" id="defaultOpen">지도/일정표</button>

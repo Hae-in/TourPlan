@@ -115,7 +115,7 @@
 	</div>
 	<div id="redips-drag">
 		<div class="footer">
-			<div class="column divNav" style="background-color: #aaa;">
+			<div class="column divNav" style="background-color: whitesmoke;">
 				<div id="left">
 					<div id="innerLeft">
 						<input type="text" class="searchInput" id="searchInput-region"
@@ -142,7 +142,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="column divMain" style="background-color: #bbb;">
+			<div class="column divMain" style="background-color: whitesmoke;">
 				<div class="tab">
 					<button class="tablinks" onclick="openTab(event, 'storyTab')">스토리</button>
 					<button class="tablinks" onclick="openTab(event, 'planTab')"
@@ -166,7 +166,14 @@
 						var day = $("#day").val();
 						var tds = new Array();
 						var divs = new Array();
-						
+						var t = $("#table2 td:last").attr("tr");
+						/* 
+						for(i = 1; i <= day; i++) {
+							for(j = 0; j <= t; j++) {
+								console.log("i = " + i + " j = " + j);
+							}
+						}
+						 */
 						function myMap(lat, lon) {
 							var mapLocation = new google.maps.LatLng(lat, lon); // 지도에서 가운데로 위치할 위도와 경도
 							var markLocation = new google.maps.LatLng(lat, lon);
@@ -283,8 +290,7 @@
 				</div>
 				<div id="divBtns">
 					<button type="submit">저장</button>
-					<button type="button"
-						onclick="window.open('<c:url value='/'/>planTable/shareView.do')">공유하기</button>
+					<button type="button" onclick="window.open('<c:url value='/'/>planTable/shareView.do')">공유하기</button>
 					<button type="button">취소</button>
 				</div>
 			</div>
