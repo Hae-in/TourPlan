@@ -624,7 +624,6 @@ function imageAdd(){
 			}
 		}).submit();
 	} else {
-		alert("이미지번호 : " + image_num);
 		$("#frm_img").ajaxForm({
 			dataType:"json",
 			data : {plannum: planNum,
@@ -851,7 +850,6 @@ function postAdd(){
 }
  
 function imageAdd_Post(){
-	console.log("이미지버튼 클릭");
 	$("#frm2").ajaxForm({
 		dataType:"json",
 		data : {plantablenum: ""},

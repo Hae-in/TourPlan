@@ -7,7 +7,7 @@
 	String isopen = vo.getIsopen();
 	String writer = vo.getId();
 	String state = vo.getState();
-%>
+%> 
 <!DOCTYPE html>
 <html>
 <head>

@@ -592,7 +592,7 @@ div.dark:hover {
 	
 <script>
 var isSave = false;
-var plannum = "";
+var planNum = "";
 var memberId = "<%=session.getAttribute("memberid")%>";
 var image_num = "";
 var post_day = $("#day").val();
@@ -614,7 +614,7 @@ function imageAdd(){
 	if($("#upload img").length == 0) {
 		$("#frm_img").ajaxForm({
 			dataType:"json",
-			data : {plannum: plannum},
+			data : {plannum: planNum},
 			url:'../planAjax/insertImage',
 			success: function(result, textStatus){
 				if(result.code == 'success') {
@@ -630,11 +630,10 @@ function imageAdd(){
 			}
 		}).submit();
 	} else {
-		alert("이미지번호 : " + image_num);
 		$("#frm_img").ajaxForm({
 			dataType:"json",
-			data : {plannum: image_num,
-					planname: "update"},
+			data : {plannum: planNum,
+					planname: "otherUp"},
 			url:'../planAjax/insertImage',
 			success: function(result, textStatus){
 				if(result.code == 'success') {
@@ -698,7 +697,7 @@ function savePlan() {
 		    	   	if(data.length > 0) {
 		    		   	alert("저장 성공");
 		    	   		alert("insert한 plannum : " + data);
-		    	   		plannum = data;
+		    	   		planNum = data;
 		    	   		saveTable();
 		    	   		}
 	   		   else {
@@ -732,7 +731,7 @@ function saveTable() {
 				p.day = i;
 				p.tr = j;
 				p.placenum = divide_place
-				p.plannum = plannum;
+				p.plannum = planNum;
 				p.fix = "0";
 				p.sortnum = "5";
 				p.staytime = stay_time;
@@ -994,6 +993,9 @@ $(function () {
 var map;
 var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 var labelIndex = 0;
+var MarkersArray = [];
+var Coordinates= [];
+var travelPathArray = [];
 
 function initMap() {
     var directionsService = new google.maps.DirectionsService;
@@ -1081,6 +1083,34 @@ function initMap() {
       	});
     	map.setCenter(location);
       }
+      
+      function myMap(lat, lon) {
+			var mapLocation = new google.maps.LatLng(lat, lon); // 지도에서 가운데로 위치할 위도와 경도
+			var markLocation = new google.maps.LatLng(lat, lon);
+			var marker = new google.maps.Marker({
+			    position: markLocation,
+			});
+			Coordinates.push(markLocation);
+			MarkersArray.push(marker);
+			flightPath();
+			for(i = 0; i < MarkersArray.length; i++) {
+				MarkersArray[i].setMap(map);
+			}
+			map.setCenter(markLocation);
+		}
+		function flightPath(){
+			for (i in travelPathArray){
+				travelPathArray[i].setMap(null);
+			}
+			var flightPath = new google.maps.Polyline({
+				path: Coordinates,
+				strokeColor: "#FF0000",
+				strokeOpacity: 0.3,
+				strokeWeight: 2
+			});
+			flightPath.setMap(map);
+			travelPathArray.push(flightPath);
+		}
 </script>
 	
 </body>
