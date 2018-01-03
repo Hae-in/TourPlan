@@ -204,7 +204,7 @@
 					
 					<myTag:paging paging="${paging}" jsfunc="dolist"/> 
 					
-					<a href="form.do">신규</a> 
+					<a href="form.do" class="btn btn-primary">신규</a> 
 
 				</div>
 			</div>

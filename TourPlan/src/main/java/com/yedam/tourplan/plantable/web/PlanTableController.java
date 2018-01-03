@@ -21,7 +21,6 @@ import com.yedam.tourplan.plan.service.PlanSearchVO;
 import com.yedam.tourplan.plan.service.PlanService;
 import com.yedam.tourplan.plan.service.PlanVO;
 import com.yedam.tourplan.plantable.service.PlanTableVO;
-import com.yedam.tourplan.post.service.PostService;
 
 @Controller
 public class PlanTableController {
@@ -45,7 +44,7 @@ public class PlanTableController {
 		
 		model.addAttribute("serverTime", formattedDate );
 		
-		return "planTable/planTableView_dragdrop3";
+		return "planTable/planTableView_dragdrop";
 	}
 	
 	@RequestMapping("/plan/shareView.do")
