@@ -10,7 +10,7 @@ body {
 
 /* Style the header */
 .header {
-	background-color: #f1f1f1;
+	background-color: whitesmoke;
 	padding: 50px;
 	/* text-align: center; */
 	/* margin-left: 300px; */
@@ -26,7 +26,7 @@ body {
 .column {
 	padding: 10px;
 	/* height: 200px; /* Should be removed. Only for demonstration */
-	*/
+	
 }
 
 /* Left column */
@@ -122,7 +122,7 @@ input:checked+.slider:before {
 .tab {
 	overflow: hidden;
 	/* border: 1px solid #ccc; */
-	background-color: #f1f1f1;
+	background-color: whitesmoke;
 }
 
 .tab button {
@@ -142,7 +142,7 @@ input:checked+.slider:before {
 
 .tab button.active {
 	background-color: #ff8f00;
-	color: #fff;
+	color: whitesmoke;
 	font-weight: bold;
 }
 
@@ -218,7 +218,7 @@ div#redips-drag #table1 div {
 
 .dark {
 	color: #444;
-	background-color: #e0e0e0;
+	background-color: whitesmoke;	/* 테이블 컬럼 색 */
 }
 
 .button_container {
@@ -256,5 +256,5 @@ div#redips-drag #table1 div {
 	margin-bottom: 10px;
 	text-align: center;
 	background-color: #DC4C46;
-	color: #fff;
+	color: whitesmoke;
 }

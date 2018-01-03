@@ -56,10 +56,11 @@ redips.init = function () {
 		var child1 = rd.objOld.childNodes[0].nodeValue;
 		var child2 = rd.objOld.childNodes[2].nodeValue;
 		
-		var temp1 = parseFloat(rd.obj.getAttribute("lat"));
+		/*var temp1 = parseFloat(rd.obj.getAttribute("lat"));
 		var temp2 = parseFloat(rd.obj.getAttribute("lon"));
 		var loc = { lat:temp1, lng:temp2 };
-		addMarker(loc);
+		addMarker(loc);*/
+		myMap(rd.obj.getAttribute("lat"), rd.obj.getAttribute("lon"));
 		
 		$("#post"+tr).append("<div class='post_loc'>" + child1 + "<br>" + child2 + "</div>");
 		$("#post"+tr+"+button").css("display", "block");
