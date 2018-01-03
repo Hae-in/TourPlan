@@ -510,7 +510,7 @@ var copy_num = 0;
 	};
 	webSocket.onmessage = function(event) {
 		var msg = JSON.parse(event.data);
-		
+		 
 		switch (msg.type) {
 		case "insert":
 			if($("#"+ msg.tdid + " div").length == 0) {
