@@ -57,11 +57,7 @@ redips.init = function () {
 		var child1 = rd.objOld.childNodes[0].nodeValue;
 		var child2 = rd.objOld.childNodes[2].nodeValue;
 		
-		/*var temp1 = parseFloat(rd.obj.getAttribute("lat"));
-		var temp2 = parseFloat(rd.obj.getAttribute("lon"));
-		var loc = { lat:temp1, lng:temp2 };
-		addMarker(loc);*/
-		myMap(rd.obj.getAttribute("lat"), rd.obj.getAttribute("lon"), day);
+		myMap(rd.obj.getAttribute("lat"), rd.obj.getAttribute("lon"), day, child1);
 		
 		$("#post"+tr).append("<div class='post_loc'>" + child1 + "<br>" + child2 + "</div>");
 		$("#post"+tr+"+button").css("display", "block");
@@ -71,18 +67,15 @@ redips.init = function () {
 	rd.event.deleted = function () {
 		var x_tr = rd.td.previous.getAttribute("id");
 		
+		delMarker();
+		
 		$("#post"+x_tr).empty();
 		$("#post"+x_tr+"+button").hide();
 	};
 	
-	// if any element is clicked, then make all subjects in timetable visible
-	rd.event.clicked = function () {
-		redips.showAll();
-	};
-	
-	//안됨
-	rd.event.dblClicked = function(objOld) {
-		rd.deleteObject(objOld);
+	rd.event.dblClicked = function() {
+		rd.deleteObject(rd.obj);
+		rd.event.deleted();
 	}
 };
 

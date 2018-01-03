@@ -27,7 +27,7 @@ var plannum = <%=vo.getPlannum()%>;
 			dataType : "json",
 			success : function(data) {
 				for (i = 0; i < data.length; i++) {
-					$("#tbody").append("<tr><td><img width='100px;' src='../resources/images/"+(data[i].imagename == null ? "null.jpg" : data[i].imagename) +"'></td><td class='dark'><div name='loc_"+data[i].lat+"_"+data[i].lon+"' id='place_" + data[i].placenum + "_" + "' class='redips-drag redips-clone'>"+data[i].placename+"<br>"+data[i].city+", " +data[i].country+"<br><input class='stay' type='hidden' placeholder='몇 분' value='30' onchange='stayCheck(this);'></div></td></tr>");
+					$("#tbody").append("<tr><td><a href='../place/select.do?num="+data[i].placenum+"' target='_blank'><img width='100px;' src='../resources/images/"+(data[i].imagename == null ? "null.jpg" : data[i].imagename) +"'></a></td><td class='dark'><div name='loc_"+data[i].lat+"_"+data[i].lon+"' id='place_" + data[i].placenum + "_" + "' class='redips-drag redips-clone'>"+data[i].placename+"<br>"+data[i].city+", " +data[i].country+"<br><input class='stay' type='hidden' placeholder='몇 분' value='30' onchange='stayCheck(this);'></div></td></tr>");
 				}
 			}
 		});

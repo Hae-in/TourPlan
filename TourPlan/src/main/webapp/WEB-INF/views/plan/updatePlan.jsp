@@ -30,7 +30,7 @@ var plan_num = "<%=plannum%>";
 				
 				for (i = 0; i < data.length; i++) {
 					console.log(data[i].imagename);
-					$("#tbody").append("<tr><td class='redips-mark lunch'><img width='100px;' height='65px;' src='../resources/images/"+(data[i].imagename == null ? "null.jpg" : data[i].imagename) +"'></td><td class='dark'><div id='place_" + data[i].placenum + "_"+i+"' class='redips-drag redips-clone'>"+data[i].placename+"<br>"+data[i].city+", " +data[i].country+"<br><input class='stay' type='hidden' placeholder='몇 분' value='30' onchange='stayCheck(this);'></div></td></tr>");
+					$("#tbody").append("<tr><td class='redips-mark lunch'><a href='../place/select.do?num="+data[i].placenum+"' target='_blank'><img width='100px;' height='65px;' src='../resources/images/"+(data[i].imagename == null ? "null.jpg" : data[i].imagename) +"'></a></td><td class='dark'><div lon='"+data[i].lon+"' lat='"+data[i].lat+"' id='place_" + data[i].placenum + "_"+i+"' class='redips-drag redips-clone'>"+data[i].placename+"<br>"+data[i].city+", " +data[i].country+"<br><input class='stay' type='hidden' placeholder='몇 분' value='30' onchange='stayCheck(this);'></div></td></tr>");
 				}
 			}
 		});
@@ -76,9 +76,9 @@ var plan_num = "<%=plannum%>";
 						
 						//[스토리]post 테이블 칸만큼 틀 추가
 						for(i=1; i<=post_day; i++) {
-							var day_div = "<div id='postDay" + i + "' style='border: 1px solid red;'><font size='5'><b>" + i + " Day</b></font>";
+							var day_div = "<div id='postDay" + i + "' class='post_day'><font size='5'><b>" + i + " Day</b></font>";
 							for(j=0; j<=last_tr; j++) {
-								day_div += "<div id='post"+i+"a"+j+"'></div><button id='"+i+"b"+j+"' class='postbtn' style='display:none;'>포스트쓰기</button>";
+								day_div += "<div id='post"+i+"a"+j+"' class='post_content'></div><button id='"+i+"b"+j+"' class='postbtn' style='display:none;'>포스트쓰기</button>";
 							}
 							day_div += "</div>";
 							$("#storyTab").append(day_div);
@@ -110,11 +110,19 @@ var plan_num = "<%=plannum%>";
 									break;
 								}
 							}
-							var div = "<div id='place_" + data[i].placenum + "_" + data[i].plantablenum + "' class='redips-drag'>" + data_place[j].placename + "<br>" + data_place[j].city + ", " + data_place[j].country+ "<br><input class='stay' type='text' placeholder='몇 분' value='"+data[i].staytime+"' onchange='stayCheck(this);'></div>";
+							var div = "<div lon='"+data_place[j].lon+"' lat='"+data_place[j].lat+"' id='place_" + data[i].placenum + "_" + data[i].plantablenum + "' class='redips-drag'>" + data_place[j].placename + "<br>" + data_place[j].city + ", " + data_place[j].country+ "<br><input class='stay' type='text' placeholder='몇 분' value='"+data[i].staytime+"' onchange='stayCheck(this);'></div>";
 							 $(div).appendTo($("#" + data[i].day + "a" + data[i].tr));
 							 
-							$("#post"+ data[i].day + "a" + data[i].tr).append("<div style='border: solid 1px orange;'>" + data_place[j].placename + "<br>" + data_place[j].city + ", " + data_place[j].country +  "</div>");
+							$("#post"+ data[i].day + "a" + data[i].tr).append("<div class='post_loc'>" + data_place[j].placename + "<br>" + data_place[j].city + ", " + data_place[j].country +  "</div>");
 							$("#post"+ data[i].day + "a" + data[i].tr + "+button").css("display", "block");
+						}
+						
+						for(f=0; f<$("#table2 div").length; f++) {
+							var day = $("#table2 div:eq("+f+")").parent().attr("day");
+							var lat = parseFloat($("#table2 div:eq("+f+")").attr("lat"));
+							var lng = parseFloat($("#table2 div:eq("+f+")").attr("lon"));
+
+							myMap(lat, lng, day);
 						}
 					}
 				} else {
@@ -192,8 +200,8 @@ body {
 
 /* Style the header */
 .header {
-    background-color: #f1f1f1;
-    padding: 50px;
+    background-color: #f8f9fa;
+    padding: 35px;
     /* text-align: center; */
     /* margin-left: 300px; */
 }
@@ -228,9 +236,10 @@ body {
 }
 
 #planName {
-	width: 100%;
-	height: 50px;
-	margin-bottom: 20px;
+	width: 80%;
+	height: 45px;
+	margin-bottom: 5px;
+	font-size: 18px;
 }
 
 /*공개여부*/
@@ -323,7 +332,9 @@ input:checked+.slider:before {
 }
 
 .tab button.active {
-    background-color: #ccc;
+    background-color: #ff8f00;
+	color: #fff;
+	font-weight: bold;
 }
 
 .tabcontent {
@@ -352,7 +363,7 @@ input:checked+.slider:before {
 	opacity: 0.7;
 	filter: alpha(opacity=70);
 	width: 180px;	/* table1 td item size */
-	height: 50px;
+	height: 60px;
 	line-height: 20px;
 	border: 1px solid #555;
 	border-radius: 3px;
@@ -393,6 +404,16 @@ div#redips-drag #table1 div {
 	background-color: #e0e0e0;
 }
 
+div.dark{
+	color: #f8f9fa;
+	background-color: #818182;
+}
+
+div.dark:hover {
+	background-color: #818182a8;
+}
+    
+
 .button_container{
 	padding-top: 10px;
 	text-align: right;
@@ -422,7 +443,7 @@ div#redips-drag #table1 div {
   margin-bottom: 12px;
 }
 
-#trashTb {
+#trashTD {
 	width: 100%;
 	height: 50px;
 	margin-bottom: 10px;
@@ -440,6 +461,83 @@ div#redips-drag #table1 div {
 	font-size: 11px;
 	width: 50px;
 	height: 15px;
+}
+
+.topTable {
+	width: 80%;
+}
+
+.topTable td {
+	padding: 2px;
+	text-align: center;
+	vertical-align: inherit;
+}
+
+.topTr {
+	padding: 2px;
+	background-color: #e0e0e0;
+}
+
+.btn-default {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 15px;
+  font-weight: normal;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: #555;
+  background-color: #fff;
+  border-color: #ccc;
+}
+.btn-default:hover {
+  color: #333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+
+.post_day {
+	border-bottom: 1px solid #212529;
+}
+
+.post_content {
+	padding: 2px;
+}
+
+.post_loc {
+	margin: 5px;
+    padding: 0 5px 0 5px;
+    border-bottom: 1px solid #555;
+    font-weight: 550;
+    width: 30%;
+}
+.postbtn {
+	display: block;
+    border: 1px solid transparent;
+    background: gold;
+    border-radius: 10px;
+    padding: 8px 12px;
+    margin: 10px;
+    cursor: pointer;
+}
+
+.postbtn:hover {
+    background: #ffc107;
+}
+
+.cal_btn {
+	cursor: pointer;
+    background-color: #ddd;
+    border: 1px solid #ddd;
+    padding: .375rem .75rem;
+    border-radius: .25rem;
+}
+
+.cal_btn:hover {
+	background-color: #ccc;
+	transition: background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
 </style>
 </head>
@@ -485,11 +583,10 @@ div#redips-drag #table1 div {
 <!-- Modal End -->
 
 	<div class="header">
-		<input type="text" id="planname" value="${vo.planname}"/>
+		<input type="text" id="planName" name="planname" value="${vo.planname}"/>
 		<div class="divContents">
-			<div>
-				<table border="1">
-					<tr>
+				<table class="topTable" border="1">
+					<tr class="topTr">
 						<td>출발일</td><td>도착일</td><td>day</td><td>인원</td><td>여행테마</td><td>공개여부</td><td>이미지</td>
 					</tr>
 					<tr>
@@ -512,7 +609,6 @@ div#redips-drag #table1 div {
 								<label class="switch"> 
 									<input id="isopen_ck" type="checkbox" name="is" value="1"><span class="slider round"></span>
 								</label>
-									<!-- ★★★form넘기기전 confirm해야 -->
 									<input type="hidden" id="isopen" name="isopen" value="0">
 							</div>
 						</td>
@@ -520,14 +616,13 @@ div#redips-drag #table1 div {
 							<!-- 이미지 업로드 -->
 							<div id="upload"></div>
 							<form id="frm_img" method="post" enctype="multipart/form-data">
-      							<input type="file" id="uploadFile" name="uploadFile" style="border: 1px solid grey"><br />
+      							<input type="file" id="uploadFile" name="uploadFile" style="border: 1px solid grey">
       							<button type="button" onclick="imageAdd();">업로드</button>
   							</form>
 							<!-- 이미지 업로드 -->			
 						</td>
 					</tr>
 				</table>
-			</div>
 		</div>
 	</div>
 	<div id="redips-drag">
@@ -538,7 +633,7 @@ div#redips-drag #table1 div {
 						<input type="text" class="searchInput" id="searchInput-region" onkeyup="searchRegionFunction()" placeholder="Search.." title="Type in a name">
 						<!-- <input type="text" class="searchInput" id="searchInput-place" onkeyup="searchPlaceFunction()" placeholder="Search for place.." title="Type in a name"> -->
 						<!-- <div class="redips-trash" title="Trash">Trash</div> -->
-						<table id="trashTb">
+						<table id="trashTD">
 							<tr><td class="redips-trash" title="Trash" id="trashTD"><h3><strong>Trash</strong></h3></td></tr>
 						</table>
 						<table id="table1" border="1">
@@ -562,30 +657,37 @@ div#redips-drag #table1 div {
 				</div>
 				<div id="planTab" class="tabcontent">
 					<div id="googleMap" style="width: 100%; height: 400px;"></div>
-					<script>
-						function myMap() {
-							var mapProp = {
-								center : new google.maps.LatLng(51.508742, -0.120850),
-								zoom : 5,
-							};
-							var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
-						}
-					</script>
-					<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC6-5na3Y2gJSt31kHSeSWZqp3VM1hvgJg&callback=myMap"></script>
+						<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC6-5na3Y2gJSt31kHSeSWZqp3VM1hvgJg&libraries=places&callback=initMap"></script>
 					<div id="planList">
 						<div id="right">
 							<table id="table2" border="1">
 								<tbody>
 								</tbody>
 							</table>
-							<div id="addTr" style="border: 1px solid blue;">칸 추가하기</div>
+							<div id="addTr" class="dark" style="text-align: center; cursor: pointer; padding: 5px;">칸 추가하기</div>
 						</div>
 					</div>
 				</div>
-				<div id="divBtns">
-					<button type="button" onclick="savePlan();">저장하기</button>
-					<button type="button">취소</button>
-				</div>
+				<div id="divBtns" style="padding: 10px 0 10px 0;">
+				<table style="width:100%">
+					<tr>
+						<td style="width: 50%;">
+						<span>
+						<select id="travel_mode" style="height:50px; width:18%;">
+					      <option value="DRIVING">자동차</option>
+					      <option value="WALKING">도보</option>
+					      <option value="TRANSIT">대중교통</option>
+					    </select>
+						<input type="text" id="cal_dis" placeholder="day" style="width: 8%; height: 50px;">
+						<button type="submit" id="submit" class="cal_btn" style="width: 70%; height: 50px;">거리계산</button>
+					</span>
+					</td>	
+					<td style="width: 50%;">
+						<button class="btn btn-primary" type="button" onclick="savePlan();" style="width: 100%; cursor: pointer; height: 50px;">저장하기</button></td>
+					</tr>
+				</table>
+			</div>
+			<div id="directions-panel"></div>
 			</div>
 		</div>
 	</div>
@@ -649,7 +751,7 @@ function savePlan() {
 	if($("#isopen_ck:checked").val() == null) {} 
 	else { $("#isopen").val("1"); }
 
-	var param2 = "planname=" + $("#planname").val() + "&departuredate=" + $("#departuredate").val() + "&arrivaldate=" + $("#arrivaldate").val()
+	var param2 = "planname=" + $("#planName").val() + "&departuredate=" + $("#departuredate").val() + "&arrivaldate=" + $("#arrivaldate").val()
 	+ "&people=" + $("#people").val() + "&categorynum=" + $("#sel").val() + "&isopen=" + $("#isopen").val() + "&state=0";
 	console.log("makePlan의 param값 : " + param2);
 	
@@ -746,9 +848,9 @@ function dayCheck() {
 			}
 			
 			//포스트도 함께 추가
-			var day_div = "<div id='postDay"+(last_day+i)+"' style='border: 1px solid red;'><font size='5'><b>" + (last_day+i) + " Day</b></font>"
+			var day_div = "<div id='postDay"+(last_day+i)+"' class='post_day'><font size='5'><b>" + (last_day+i) + " Day</b></font>"
 			for(j=0; j<=t; j++) {
-				day_div += "<div id='post"+(last_day+i)+"a"+j+"'></div><button id='"+(last_day+i)+"b"+j+"' class='postbtn' style='display:none;'>포스트쓰기</button>"
+				day_div += "<div id='post"+(last_day+i)+"a"+j+"' class='post_content'></div><button id='"+(last_day+i)+"b"+j+"' class='postbtn' style='display:none;'>포스트쓰기</button>"
 			}
 			day_div += "</div>";
 			$("#storyTab").append(day_div);
@@ -949,6 +1051,188 @@ $(function () {
 		$("#table2").append(add);
 	});
 })
+
+
+//구글맵스
+var map;
+var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+var labelIndex = 0;
+var MarkersArray = [];
+var MarkersArray2 = [];
+var co= [];
+var co2= [];
+var co3= [];
+var Coordinates;
+var color;
+var travelPathArray = [];
+var travelPathArray2 = [];
+var t_mode;
+
+function initMap() {
+    var directionsService = new google.maps.DirectionsService;
+    var directionsDisplay = new google.maps.DirectionsRenderer;
+    map = new google.maps.Map(document.getElementById('googleMap'), {
+      zoom: 6,
+      center: {lat: 37.249289, lng: 127.076645}
+    });
+    directionsDisplay.setMap(map);
+    
+    document.getElementById('submit').addEventListener('click', function() {
+ 	   calculateAndDisplayRoute(directionsService, directionsDisplay);
+    	});
+    }
+
+      function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+        var waypts = [];
+        
+        t_mode = $("#travel_mode").val();
+        var calcul_day = $("#cal_dis").val();
+        var count = $("[day='"+calcul_day+"'] div").length-1;
+        var first_div_lat = parseFloat($("[day='"+calcul_day+"'] div:eq(0)").attr("lat"));
+        var first_div_lng = parseFloat($("[day='"+calcul_day+"'] div:eq(0)").attr("lon"));
+        var last_div_lat = parseFloat($("[day='"+calcul_day+"'] div:eq("+count+")").attr("lat")); 
+        var last_div_lng = parseFloat($("[day='"+calcul_day+"'] div:eq("+count+")").attr("lon")); 
+    	var wayArr_lat = new Array();
+    	var wayArr_lng = new Array();
+    	for(i=1; i<$("[day='"+calcul_day+"'] div").length-1; i++) {
+    		wayArr_lat[i] = parseFloat($("[day='"+calcul_day+"'] div:eq("+i+")").attr("lat"));
+    		wayArr_lng[i] = parseFloat($("[day='"+calcul_day+"'] div:eq("+i+")").attr("lon"));
+    		
+    		waypts.push({
+                location: {lat:wayArr_lat[i],lng:wayArr_lng[i]},
+                stopover: true
+              });
+    	}
+    	
+        directionsService.route({
+          origin: {lat:first_div_lat,lng:first_div_lng},
+          destination: {lat:last_div_lat,lng:last_div_lng},
+          waypoints: waypts,
+          optimizeWaypoints: true,
+          travelMode: t_mode
+        }, function(response, status) {
+          if (status === 'OK') {
+            directionsDisplay.setDirections(response);
+            //console.log(response);
+            var route = response.routes[0];
+            var summaryPanel = document.getElementById('directions-panel');
+            summaryPanel.innerHTML = '';
+            for (var i = 0; i < route.legs.length; i++) {
+              var routeSegment = i + 1;
+              summaryPanel.innerHTML += '<b>최적경로: ' + routeSegment +
+                  '</b><br>';
+            	if(i == 0) {
+            		summaryPanel.innerHTML += $("[lat='"+first_div_lat+"']").contents().first().text() + ' to ';
+            		summaryPanel.innerHTML += $("[lat='"+wayArr_lat[1]+"']").contents().first().text() + ' ';
+            		summaryPanel.innerHTML += route.legs[i].distance.text + ' ' + route.legs[i].duration.text + '<br>';
+            	}
+            	else if(i == route.legs.length-1) {
+            		summaryPanel.innerHTML += $("[lat='"+wayArr_lat[count-1]+"']").contents().first().text() + ' to ';
+            		summaryPanel.innerHTML += $("[lat='"+last_div_lat+"']").contents().first().text() + ' ';
+            		summaryPanel.innerHTML += route.legs[i].distance.text + ' ' + route.legs[i].duration.text + '<br>';
+            	}
+            	else {
+            		summaryPanel.innerHTML += $("[lat='"+wayArr_lat[i]+"']").contents().first().text() + ' to ';
+            		summaryPanel.innerHTML += $("[lat='"+wayArr_lat[i+1]+"']").contents().first().text() + ' ';
+            		summaryPanel.innerHTML += route.legs[i].distance.text + ' ' + route.legs[i].duration.text + '<br>';
+            	}
+            }
+            
+          } else {
+            window.alert('에러발생 관리자에게 문의하세요 : ' + status);
+          }
+        });
+      }
+	
+      function myMap(lat, lon, day, title) {
+    	  if(day=='1') { Coordinates = co; color = "#FF0000"; }
+    	  else if(day == '2') { Coordinates = co2; color = "#33cc33"; }
+    	  else if(day == '3') { Coordinates = co3; color = "#0000ff"; }
+    	  else {}
+			var mapLocation = new google.maps.LatLng(lat, lon); // 지도에서 가운데로 위치할 위도와 경도
+			var markLocation = new google.maps.LatLng(lat, lon);
+			var marker = new google.maps.Marker({
+			    position: markLocation,
+			    title: title
+			});
+			Coordinates.push(markLocation);
+			MarkersArray.push(marker);
+			flightPath();
+			for(i = 0; i < MarkersArray.length; i++) {
+				MarkersArray[i].setMap(map);
+			}
+			map.setCenter(markLocation);
+		}
+		function flightPath(){
+			for (i in travelPathArray){
+				travelPathArray[i].setMap(null);
+			}
+			var flightPath = new google.maps.Polyline({
+				path: Coordinates,
+				strokeColor: color,
+				strokeOpacity: 0.5,
+				strokeWeight: 3
+			});
+			travelPathArray.push(flightPath);
+			for (var i = 0; i < travelPathArray.length; i++) {
+				travelPathArray[i].setMap(map);
+		    }
+		}
+		
+		 function myMap2(lat, lon, day, title) {
+	    	  if(day=='1') { Coordinates = co; color = "#FF0000"; }
+	    	  else if(day == '2') { Coordinates = co2; color = "#33cc33"; }
+	    	  else if(day == '3') { Coordinates = co3; color = "#0000ff"; }
+	    	  else {}
+				var mapLocation = new google.maps.LatLng(lat, lon); // 지도에서 가운데로 위치할 위도와 경도
+				var markLocation = new google.maps.LatLng(lat, lon);
+				var marker = new google.maps.Marker({
+				    position: markLocation,
+				    title: title
+				});
+				Coordinates.push(markLocation);
+				MarkersArray.push(marker);
+				flightPath();
+				for(i = 0; i < MarkersArray.length; i++) {
+					MarkersArray[i].setMap(map);
+				}
+				map.setCenter(markLocation);
+			}
+			function flightPath(){
+				for (i in travelPathArray){
+					travelPathArray[i].setMap(null);
+				}
+				var flightPath = new google.maps.Polyline({
+					path: Coordinates,
+					strokeColor: color,
+					strokeOpacity: 0.5,
+					strokeWeight: 3
+				});
+				travelPathArray.push(flightPath);
+				for (var i = 0; i < travelPathArray.length; i++) {
+					travelPathArray[i].setMap(map);
+			    }
+			}
+		
+		function delMarker() {
+			for (var i = 0; i < MarkersArray.length; i++) {
+				MarkersArray[i].setMap(null);
+		    }
+			for (var i = 0; i < travelPathArray.length; i++) {
+				travelPathArray[i].setMap(null);
+		    }
+			MarkersArray = [];
+			travelPathArray = [];
+			co = [], co2 = [], co3 = [];
+			
+			for(f=0; f<$("#table2 div").length; f++) {
+				var day = $("#table2 div:eq("+f+")").parent().attr("day");
+				var lat = parseFloat($("#table2 div:eq("+f+")").attr("lat"));
+				var lng = parseFloat($("#table2 div:eq("+f+")").attr("lon"));
+				var title = $("#table2 div:eq("+f+")").contents().first().text();
+				myMap(lat, lng, day, title);
+			}
+		}
 </script>
 	
 </body>
