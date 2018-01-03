@@ -31,10 +31,10 @@
 .button5 {border-radius: 50%;}
 </style>
 </head>
-
+ 
 
 <!-- Modal -->
-  <div class="modal fade" id="myModal" role="dialog">
+  <div class="modal fade" id="myModal" role="dialog" style="min-width:430px;">
     <div class="modal-dialog">
     
       <!-- Modal content-->
