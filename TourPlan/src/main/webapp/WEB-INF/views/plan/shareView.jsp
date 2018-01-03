@@ -74,11 +74,22 @@ var plannum = <%=vo.getPlannum()%>;
 									break;
 								}
 							}
-							var div = "<div id='place_" + data[i].placenum + "_" + data[i].plantablenum + "' class='redips-drag'>" + data_place[j].placename + "<br>" + data_place[j].city + ", " + data_place[j].country+ "<br><input class='stay' type='text' placeholder='몇 분' value='"+data[i].staytime+"' onchange='stayCheck(this);'></div>";
+							var div = "<div name='loc_"+data_place[j].lat+"_"+data_place[j].lon+"' id='place_" + data[i].placenum + "_" + data[i].plantablenum + "' class='redips-drag'>" + data_place[j].placename + "<br>" + data_place[j].city + ", " + data_place[j].country+ "<br><input class='stay' type='text' placeholder='몇 분' value='"+data[i].staytime+"' onchange='stayCheck(this);'></div>";
 							 $(div).appendTo($("#" + data[i].day + "a" + data[i].tr));
 							 
 							$("#post"+ data[i].day + "a" + data[i].tr).append("<div style='border: solid 1px orange;'>" + data_place[j].placename + "<br>" + data_place[j].city + ", " + data_place[j].country +  "</div>");
 							$("#post"+ data[i].day + "a" + data[i].tr + "+button").css("display", "block");
+						}
+						
+						for(f=0; f<$("#table2 div").length; f++) {
+							var day = $("#table2 div:eq("+f+")").parent().attr("day");
+							var f_name = $("#table2 div:eq("+f+")").attr("name");
+							var f_arr = new Array();
+							f_arr = f_name.split("_");
+							var lat = parseFloat(f_arr[1]);
+							var lng = parseFloat(f_arr[2]);
+
+							myMap(lat, lng, day);
 						}
 					}
 				} else {
@@ -171,7 +182,7 @@ body {
     flex: 4;
 }
 #planName {
-	width: 100%;
+	width: 80%;
 	height: 50px;
 	margin-bottom: 20px;
 }
@@ -252,7 +263,9 @@ input:checked+.slider:before {
     background-color: #ddd;
 }
 .tab button.active {
-    background-color: #ccc;
+    background-color: #ff8f00;
+	color: #fff;
+	font-weight: bold;
 }
 .tabcontent {
     display: none;
@@ -284,7 +297,7 @@ input:checked+.slider:before {
 	-moz-border-radius: 3px;
 }
 div#redips-drag table {
-	background-color: #eee; /* table2 background-color */
+	/* background-color: #eee; */ /* table2 background-color */
 	border-collapse: collapse;
 }
 div#redips-drag td {
@@ -336,7 +349,7 @@ div#redips-drag #table1 div {
   border: 1px solid #ddd;
   margin-bottom: 12px;
 }
-#trashTb {
+#trashTD {
 	width: 100%;
 	height: 50px;
 	margin-bottom: 10px;
@@ -349,15 +362,59 @@ div#redips-drag #table1 div {
 	width: 50px;
 	height: 15px;
 }
+.topTable {
+	width: 80%;
+}
+
+.topTable td {
+	padding: 2px;
+	text-align: center;
+	vertical-align: inherit;
+}
+
+.topTr {
+	padding: 2px;
+	background-color: #e0e0e0;
+}
+.btn-default {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 15px;
+  font-weight: normal;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: #555;
+  background-color: #fff;
+  border-color: #ccc;
+}
+.btn-default:hover {
+  color: #333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+.cal_btn {
+	cursor: pointer;
+    background-color: #ddd;
+    border: 1px solid #ddd;
+    padding: .375rem .75rem;
+    border-radius: .25rem;
+}
+
+.cal_btn:hover {
+	background-color: #ccc;
+	transition: background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
 </style>
 </head>
 <body>
 	<div class="header">
-		<input type="text" id="planname" value=""/>
+		<input type="text" id="planName" name="planname" value="${vo.planname}" placeholder="제목과 간단한 소개"/>
 		<div class="divContents">
-			<div>
-				<table border="1">
-					<tr>
+				<table class="topTable" border="1">
+					<tr class="topTr">
 						<td>출발일</td><td>도착일</td><td>day</td><td>인원</td><td>여행테마</td><td>공개여부</td><td>이미지</td>
 					</tr>
 					<tr>
@@ -387,7 +444,7 @@ div#redips-drag #table1 div {
 							<!-- 이미지 업로드 -->
 							<div id="upload"></div>
 							<form id="frm_img" method="post" enctype="multipart/form-data">
-      							<input type="file" name="uploadFile" style="border: 1px solid grey"><br />
+      							<input type="file" name="uploadFile" style="border: 1px solid grey">
       							<button type="button" onclick="imageAdd();">업로드</button>
   							</form>
 							<!-- 이미지 업로드 -->			
@@ -396,14 +453,13 @@ div#redips-drag #table1 div {
 				</table>
 			</div>
 		</div>
-	</div>
 	<div id="redips-drag">
 		<div class="footer">
 			<div class="column divNav" style="background-color:#aaa;">
 				<div id="left">
 					<input type="text" class="searchInput" id="searchInput-region" onkeyup="searchRegionFunction()" placeholder="Search.." title="Type in a name">
 					<!-- <input type="text" class="searchInput" id="searchInput-place" onkeyup="searchPlaceFunction()" placeholder="Search for place.." title="Type in a name"> -->
-					<table id="trashTb">
+					<table id="trashTD">
 						<tr><td class="redips-trash" title="Trash" id="trashTD"><h3><strong>Trash</strong></h3></td></tr>
 					</table>
 					<table id="table1" border="1">
@@ -414,7 +470,7 @@ div#redips-drag #table1 div {
 							
 						</tbody>
 					</table>
-					<button id="newPlaceBtn">새장소등록</button>
+					<button id="newPlaceBtn" class="btn-default">새장소등록</button>
 				</div>
 			</div>
 			<div class="column divMain" style="background-color:#bbb;">
@@ -457,9 +513,9 @@ div#redips-drag #table1 div {
 					</div>
 				</div>
 				<div id="divBtns" style="padding: 10px 0 10px 0;">
-				<table style="width:100%">
+				<table style="width:100%;">
 					<tr>
-						<td style="width: 50%;">
+						<td style="width: 50%; border:0px;">
 						<span>
 						<select id="travel_mode" style="height:30px; width:18%;">
 					      <option value="DRIVING">자동차</option>
@@ -470,7 +526,7 @@ div#redips-drag #table1 div {
 						<button type="submit" id="submit" class="cal_btn" style="width: 70%;">거리계산</button>
 					</span>
 					</td>	
-					<td style="width: 50%;">
+					<td style="width: 50%; border:0px;">
 						<button class="btn btn-primary" type="button" onclick="savePlan();" style="width: 100%; cursor: pointer;">저장하기</button></td>
 					</tr>
 				</table>

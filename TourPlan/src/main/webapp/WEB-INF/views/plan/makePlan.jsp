@@ -146,7 +146,7 @@ body {
     flex: 4;
 }
 
-#planname {
+#planName {
 	width: 80%;
 	height: 45px;
 	margin-bottom: 5px;
@@ -494,7 +494,7 @@ div.dark:hover {
 <!-- Modal End -->
 
 	<div class="header">
-		<input type="text" id="planname" name="planname" value="${vo.planname}" placeholder="제목과 간단한 소개"/>
+		<input type="text" id="planName" name="planname" value="${vo.planname}" placeholder="제목과 간단한 소개"/>
 		<div class="divContents">
 				<table class="topTable" border="1">
 					<tr class="topTr">
@@ -519,7 +519,6 @@ div.dark:hover {
 								<label class="switch"> 
 									<input id="isopen_ck" type="checkbox" name="is" value="1"><span class="slider round"></span>
 								</label>
-									<!-- ★★★form넘기기전 confirm해야 -->
 									<input type="hidden" id="isopen" name="isopen" value="0">
 						</td>
 						<td>
@@ -621,6 +620,8 @@ div.dark:hover {
 			</div>
 		</div>
 	</div>
+</div>
+</div>
 	
 <script>
 var isSave = false;
