@@ -159,7 +159,7 @@ public class MemberAjaxController {
 	public boolean passwordInit(MemberSearchVO vo) {
 		System.out.println(getRandomPassword(10));
 		vo.setPassword(getRandomPassword(10));
-		return memberService.update(vo);
+		return memberService.updatePw(vo);
 	}
 	
 	public String getRandomPassword(int len ) {

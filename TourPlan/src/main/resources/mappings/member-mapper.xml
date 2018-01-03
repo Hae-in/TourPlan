@@ -62,6 +62,13 @@
 		</set>
 		where membernum = #{membernum}
 	</update>
+	
+		<update id="updatePw" parameterType="member">
+		update member
+		set password = #{password}
+			
+		where id = #{id}
+	</update>
 
 	<delete id="delete" parameterType="member">
 		<![CDATA[

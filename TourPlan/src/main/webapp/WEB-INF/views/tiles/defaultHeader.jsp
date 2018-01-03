@@ -76,7 +76,7 @@
 
          <form id="frmModal2">
          <table border="0" width="370px" cellspacing="15" cellpadding="10" align="center">
-            <tr center>
+           <tr center>
                 <td align="center">아이디</td>
                 <td align="center"><input type="email" name="id" id="rId" width="150px">
                 <span id="checkResultId"></span></td>
@@ -100,6 +100,32 @@
                 <td align="center"><input type="text" name="nickname" id="rNickname">
                 <span id="checkResultNickname"></span></td>
             </tr>
+            
+            
+ <!--           	<tr center>
+                <td align="center"><input type="email" name="id" id="rId" width="150px"  placeholder="아이디">
+                <span id="checkResultId"></span></td>
+            </tr>
+            
+            <tr>
+                <td align="center"><input type="password" name="password" id="rPassword"  placeholder="비밀번호">
+               		</td>
+            </tr>
+            
+            <tr>
+                <td align="center"><input type="password" name="pwCheck" id="rPwCheck"  placeholder="비밀번호 확인">
+                <span id="checkResultPw"></span></td>
+            
+            </tr>
+            
+            <tr>
+                <td align="center"><input type="text" name="nickname" id="rNickname" placeholder="닉네임">
+                <span id="checkResultNickname"></span></td>
+            </tr> -->
+            
+            
+            
+            
             
             <tr>
                 <td colspan="2" align="center">
@@ -155,7 +181,7 @@
          <table style="border:0px; width:200px; text-align:center;" align="center" cellspacing="10" cellpadding="5">
          
             <tr>
-                <td align="center"><input type="email" name="pwCk" id="pwCk" placeholder="이메일 주소"></td>
+                <td align="center"><input type="email" name="id" id="pwCk" placeholder="이메일 주소"></td>
             </tr>
             
             <tr>
@@ -182,8 +208,10 @@
           <h4 class="modal-title"><span style="color:#007BFF">이용약관</span></h4>
           <button type="button" class="close" data-dismiss="modal" data-toggle="modal" data-target="terms">&times;</button>
         </div>
+        <div style="overflow-y:auto; overflow-x:hidden; height:500px;">
         <div class="modal-body">
-        
+
+
          <form id="frmModal4">
     		<span style = " font-size:0.66em;"> 
     		<pre>    
@@ -515,7 +543,8 @@
     본 약관은 2018년 01월 01일부터 적용됩니다.
     	</pre>
 		</span>
-         </form>
+         </form></div>
+         
          </div>
          <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -534,6 +563,7 @@
           <h4 class="modal-title"><span style="color:#007BFF">개인정보보호정책</span></h4>
           <button type="button" class="close" data-dismiss="modal" data-toggle="modal" data-target="privPolicy">&times;</button>
         </div>
+        <div style="overflow-y:auto; overflow-x:hidden; height:500px;">
         <div class="modal-body">
         
          <form id="frmModal5">
@@ -680,7 +710,7 @@
 		</pre>
 		</span>
          </form>
-         </div>
+         </div></div>
          <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
@@ -794,6 +824,7 @@ $("#regBtn").click(function () {
 	$("#regBtn").hide();
 	$("#logBtn").show();
 	$("#rPwCheck").prop('disabled', true);//비밀번호 확인 칸 비활성화
+	$(".AStyle").html("");
 });
 
 $("#menuLogout").click(function() {
@@ -851,17 +882,17 @@ var nicknameCheck = 0;
 $("#rId").change(function() {
 	var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
 	if(!re.test($("#rId").val())){
-		$("#checkResultId").text("이메일 주소를 입력하세요.");
+		$("#checkResultId").html("<br><span class ='AStyle' style = 'font-size:0.7em;  color: red;'>이메일 주소를 입력하세요.</span>");
 		return; 
 	};
 	var param = "id="+$("#rId").val();
 	$.getJSON("../memberAjax/memberIdCheck", param, function(data,status){ //뷰페이지 상에서 제이슨 형태로 데이터를 가져온다
 		if(status =="success" ) {
 			if(data == true) {
-				$("#checkResultId").text("사용가능한 아이디입니다.");
+				$("#checkResultId").html("<br><span class ='AStyle' style = 'font-size:0.7em;  color: red;'>사용가능한 아이디입니다.</span>");
 				memberIdCheck = 1;
 			} else {
-				$("#checkResultId").text("이미 사용 중인 아이디입니다.");
+				$("#checkResultId").html("<br><span class ='AStyle' style = 'font-size:0.7em;  color: red;'>이미 사용 중인 아이디입니다.<span>");
 				memberIdCheck = 0;
 			}
 		} 
@@ -873,13 +904,14 @@ $("#rNickname").change(function() {
 	var param = "nickname="+$("#rNickname").val();
 	$.getJSON("../memberAjax/nicknameCheck", param, function(data,status){ //뷰페이지 상에서 제이슨 형태로 데이터를 가져온다
 		if(status =="success" ) {
-			if(data == true) {
-				$("#checkResultNickname").text("사용가능한 닉네임입니다.");
+			if(data != true) /* {
+				$("#checkResultNickname").html("</br><span class ='AStyle' style = 'font-size:0.7em;  color: red;'>사용가능한 닉네임입니다.</span>");
 				nicknameCheck = 1;
-			} else {
-				$("#checkResultNickname").text("이미 사용 중인 닉네임입니다.");
+			} else */ {
+				$("#checkResultNickname").html("</br><span class ='AStyle' style = 'font-size:0.7em;  color: red;'>이미 사용 중인 닉네임입니다.</span>");
 				nicknameCheck = 0;
 			}
+			else {nicknameCheck = 1;}
 		} 
 	});
 });
@@ -903,10 +935,11 @@ $("#rPassword").change(function() {
 	if($("#rPassword").val() !="" && $("#rPwCheck").val() !="" ){
 		if($("#rPassword").val() == $("#rPwCheck").val()){
 			passwordCheck=1;
+			$("#checkResultPw").html("");
 		}
 		else {
 			passwordCheck=0;
-			$("#checkResultPw").text("패스워드가 일치하지 않습니다. 다시 입력해 주세요.");
+			$("#checkResultPw").html("<br><span  class ='AStyle' style = 'font-size:0.7em;  color: red;'>패스워드가 일치하지 않습니다.</span>");
 		}
 	}	
 });
@@ -945,10 +978,11 @@ $("#rPwCheck").change(function() {
 	if($("#rPassword").val() !="" && $("#rPwCheck").val() !="" ){
 		if($("#rPassword").val() == $("#rPwCheck").val()){
 			passwordCheck=1;
+			$("#checkResultPw").html("");
 		}
 		else {
 			passwordCheck=0;
-			$("#checkResultPw").text("패스워드가 일치하지 않습니다. 다시 입력해 주세요.");
+			$("#checkResultPw").html("<br><span  class ='Astyle' style = 'font-size:0.7em;  color: red;'>패스워드가 일치하지 않습니다.</span>");
 			$("#rPwCheck").val("");
 			$('#rPwCheck').focus();
 		}
@@ -961,19 +995,19 @@ $("#reg").click(function() {
 
 	//입력값 체크
 	if(memberIdCheck == 0){
-        alert("아이디를 입력하세요.");
+        alert("아이디를 다시 입력하세요. 아이디는 이메일 주소입니다.");
         $("#rId").focus(); // 입력포커스 이동
         return; // 함수 종료
     }
 
 	if(passwordCheck == 0){
-        alert("패스워드가 일치하지 않습니다.");
+        alert("패스워드를 입력하세요.");
         $("#rPassword").focus(); // 입력포커스 이동
         return; // 함수 종료
     }
 
-	if(memberIdCheck == 0){
-        alert("이미 사용 중인 닉네임입니다."); 
+	if(nicknameCheck == 0){
+        //alert("이미 사용 중인 닉네임입니다."); 
         $("#rNickname").focus(); // 입력포커스 이동
         return; // 함수 종료
     }
@@ -993,23 +1027,29 @@ $("#reg").click(function() {
 	});
 });
 
+$("#pwBtn").click(function() {
+	$('#pwModal').modal('show');
+});
+
 //패스워드 이메일 전송
 $("#sendPw").click(function() {
 
 	//입력값 체크
-	if(memberIdCheck == 0){
+	if($("#memberIdCheck") == ""){
         alert("아이디를 입력하세요.");
         $("#pwCk").focus(); // 입력포커스 이동
         return; // 함수 종료
     }
 
 	var param = $("#frmModal3").serialize();
-	$.getJSON("../memberAjax/passwordInit", param, function(data,status){ //뷰페이지 상에서 제이슨 형태로 데이터를 가져온다
+	$.getJSON("../memberAjax/passwordInit.do", param, function(data,status){ //뷰페이지 상에서 제이슨 형태로 데이터를 가져온다
 		if(status =="success" ) {
 			if(data == true) {
 				alert("임시 비밀번호 전송이 완료되었습니다.");
-				//부트스트랩 팝업창 닫기				$
-				$("#logBtn").click();
+				$("#frmModal3")[0].reset();
+				//부트스트랩 팝업창 닫기	 
+				//$('#pwModal').modal('hide');
+				
 			} else {
 				alert("가입되어 있지 않은 이메일입니다.");
 			}
@@ -1017,5 +1057,15 @@ $("#sendPw").click(function() {
 			alert(status);
 		}
 	});
+	
+
 });
+
+document.addEventListener('keydown', function(event) {
+    if (event.keyCode === 13) {
+        event.preventDefault();
+    }
+}, true);
+
+
 </script>

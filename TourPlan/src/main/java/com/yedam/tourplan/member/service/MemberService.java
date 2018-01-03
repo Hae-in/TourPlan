@@ -10,6 +10,7 @@ package com.yedam.tourplan.member.service;//제한
 		public boolean insert(MemberVO vo);
 		public MemberVO select(MemberSearchVO vo);
 		public boolean update(MemberVO vo);
+		public boolean updatePw(MemberVO vo);
 		public boolean delete(MemberVO vo);
 		
 		
