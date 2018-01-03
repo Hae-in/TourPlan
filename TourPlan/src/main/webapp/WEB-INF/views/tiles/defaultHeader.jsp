@@ -826,7 +826,7 @@ $("#regBtn").click(function () {
 	$("#rPwCheck").prop('disabled', true);//비밀번호 확인 칸 비활성화
 	$(".AStyle").html("");
 });
-
+ 
 $("#menuLogout").click(function() {
 	if(confirm('로그아웃 하시겠습니까?')) {
 		$.getJSON("../memberAjax/logout", function(data,status){
