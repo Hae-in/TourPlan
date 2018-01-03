@@ -50,7 +50,7 @@
 					}
 				}, {
 					label : '신고자',
-					name : 'membernum',
+					name : 'userid',
 					width : 65
 				}, {
 					label : '내용',
