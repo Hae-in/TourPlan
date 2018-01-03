@@ -68,10 +68,9 @@ redips.init = function () {
 		}
 	};
 	
-	// if any element is clicked, then make all subjects in timetable visible
-	rd.event.clicked = function () {
-		redips.showAll();
-	};
+	rd.event.dblClicked = function() {
+		rd.deleteObject(rd.obj);
+	}
 };
 
 

@@ -75,9 +75,9 @@ $(function(){
 							
 							//[스토리]post 테이블 칸만큼 틀 추가
 							for(i=1; i<=post_day; i++) {
-								var day_div = "<div id='postDay" + i + "' style='border: 1px solid red;'><font size='5'><b>" + i + " Day</b></font>";
+								var day_div = "<div id='postDay" + i + "' class='post_day'><font size='5'><b>" + i + " Day</b></font>";
 								for(j=0; j<=last_tr; j++) {
-									day_div += "<div id='post"+i+"a"+j+"'></div>";
+									day_div += "<div id='post"+i+"a"+j+"' class='post_content'></div>";
 								}
 								day_div += "</div>";
 								$("#storyTab").append(day_div);
@@ -89,7 +89,7 @@ $(function(){
 								if(status =="success" ) {
 									if( data.length > 0) {
 										for(i=0; i<data.length; i++) {
-											var div = "<div style='border: 1px solid grey; padding: 5px; margin: 5px; width: fit-content;'>" + data[i].post + "</div>"
+											var div = "<div style='background-color: whitesmoke; border: 1px solid grey; padding: 5px; margin: 5px; width: fit-content;'>" + data[i].post + "</div>"
 											$("#post" + data[i].day + "a" + data[i].tr).append(div);
 										}
 									}
@@ -109,7 +109,7 @@ $(function(){
 								var div = "<div lon='"+data_place[j].lon+"' lat='"+data_place[j].lat+"' id='place_" + data[i].placenum + "_" + data[i].plantablenum + "' class='redips-drag'>" + data_place[j].placename + "<br>" + data_place[j].city + ", " + data_place[j].country+ "<br>" + data[i].staytime + "분</div>";
 								 $(div).appendTo($("#" + data[i].day + "a" + data[i].tr));
 								 
-								 $("#post"+ data[i].day + "a" + data[i].tr).append("<div style='border: solid 1px orange;'>" + data_place[j].placename + "<br>" + data_place[j].city + ", " + data_place[j].country +  "</div>");
+								 $("#post"+ data[i].day + "a" + data[i].tr).append("<div class='post_loc'>" + data_place[j].placename + "<br>" + data_place[j].city + ", " + data_place[j].country +  "</div>");
 							}
 							
 							for(f=0; f<$("#table2 div").length; f++) {
@@ -119,7 +119,6 @@ $(function(){
 
 								myMap(lat, lng, day);
 							}
-						
 						}
 					} else {
 						alert(status);
@@ -163,7 +162,7 @@ body {
 /* Style the header */
 .header {
     background-color: #f1f1f1;
-    padding: 50px;
+    padding: 30px;
     /* text-align: center; */
     /* margin-left: 300px; */
 }
@@ -195,12 +194,7 @@ body {
     -webkit-flex: 2;
     -ms-flex: 4;
     flex: 4;
-}
-
-#planName {
-	width: 100%;
-	height: 50px;
-	margin-bottom: 20px;
+    height: 1000px;
 }
 
 /*공개여부*/
@@ -293,7 +287,9 @@ input:checked+.slider:before {
 }
 
 .tab button.active {
-    background-color: #ccc;
+    background-color: #ff8f00;
+	color: #fff;
+	font-weight: bold;
 }
 
 .tabcontent {
@@ -401,12 +397,28 @@ div#redips-drag #table1 div {
 	color: #fff;
 }
 
+.topTable {
+	width: 80%;
+}
+
+.topTable td {
+	padding: 2px;
+	text-align: center;
+	vertical-align: inherit;
+}
+
+.topTr {
+	padding: 2px;
+	background-color: #e0e0e0;
+}
+
 #innerLeft {
 	text-align: center;
     border: 1px solid #e0e0e0;
    	padding: 10px;
     background: whitesmoke;
     border-radius: 10px;
+    margin-bottom: 5px;
 }
 
 .btn-default {
@@ -433,10 +445,44 @@ div#redips-drag #table1 div {
 	width: 80%;
 }
 #planName {
-	width: 80%;
+	width: 100%;
 	height: 45px;
 	margin-bottom: 5px;
 	font-size: 18px;
+}
+.cal_btn {
+	cursor: pointer;
+    background-color: #ddd;
+    border: 1px solid #ddd;
+    padding: .375rem .75rem;
+    border-radius: .25rem;
+}
+
+.cal_btn:hover {
+	background-color: #ccc;
+	transition: background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+h4 {
+	border: 1px solid #868686;
+    background: gainsboro;
+    color: dimgrey;
+    font-family: -webkit-pictograph;
+    margin-bottom: 10px;
+}
+.post_day {
+	border-bottom: 1px solid #212529;
+}
+
+.post_content {
+	padding: 2px;
+}
+.post_loc {
+	margin: 5px;
+    padding: 0 5px 0 5px;
+    border-bottom: 1px solid #555;
+    font-weight: 550;
+    width: 30%;
 }
 </style>
 </head>
@@ -479,45 +525,50 @@ div#redips-drag #table1 div {
 <!-- Modal End -->
 
 	<div class="header">
-		<input type="text" id="planName" placeholder="${plan.planname}"/>
-		<div class="divContents">
-			<div>
-				<table class="topTable" border="1">
-					<tr>
-						<td>출발일</td><td>일수</td><td>인원</td><td>여행테마</td><td>이미지</td>
-					</tr>
-					<tr>
-						<td>${plan.departuredate}</td>
-						<td id="day">${plan.day}</td>
-						<td>${plan.people}</td>
-						<td>
-							<select id="sel" name="categorynum" disabled>
-        						<option value="11">나홀로여행</option>
-								<option value="12">친구와여행</option>
-  				 				<option value="13">가족여행</option>
-			     				<option value="14">단체여행</option>
-			     				<option value="15">커플여행</option>
-			     				<option value="16">기타</option>
-			  				</select>
-						</td>
-						<td>
-							<div id="upload"></div>
-						</td>
-					</tr>
-				</table>
-			</div>
-		</div>
 	</div>
 	<div id="redips-drag">
 		<div class="footer">
 			<div class="column divNav" style="background-color:#aaa;">
 				<div id="left">
 					<div id="innerLeft">
+						<p><h4>일정정보</h4>
+						<input type="text" id="planName" value="${plan.planname}" readonly="readonly"/>
+							<div class="divContents">
+								<div>
+									<table class="topTable" border="1">
+										<tr class="topTr">
+											<td>출발일</td><td>day</td><td>인원</td><td>여행테마</td><td>이미지</td>
+										</tr>
+										<tr>
+											<td>${plan.departuredate}</td>
+											<td id="day">${plan.day}</td>
+											<td>${plan.people}</td>
+											<td>
+												<select id="sel" name="categorynum" disabled>
+					        						<option value="11">나홀로여행</option>
+													<option value="12">친구와여행</option>
+					  				 				<option value="13">가족여행</option>
+								     				<option value="14">단체여행</option>
+								     				<option value="15">커플여행</option>
+								     				<option value="16">기타</option>
+								  				</select>
+											</td>
+											<td>
+												<div id="upload"></div>
+											</td>
+										</tr>
+									</table>
+								</div>
+							</div>
+						</div>
+					<div id="innerLeft">
+					<p><h4>작성자</h4>
 						<c:if test="${not empty m_picture}">
 							<img src="<c:url value='/'/>resources/images/${m_picture[0].realfilename}" width='100px' height='100px' style='border-radius: 20px;'>
 						</c:if><br>
 						<font size="4">${writer.nickname}</font><br><hr>
 						<a style="cursor: pointer;" data-toggle="modal" data-target="#report_Modal"><font color='#e60000'>▶잘못된 일정 신고하기</font></a>
+						<br>
 					</div>
 				</div>
 			</div>
@@ -546,18 +597,17 @@ div#redips-drag #table1 div {
 					<tr>
 						<td style="width: 50%;">
 						<span>
-						<select id="travel_mode" style="height:30px; width:18%;">
+						<select id="travel_mode" style="height:50px; width:18%;">
 					      <option value="DRIVING">자동차</option>
 					      <option value="WALKING">도보</option>
 					      <option value="TRANSIT">대중교통</option>
 					    </select>
-						<input type="text" id="cal_dis" placeholder="day" style="width: 8%;">
-						<button type="submit" id="submit" class="cal_btn" style="width: 70%;">거리계산</button>
+						<input type="text" id="cal_dis" placeholder="day" style="width: 8%; height: 50px;">
+						<button type="submit" id="submit" class="cal_btn" style="width: 70%; height: 50px;">거리계산</button>
 					</span>
 					</td>	
 					<td style="width: 50%;">
-						<a href="../plan/modify.do?plannum=<%=vo.getPlannum()%>" class="btn-default">이 일정 참고하기</a>
-						<!-- <button class="btn btn-primary" type="button" onclick="savePlan();" style="width: 100%; cursor: pointer;">저장하기</button></td> -->
+						<a href="../plan/modify.do?plannum=<%=vo.getPlannum()%>" class="btn btn-primary" style="width: 100%; cursor: pointer; height: 50px;">이 일정 참고하기</a>
 					</tr>
 				</table>
 			</div>

@@ -13,6 +13,28 @@
 	display: inline-block;
 	margin-right: 10px;
 }
+#conf {
+	color: #007bff;
+}
+#conf:hover {
+	text-decoration: underline;
+	color: #0d5baf;
+}
+.del_confirm {
+	cursor: pointer;
+	color: #007bff;
+}
+.del_confirm:hover {
+	text-decoration: underline;
+	color: #0d5baf;
+}
+.shareA {
+	color: lightslategrey;
+}
+.shareA:hover {
+	text-decoration: underline;
+	color: #3b4650;
+}
 </style>
 <script>
 function dolist(page){
@@ -104,11 +126,6 @@ $(document).on("click", '.del_confirm', function(e) {
 });
 
 </script>
-<style>
-.del_confirm {
-	cursor: pointer;
-}
-</style>
 </head>
 <body>
 
@@ -210,7 +227,6 @@ $(document).on("click", '.del_confirm', function(e) {
 						<c:forEach items="${planList}" var="plan">
 							<div class="col-lg-6 portfolio-item">
 								<div class="card h-100">
-								<a class="shareA" style="cursor: pointer;" plannum="${plan.plannum}">실시간공유하기</a>
 								<a href="../plan/select.do?plannum=${plan.plannum}">
 									<c:if test="${not empty plan.imagename}">
 										<img class="card-img-top" src="<c:url value='/'/>resources/images/${plan.imagename}" alt="" width="348" height="250"> 
@@ -231,16 +247,16 @@ $(document).on("click", '.del_confirm', function(e) {
 										</h4>
 											<c:choose>
 												<c:when test="${plan.state == '0'}">
-													<a href="../plan/myUpdate.do?plannum=${plan.plannum}" style="border: 1px solid black;">수정하기</a>
-													<a class="del_confirm" plannum="${plan.plannum}" style="border: 1px solid black;">삭제하기</a>
-													<div id="conf" onclick="confc('${plan.plannum}');" style="border: 1px solid red; cursor: pointer;">승인요청</div>
+													<a href="../plan/myUpdate.do?plannum=${plan.plannum}"><font size="2">수정하기</font></a> 
+													<span class="del_confirm" plannum="${plan.plannum}"><font size="2">삭제하기</font></span> 
+													<span id="conf" onclick="confc('${plan.plannum}');" style="cursor: pointer;"><font size="2">승인요청</font></span>
 												</c:when>
 												<c:when test="${plan.state == '2'}">
 													<div>승인대기중</div>
 												</c:when>
 											</c:choose>
 										<p class="card-text">
-											<%-- ${i.lat}${i.lon}${i.addr}${i.city}${i.country} --%>
+											<span class="shareA" style="cursor: pointer;" plannum="${plan.plannum}">실시간공유하기</span>
 										</p>
 									</div>
 									<div class="card-footer text-muted">Like Count : ${plan.likecount}

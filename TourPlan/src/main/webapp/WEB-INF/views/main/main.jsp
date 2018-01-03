@@ -47,6 +47,13 @@
             </div></a>
           </div>
           
+          <div class="carousel-item" style="background-image: url('https://www.nycgo.com/images/venues/152/tripadvisortimessquare_taggeryanceyiv_5912__x_large.jpg?resize=660%2C330')">
+            <a href="../theme/theme1.do"><div class="carousel-caption d-none d-md-block">
+              <h3>혼자여도 나는 좋아</h3>
+              <p>뉴욕, 미국</p>
+            </div></a>
+          </div>
+          
           <div class="carousel-item" style="background-image: url('https://i.imgur.com/cIH9lDy.jpg?resize=660%2C330')">
             <a href="../theme/theme2.do"><div class="carousel-caption d-none d-md-block">
               <h3>대자연에 압도되다</h3>
@@ -65,13 +72,6 @@
             <a href="../theme/theme1.do"><div class="carousel-caption d-none d-md-block">
               <h3>3일이면 당신도 서퍼!</h3>
               <p>발리, 인도네시아</p>
-            </div></a>
-          </div>
-          
-          <div class="carousel-item" style="background-image: url('https://www.nycgo.com/images/venues/152/tripadvisortimessquare_taggeryanceyiv_5912__x_large.jpg?resize=660%2C330')">
-            <a href="../theme/theme1.do"><div class="carousel-caption d-none d-md-block">
-              <h3>혼자여도 나는 좋아</h3>
-              <p>뉴욕, 미국</p>
             </div></a>
           </div>
           

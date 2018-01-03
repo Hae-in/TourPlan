@@ -25,7 +25,7 @@
 				
 				for (i = 0; i < data.length; i++) {
 					console.log(data[i].imagename);
-					$("#tbody").append("<tr><td class='redips-mark lunch'><img width='100px;' height='65px;' src='../resources/images/"+(data[i].imagename == null ? "null.jpg" : data[i].imagename) +"'></td><td class='dark'><div lon='"+data[i].lon+"' lat='"+data[i].lat+"' id='place_" + data[i].placenum + "_"+i+"' class='redips-drag redips-clone'>"+data[i].placename+"<br>"+data[i].city+", " +data[i].country+"<br><input class='stay' type='hidden' placeholder='몇 분' value='30' onchange='stayCheck(this);'></div></td></tr>");
+					$("#tbody").append("<tr><td class='redips-mark lunch'><a href='../place/select.do?num="+data[i].placenum+"' target='_blank'><img width='100px;' height='65px;' src='../resources/images/"+(data[i].imagename == null ? "null.jpg" : data[i].imagename) +"'></a></td><td class='dark'><div lon='"+data[i].lon+"' lat='"+data[i].lat+"' id='place_" + data[i].placenum + "_"+i+"' class='redips-drag redips-clone'>"+data[i].placename+"<br>"+data[i].city+", " +data[i].country+"<br><input class='stay' type='hidden' placeholder='몇 분' value='30' onchange='stayCheck(this);'></div></td></tr>");
 				}
 			}
 		});
@@ -111,8 +111,8 @@ body {
 
 /* Style the header */
 .header {
-    background-color: #fff;
-    padding: 50px;
+    background-color: #f8f9fa;
+    padding: 35px;
     /* text-align: center; */
     /* margin-left: 300px; */
 }
@@ -566,7 +566,6 @@ div.dark:hover {
 				<div id="planTab" class="tabcontent">
 					<div id="googleMap" style="width: 100%; height: 400px;"></div>
   						  <div id="right-panel"><div>
-    					 <div id="directions-panel"></div>
 					<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC6-5na3Y2gJSt31kHSeSWZqp3VM1hvgJg&libraries=places&callback=initMap"></script>
 					<div id="planList">
 						<div id="right">
@@ -594,7 +593,7 @@ div.dark:hover {
 										</tr>
 								</tbody>
 							</table>
-							<div id="addTr" class="dark" style="text-align: center; cursor: pointer;">칸 추가하기</div>
+							<div id="addTr" class="dark" style="text-align: center; cursor: pointer; padding: 5px;">칸 추가하기</div>
 						</div>
 					</div>
 				</div>
@@ -604,21 +603,22 @@ div.dark:hover {
 					<tr>
 						<td style="width: 50%;">
 						<span>
-						<select id="travel_mode" style="height:30px; width:18%;">
+						<select id="travel_mode" style="height:50px; width:18%;">
 					      <option value="DRIVING">자동차</option>
 					      <option value="WALKING">도보</option>
 					      <option value="TRANSIT">대중교통</option>
 					    </select>
-						<input type="text" id="cal_dis" placeholder="day" style="width: 8%;">
-						<button type="submit" id="submit" class="cal_btn" style="width: 70%;">거리계산</button>
+						<input type="text" id="cal_dis" placeholder="day" style="width: 8%; height: 50px;">
+						<button type="submit" id="submit" class="cal_btn" style="width: 70%; height: 50px;">거리계산</button>
 					</span>
 					</td>	
 					<td style="width: 50%;">
-						<button class="btn btn-primary" type="button" onclick="savePlan();" style="width: 100%; cursor: pointer;">저장하기</button></td>
+						<button class="btn btn-primary" type="button" onclick="savePlan();" style="width: 100%; cursor: pointer; height: 50px;">저장하기</button></td>
 					</tr>
 				</table>
 			</div>
 		</div>
+			<div id="directions-panel"></div>
 	</div>
 </div>
 </div>
@@ -698,7 +698,7 @@ function savePlan() {
 	if($("#isopen_ck:checked").val() == null) {} 
 	else { $("#isopen").val("1"); }
 
-	var param2 = "planname=" + $("#planname").val() + "&departuredate=" + $("#departuredate").val() + "&arrivaldate=" + $("#arrivaldate").val()
+	var param2 = "planname=" + $("#planName").val() + "&departuredate=" + $("#departuredate").val() + "&arrivaldate=" + $("#arrivaldate").val()
 	+ "&people=" + $("#people").val() + "&categorynum=" + $("#sel").val() + "&isopen=" + $("#isopen").val() + "&state=0&id=" + memberId + "&imagename=" + image_num;
 	console.log("makePlan의 param값 : " + param2);
 	
@@ -841,7 +841,7 @@ function dayCheck() {
 			}
 			
 			//포스트도 함께 추가
-			var day_div = "<div id='postDay"+(last_day+i)+"' class='post_day''><font size='5'><b>" + (last_day+i) + " Day</b></font>"
+			var day_div = "<div id='postDay"+(last_day+i)+"' class='post_day'><font size='5'><b>" + (last_day+i) + " Day</b></font>"
 			for(j=0; j<=t; j++) {
 				day_div += "<div id='post"+(last_day+i)+"a"+j+"' class='post_content'></div><button id='"+(last_day+i)+"b"+j+"' class='postbtn' style='display:none;'>포스트쓰기</button>"
 			}
@@ -1030,12 +1030,14 @@ var map;
 var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 var labelIndex = 0;
 var MarkersArray = [];
+var MarkersArray2 = [];
 var co= [];
 var co2= [];
 var co3= [];
 var Coordinates;
 var color;
 var travelPathArray = [];
+var travelPathArray2 = [];
 var t_mode;
 
 function initMap() {
@@ -1114,16 +1116,7 @@ function initMap() {
         });
       }
 	
-      function addMarker(location) {
-    	  var marker = new google.maps.Marker({
-    	     position: location,
-    	     label: labels[labelIndex++ % labels.length],
-    	     map: map
-      	});
-    	map.setCenter(location);
-      }
-      
-      function myMap(lat, lon, day) {
+      function myMap(lat, lon, day, title) {
     	  if(day=='1') { Coordinates = co; color = "#FF0000"; }
     	  else if(day == '2') { Coordinates = co2; color = "#33cc33"; }
     	  else if(day == '3') { Coordinates = co3; color = "#0000ff"; }
@@ -1132,6 +1125,7 @@ function initMap() {
 			var markLocation = new google.maps.LatLng(lat, lon);
 			var marker = new google.maps.Marker({
 			    position: markLocation,
+			    title: title
 			});
 			Coordinates.push(markLocation);
 			MarkersArray.push(marker);
@@ -1142,17 +1136,74 @@ function initMap() {
 			map.setCenter(markLocation);
 		}
 		function flightPath(){
-			/* for (i in travelPathArray){
+			for (i in travelPathArray){
 				travelPathArray[i].setMap(null);
-			} */
+			}
 			var flightPath = new google.maps.Polyline({
 				path: Coordinates,
 				strokeColor: color,
 				strokeOpacity: 0.5,
 				strokeWeight: 3
 			});
-			flightPath.setMap(map);
-			//travelPathArray.push(flightPath);
+			travelPathArray.push(flightPath);
+			for (var i = 0; i < travelPathArray.length; i++) {
+				travelPathArray[i].setMap(map);
+		    }
+		}
+		
+		 function myMap2(lat, lon, day, title) {
+	    	  if(day=='1') { Coordinates = co; color = "#FF0000"; }
+	    	  else if(day == '2') { Coordinates = co2; color = "#33cc33"; }
+	    	  else if(day == '3') { Coordinates = co3; color = "#0000ff"; }
+	    	  else {}
+				var mapLocation = new google.maps.LatLng(lat, lon); // 지도에서 가운데로 위치할 위도와 경도
+				var markLocation = new google.maps.LatLng(lat, lon);
+				var marker = new google.maps.Marker({
+				    position: markLocation,
+				    title: title
+				});
+				Coordinates.push(markLocation);
+				MarkersArray.push(marker);
+				flightPath();
+				for(i = 0; i < MarkersArray.length; i++) {
+					MarkersArray[i].setMap(map);
+				}
+				map.setCenter(markLocation);
+			}
+			function flightPath(){
+				for (i in travelPathArray){
+					travelPathArray[i].setMap(null);
+				}
+				var flightPath = new google.maps.Polyline({
+					path: Coordinates,
+					strokeColor: color,
+					strokeOpacity: 0.5,
+					strokeWeight: 3
+				});
+				travelPathArray.push(flightPath);
+				for (var i = 0; i < travelPathArray.length; i++) {
+					travelPathArray[i].setMap(map);
+			    }
+			}
+		
+		function delMarker() {
+			for (var i = 0; i < MarkersArray.length; i++) {
+				MarkersArray[i].setMap(null);
+		    }
+			for (var i = 0; i < travelPathArray.length; i++) {
+				travelPathArray[i].setMap(null);
+		    }
+			MarkersArray = [];
+			travelPathArray = [];
+			co = [], co2 = [], co3 = [];
+			
+			for(f=0; f<$("#table2 div").length; f++) {
+				var day = $("#table2 div:eq("+f+")").parent().attr("day");
+				var lat = parseFloat($("#table2 div:eq("+f+")").attr("lat"));
+				var lng = parseFloat($("#table2 div:eq("+f+")").attr("lon"));
+				var title = $("#table2 div:eq("+f+")").contents().first().text();
+				myMap(lat, lng, day, title);
+			}
 		}
 </script>
 	
