@@ -19,7 +19,6 @@
 <script src='<c:url value='/'/>resources/js/jquery.form.min.js'></script>
 <script>
 var plannum = <%=vo.getPlannum()%>; 
-
 	$(function(){
 		document.getElementById("defaultOpen").click();
 		
@@ -33,7 +32,6 @@ var plannum = <%=vo.getPlannum()%>;
 			}
 		});
 		
-
 		$("#sel > option[value='<%=catenum%>']").attr("selected", "true");
 		var isopen = "<%=isopen%>";
 		if(isopen == "1") {
@@ -130,10 +128,8 @@ var plannum = <%=vo.getPlannum()%>;
 		var depDateArr = new Date(depDate[0], depDate[1], depDate[2]); 
 		var arrDateArr = new Date(arrDate[0], arrDate[1], arrDate[2]); 
 		var cal_day = 0;
-
 		var diff = arrDateArr - depDateArr;
  		var currDay = 24 * 60 * 60 * 1000;// 시 * 분 * 초 * 밀리세컨
-
  		cal_day = parseInt(diff/currDay)+1;
  		$("#day").val(cal_day);
 	}
@@ -142,11 +138,9 @@ var plannum = <%=vo.getPlannum()%>;
 * {
     box-sizing: border-box;
 }
-
 body {
     margin: 0;
 }
-
 /* Style the header */
 .header {
     background-color: #f1f1f1;
@@ -154,56 +148,47 @@ body {
     /* text-align: center; */
     /* margin-left: 300px; */
 }
-
 /* Container for flexboxes */
 .footer {
     display: -webkit-flex;
     display: flex;
 }
-
 /* Create three unequal columns that sits next to each other */
 .column {
     padding: 10px;
     /* height: 200px; /* Should be removed. Only for demonstration */ */
 }
-
 /* Left column */
 .column.divNav {
    -webkit-flex: 1;
    -ms-flex: 1;
    flex: 1;
 }
-
 /* Middle column */
 .column.divMain {
     -webkit-flex: 2;
     -ms-flex: 4;
     flex: 4;
 }
-
 #planName {
 	width: 100%;
 	height: 50px;
 	margin-bottom: 20px;
 }
-
 /*공개여부*/
 #isopen {
 	float: left;
 	/* margin: 5px; */
 }
-
 .switch {
 	position: relative;
 	display: inline-block;
 	width: 60px;
 	height: 32px;
 }
-
 .switch input {
 	display: none;
 }
-
 .slider {
 	position: absolute;
 	cursor: pointer;
@@ -215,7 +200,6 @@ body {
 	-webkit-transition: .4s;
 	transition: .4s;
 }
-
 .slider:before {
 	position: absolute;
 	content: "";
@@ -227,15 +211,12 @@ body {
 	-webkit-transition: .4s;
 	transition: .4s;
 }
-
 input:checked+.slider {
 	background-color: #2196F3;
 }
-
 input:focus+.slider {
 	box-shadow: 0 0 1px #2196F3;
 }
-
 input:checked+.slider:before {
 	-webkit-transform: translateX(26px);
 	-ms-transform: translateX(26px);
@@ -245,22 +226,18 @@ input:checked+.slider:before {
 .slider.round {
 	border-radius: 40px;
 }
-
 .slider.round:before {
 	border-radius: 50%;
 }
 /*공개여부끝*/
-
 .planCate {
 	width: 120px;
 }
-
 .tab {
     overflow: hidden;
     border: 1px solid #ccc;
     background-color: #f1f1f1;
 }
-
 .tab button {
     background-color: inherit;
     float: left;
@@ -271,31 +248,25 @@ input:checked+.slider:before {
     transition: 0.3s;
     font-size: 17px;
 }
-
 .tab button:hover {
     background-color: #ddd;
 }
-
 .tab button.active {
     background-color: #ccc;
 }
-
 .tabcontent {
     display: none;
     padding: 6px 12px;
     border: 1px solid #ccc;
     border-top: none;
 }
-
 .tablinks {
 	width: 50%;
 }
-
 #map {
 	width: 100%;
 	height: 100%;
 }
-
 .redips-drag {	
 	cursor: move;
 	margin: auto;
@@ -312,12 +283,10 @@ input:checked+.slider:before {
 	border-radius: 3px;
 	-moz-border-radius: 3px;
 }
-
 div#redips-drag table {
 	background-color: #eee; /* table2 background-color */
 	border-collapse: collapse;
 }
-
 div#redips-drag td {
 	border-style: solid;
 	border-width: 1px;
@@ -328,30 +297,24 @@ div#redips-drag td {
 	font-size: 10pt;
 	padding: 2px;
 }
-
 div#redips-drag #table1 td {
 	border-width: 0px 0px 1px 0px;
 }
-
 div#redips-drag #table1 div {
 	margin-left: 5px;
 	float: left;
 }
-
 .ar { background-color: #AAC8E2; }
 .bi { background-color: #E7D783; }
 .ch { background-color: #E99AE6; }
-
 .dark{
 	color: #444;
 	background-color: #e0e0e0;
 }
-
 .button_container{
 	padding-top: 10px;
 	text-align: right;
 }
-
 /* "Save" button */
 .button_container input{
 	background-color: #6A93D4;
@@ -360,11 +323,9 @@ div#redips-drag #table1 div {
 	width: 40px;
 	padding: 0px;
 }
-
 #searchTable td{
 	width: 200px;
 }
-
 .searchInput {
   background-image: url('/css/searchicon.png');
   background-position: 10px 10px;
@@ -375,7 +336,6 @@ div#redips-drag #table1 div {
   border: 1px solid #ddd;
   margin-bottom: 12px;
 }
-
 #trashTb {
 	width: 100%;
 	height: 50px;
@@ -384,7 +344,6 @@ div#redips-drag #table1 div {
 	background-color: #DC4C46;
 	color: #fff;
 }
-
 .stay {
 	font-size: 11px;
 	width: 50px;
@@ -558,6 +517,7 @@ var copy_num = 0;
 				
 				//복제
 				var div = $("#place_" + msg.placenum + "_").get(0);
+				console.log(div);
 				var copy_div = REDIPS.drag.cloneObject(div, true);
 				
 				//복제품 속성부여
@@ -624,7 +584,6 @@ var copy_num = 0;
 			$("#"+td_id+" input").val(st_time);
 			break;
 		}
-
 		//onMessage(event)
 	};
 	function onMessage(event) {
@@ -651,9 +610,7 @@ var copy_num = 0;
 		//  Send  the msg  object  as  a  JSON-formatted  string.
 		webSocket.send(JSON.stringify(msg));
 	}
-
 // WebSocket End -----------------------------------
-
 function imageAdd(){
 	if($("#upload img").length == 0) {
 		$("#frm_img").ajaxForm({
@@ -695,11 +652,9 @@ function imageAdd(){
 		}).submit();
 	}
 }
-
 function savePlan() {
 	if($("#isopen_ck:checked").val() == null) {} 
 	else { $("#isopen").val("1"); }
-
 	var param2 = "planname=" + $("#planname").val() + "&departuredate=" + $("#departuredate").val() + "&arrivaldate=" + $("#arrivaldate").val()
 	+ "&people=" + $("#people").val() + "&categorynum=" + $("#sel").val() + "&isopen=" + $("#isopen").val() + "&state=0";
 	
@@ -723,7 +678,6 @@ function savePlan() {
    		}
 	  });
 }//savePlan()
-
 function saveTable() {
 	var parameter = []; 
 	var day = "<%=vo_day%>";
@@ -776,7 +730,6 @@ function saveTable() {
 		
 	send("planSave");
 }
-
 function dayCheck() {
 	console.log("dayCheck실행");
 	var last_day = parseInt($("#table2 tr:eq(2) td").length);
@@ -825,7 +778,6 @@ function dayCheck() {
 	var ddd = $("#day").val();
 	send("dayCheck", ddd, $("#departuredate").val(), $("#arrivaldate").val(), "", "", "");
 }
-
 function stayCheck(obj) {
 	var regTest = /[0-9]/g;
 	var st_time = obj.value;

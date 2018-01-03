@@ -59,7 +59,6 @@ redips.init = function () {
 		var temp1 = parseFloat(rd.obj.getAttribute("lat"));
 		var temp2 = parseFloat(rd.obj.getAttribute("lon"));
 		var loc = { lat:temp1, lng:temp2 };
-		console.log(loc);
 		addMarker(loc);
 		
 		$("#post"+tr).append("<div class='post_loc'>" + child1 + "<br>" + child2 + "</div>");
