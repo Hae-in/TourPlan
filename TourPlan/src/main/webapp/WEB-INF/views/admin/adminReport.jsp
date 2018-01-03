@@ -1,101 +1,149 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+<!-- We support more than 40 localizations -->
+<script type="text/ecmascript"
+	src="<c:url value='/'/>resources/js/i18n/grid.locale-kr.js"></script>
+<!-- This is the Javascript file of jqGrid -->
+<script type="text/ecmascript"
+	src="<c:url value='/'/>resources/js/jquery.jqGrid.min.js"></script>
+<!-- A link to a Boostrap  and jqGrid Bootstrap CSS siles-->
 <link rel="stylesheet"
-	href='<c:url value='/'/>resources/js/jquery-ui.min.css'>
-<link rel="stylesheet"
-	href='<c:url value='/'/>resources/js/css/ui.jqgrid.css'>
-<script src='<c:url value='/'/>resources/js/jquery-3.2.1.min.js'></script>
-<script src='<c:url value='/'/>resources/js/jquery.jqGrid.min.js'></script>
-<script src='<c:url value='/'/>resources/js/i18n/grid.locale-kr.js'></script>
-<script src='<c:url value='/'/>resources/js/jquery-ui.min.js'></script>
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" media="screen"
+	href="<c:url value='/'/>resources/js/css/ui.jqgrid-bootstrap.css" />
 <script>
-	$(function() {
-		jQuery("#list2").jqGrid({
-			url : '../reportAjax//selectAll',
-			editurl: "../report/update.do",
-			datatype : "json",
-			colNames : [ '신고번호', '신고자', '신고내용', '일정번호', '장소번호', '신고날짜', '상태' ],
-			colModel : [ {
-				name : 'reportnum',
-				index : 'reportnum',
-				id : 'reportnum',
-				key : true,
-				width : 25,
-			}, {
-				name : 'userid',
-				index : 'userid',
-				width : 100
-			}, {
-				name : 'reportcontent',
-				index : 'reportcontent',
-				width : 100,
-			}, {
-				name : 'plannum',
-				index : 'plannum',
-				width : 25,
-			}, {
-				name : 'placenum',
-				index : 'placenum',
-				width : 25,
-			}, {
-				name : 'reportdate',
-				index : 'reportdate',
-				width : 100,
-			}, {
-				name : 'state',
-				index : 'state',
-				editable : true,
-				width : 50,
-			} ],
-			editable : true,
-			autowidth : true,
-			height : "800px",
-			loadonce : true,
-			multiselect : true,
-			rowNum : 10,
-			rowList : [ 10, 20, 30 ],
-			pager : '#pager2',
-			viewrecords : true,
-			caption : "신고관리"
-		});
-		jQuery("#list2").jqGrid('navGrid', '#pager2', {
-			edit : true,
-			add : false,
-			del : true
-		},   // options for the Edit Dialog
-        {
-			beforeSubmit : function( postdata, form , oper) {
-				if( confirm('수정하시겠습니까?') ) {
-					return [true,''];
-				} else {
-					return [false, '취소하셨습니다.'];
-				}
-			},
-			afterComplete:function(data) {
-				jQuery("#list2").jqGrid('setGridParam',{datatype:'json'}).trigger('reloadGrid');
-	        },
-            recreateForm: true,
-            closeAfterEdit: true,
-            errorTextFormat: function (data) {
-                return 'Error: ' + data.responseText
-            }
-        },   // options for the Delete Dailog
-        {
-            errorTextFormat: function (data) {
-                return 'Error: ' + data.responseText
-            }
-        });
-	});
+	$.jgrid.defaults.width = $(".col-lg-9").width();
+	$.jgrid.defaults.responsive = true;
+	$.jgrid.defaults.styleUI = 'Bootstrap';
+
+	$("body").css("padding-top", 0);
 </script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<meta charset="utf-8" />
+<title>카테고리관리</title>
 </head>
 <body>
-	<table id="list2"></table>
-	<div id="pager2"></div>
+	<div class="col-lg-9 mb-8" style="margin-left: -15px">
+		<table id="jqGrid"></table>
+		<div id="jqGridPager"></div>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$("#jqGrid").jqGrid({
+				url : '../reportAjax//selectAll',
+				editurl : "../report/update.do",
+				datatype : "json",
+				colModel : [ {
+					label : '번호',
+					name : 'reportnum',
+					width : 50,
+					key : true,
+					editable : true,
+					editoptions : {
+						readonly : true
+					}
+				}, {
+					label : '신고자',
+					name : 'membernum',
+					width : 65
+				}, {
+					label : '내용',
+					name : 'reportcontent',
+					hidden : true,
+					editable : true,
+					edittype : "textarea",
+					editoptions : {
+						rows : "5",
+						cols : "35"
+					}
+				}, {
+					label : '일정',
+					name : 'plannum',
+					width : 25,
+				}, {
+					label : '명소',
+					name : 'placenum',
+					width : 25,
+				}, {
+					label : '등록일',
+					name : 'reportdate',
+					width : 100,
+				}, {
+					label : '상태',
+					name : 'state',
+					formatter : 'select',
+					formatoptions : {
+						value : "1:접수;2:처리"
+					},
+					editable : true,
+					edittype : "select",
+					editoptions : {
+						value : "1:접수;2:처리"
+					} 
+				} ],
+				loadonce : true,
+				viewrecords : true,
+				multiselect : false,
+				height : 400,
+				rowNum : 10,
+				pager : "#jqGridPager"
+			});
+
+			$('#jqGrid').navGrid('#jqGridPager',
+			// the buttons to appear on the toolbar of the grid
+			{
+				edit : true,
+				add : false,
+				del : true,
+				search : true,
+				refresh : false,
+				view : false,
+				position : "left",
+				cloneToTop : false
+			},
+			// options for the Edit Dialog
+			{
+				editCaption : "The Edit Dialog",
+				recreateForm : true,
+				checkOnUpdate : true,
+				checkOnSubmit : true,
+				closeAfterEdit : true,
+				afterComplete : function(data) {
+					$(this).jqGrid('setGridParam', {
+						datatype : 'json'
+					}).trigger('reloadGrid');
+				},
+				errorTextFormat : function(data) {
+					return 'Error: ' + data.responseText
+				}
+			},
+			// options for the Add Dialog
+			{
+				closeAfterAdd : true,
+				recreateForm : true,
+				afterComplete : function(data) {
+					$(this).jqGrid('setGridParam', {
+						datatype : 'json'
+					}).trigger('reloadGrid');
+				},
+				errorTextFormat : function(data) {
+					return 'Error: ' + data.responseText
+				}
+			},
+			// options for the Delete Dailog
+			{
+				errorTextFormat : function(data) {
+					return 'Error: ' + data.responseText
+				}
+			});
+		});
+	</script>
+	
 </body>
 </html>

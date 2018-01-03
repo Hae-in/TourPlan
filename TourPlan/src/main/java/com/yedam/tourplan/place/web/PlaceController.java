@@ -21,9 +21,14 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.yedam.tourplan.category.service.CategoryService;
+import com.yedam.tourplan.category.service.CategoryVO;
 import com.yedam.tourplan.common.Paging;
 import com.yedam.tourplan.files.service.FilesService;
 import com.yedam.tourplan.files.service.FilesVO;
+import com.yedam.tourplan.member.service.MemberSearchVO;
+import com.yedam.tourplan.member.service.MemberService;
+import com.yedam.tourplan.member.service.MemberVO;
 import com.yedam.tourplan.place.service.PlaceSearchVO;
 import com.yedam.tourplan.place.service.PlaceService;
 import com.yedam.tourplan.place.service.PlaceVO;
@@ -34,6 +39,8 @@ import com.yedam.tourplan.place.service.PlaceVO;
 public class PlaceController {
 	@Autowired PlaceService placeService;
 	@Autowired FilesService filesService;
+	@Autowired MemberService memberService;
+	@Autowired CategoryService categoryService;
 	
 	//등록&수정 폼
 	@RequestMapping(value="form.do", method=RequestMethod.GET)
@@ -130,12 +137,22 @@ public class PlaceController {
 	@RequestMapping("select.do")
 	public ModelAndView select(@RequestParam(value="num", required=false) String num, ModelAndView mv) {
 		PlaceVO place = new PlaceVO();
-		FilesVO files = new FilesVO();
 		place.setPlacenum(num);
+		PlaceVO placeRs  = placeService.select(place);
+		
+		MemberSearchVO member = new MemberSearchVO();
+		member.setMembernum(placeRs.getMembernum());
+		
+		CategoryVO category = new CategoryVO();
+		category.setCategorynum(placeRs.getCategorynum());
+
+		FilesVO files = new FilesVO();
 		files.setTablename("place");
 		files.setTablenum(num);
-		PlaceVO placeRs  = placeService.select(place);
+		
 		mv.addObject("place", placeRs);
+		mv.addObject("placeMember", memberService.select(member));
+		mv.addObject("placeCategory", categoryService.select(category));
 		mv.addObject("files", filesService.selectAll(files));
 		
 		//place 같은 도시
@@ -144,7 +161,6 @@ public class PlaceController {
 		placelist.setLast(4);
 		placelist.setSort("likecnt");
 		placelist.setCity(placeRs.getCity());
-		System.out.println("도시 : "+placeRs.getCity());
 		mv.addObject("placeList", placeService.selectAll(placelist));
 		
 		mv.setViewName("place/select");
