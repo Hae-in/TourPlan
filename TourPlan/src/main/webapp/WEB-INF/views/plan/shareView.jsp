@@ -19,6 +19,7 @@
 <script src='<c:url value='/'/>resources/js/jquery.form.min.js'></script>
 <script>
 var plannum = <%=vo.getPlannum()%>; 
+var nowNum = 14;
 	$(function(){
 		document.getElementById("defaultOpen").click();
 		
@@ -28,6 +29,10 @@ var plannum = <%=vo.getPlannum()%>;
 			success : function(data) {
 				for (i = 0; i < data.length; i++) {
 					$("#tbody").append("<tr><td><a href='../place/select.do?num="+data[i].placenum+"' target='_blank'><img width='100px;' src='../resources/images/"+(data[i].imagename == null ? "null.jpg" : data[i].imagename) +"'></a></td><td class='dark'><div name='loc_"+data[i].lat+"_"+data[i].lon+"' id='place_" + data[i].placenum + "_" + "' class='redips-drag redips-clone'>"+data[i].placename+"<br>"+data[i].city+", " +data[i].country+"<br><input class='stay' type='hidden' placeholder='몇 분' value='30' onchange='stayCheck(this);'></div></td></tr>");
+					
+					if(i > 14) {
+						$("#tbody tr:eq("+i+")").hide();	
+					}
 				}
 			}
 		});
@@ -143,6 +148,26 @@ var plannum = <%=vo.getPlannum()%>;
  		var currDay = 24 * 60 * 60 * 1000;// 시 * 분 * 초 * 밀리세컨
  		cal_day = parseInt(diff/currDay)+1;
  		$("#day").val(cal_day);
+	}
+	
+	function moreView() {
+		var num = nowNum;
+		for(i=nowNum+1; i<nowNum+15; i++) {
+			$("#tbody tr:eq("+num+")").hide();
+			num--;
+			$("#tbody tr:eq("+i+")").show();
+		}
+		nowNum += 15;
+	}
+	
+	function preView() {
+		var num = nowNum-15;
+		for(i=nowNum; i>nowNum-15; i--) {
+			$("#tbody tr:eq("+i+")").hide();
+			$("#tbody tr:eq("+num+")").show();
+			num--;
+		}
+		nowNum -= 15;
 	}
 </script>
 <style>
@@ -470,6 +495,10 @@ div#redips-drag #table1 div {
 							
 						</tbody>
 					</table>
+					<br>
+					<button class="btn" onclick="preView();">이전</button>
+					<button class="btn" onclick="moreView();">다음</button>
+					<br>
 					<button id="newPlaceBtn" class="btn-default">새장소등록</button>
 				</div>
 			</div>
