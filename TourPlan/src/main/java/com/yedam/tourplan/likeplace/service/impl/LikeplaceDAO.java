@@ -24,7 +24,7 @@ public class LikeplaceDAO {
 	}
 	
 	public int insert(LikeplaceVO vo) {
-		return mybatis.insert(".LikeplaceDAOinsert", vo);
+		return mybatis.insert("LikeplaceDAO.insert", vo);
 	}
 	
 	public int delete(LikeplaceVO vo) {

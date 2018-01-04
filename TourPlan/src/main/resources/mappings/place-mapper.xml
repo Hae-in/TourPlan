@@ -135,6 +135,12 @@
 			<if test="membernum == null or membernum == ''">
 				and state = '1'
 			</if>
+			<if test="mode == 'mypage' and membernum != null and membernum != ''">
+				and membernum = #{membernum}
+			</if>
+			<if test="mode == 'like' and membernum != null and membernum != ''">
+				and placenum in (select placenum from likeplace where membernum = #{membernum})
+			</if>
 		</where>
 	</select>
 	

@@ -7,11 +7,11 @@
 <head>
 <title>Insert title here</title>
 <script>
-	function dolist(page){
-		document.frm.elements["page"].value = page
-		document.frm.submit();
-	}
+	$(function() {
+		$(".likemy").click(placeLike);
+	});
 </script>
+<script src='<c:url value='/'/>resources/js/place.js'></script>
 </head>
 <body>
 
@@ -51,7 +51,7 @@
 										</p>
 									</div>
 									<div class="card-footer text-muted">
-										Like Count : ${i.likecnt}
+										Like Count : <span id="likeCnt${i.placenum}">${i.likecnt}</span>
 									</div>
 								</div>
 							</div>
@@ -60,7 +60,8 @@
 					
 					<myTag:paging paging="${paging}" jsfunc="dolist"/> 
 					
-					<a href="form.do">신규</a> 
+					<button type="button" onclick="modal_iframe('form.do','명소등록','1080','500')" class="btn btn-primary">신규</button>
+					<div id="dialog-place"></div> 
 
 				</div>
 </body>

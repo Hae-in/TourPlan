@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.hamcrest.core.IsEqual;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
@@ -26,10 +24,8 @@ import com.yedam.tourplan.category.service.CategoryVO;
 import com.yedam.tourplan.common.Paging;
 import com.yedam.tourplan.files.service.FilesService;
 import com.yedam.tourplan.files.service.FilesVO;
-import com.yedam.tourplan.likeplace.service.LikeplaceSearchVO;
 import com.yedam.tourplan.member.service.MemberSearchVO;
 import com.yedam.tourplan.member.service.MemberService;
-import com.yedam.tourplan.member.service.MemberVO;
 import com.yedam.tourplan.place.service.PlaceSearchVO;
 import com.yedam.tourplan.place.service.PlaceService;
 import com.yedam.tourplan.place.service.PlaceVO;
@@ -109,7 +105,7 @@ public class PlaceController {
 		}				
 		
 		session.setAttribute("placenum", vo.getPlacenum());	
-		return "place/select";
+		return "popup/place/formOk";
 	}	
 	
 	//삭제
@@ -136,9 +132,10 @@ public class PlaceController {
 	
 	//단건조회
 	@RequestMapping("select.do")
-	public ModelAndView select(@RequestParam(value="num", required=false) String num, ModelAndView mv) {
+	public ModelAndView select(@RequestParam(value="num", required=false) String num, ModelAndView mv, HttpSession session) {
 		PlaceVO place = new PlaceVO();
 		place.setPlacenum(num);
+		place.setMembernum((String)session.getAttribute("membernum"));
 		PlaceVO placeRs  = placeService.select(place);
 		
 		MemberSearchVO member = new MemberSearchVO();
@@ -159,9 +156,10 @@ public class PlaceController {
 		//place 같은 도시
 		PlaceSearchVO placelist = new PlaceSearchVO();
 		placelist.setFirst(1);
-		placelist.setLast(4);
+		placelist.setLast(3);
 		placelist.setSort("likecnt");
 		placelist.setCity(placeRs.getCity());
+		placelist.setMembernum((String)session.getAttribute("membernum"));
 		mv.addObject("placeList", placeService.selectAll(placelist));
 		
 		mv.setViewName("place/select");
@@ -171,12 +169,12 @@ public class PlaceController {
 	//조회
 	@RequestMapping("selectAll.do")
 	public String selectAll(PlaceSearchVO vo, Model model, HttpSession session, Paging paging) {
-		//전체 건수
+		vo.setMembernum((String)session.getAttribute("membernum"));
+		
 		int total = placeService.selectListTotCnt(vo);
 		paging.setTotalRecord(total);
 		vo.setFirst(paging.getFirst());
 		vo.setLast(paging.getLast());	
-		vo.setMembernum((String)session.getAttribute("membernum"));
 		model.addAttribute("placeList", placeService.selectAll(vo));
 		model.addAttribute("paging", paging);
 		return "place/selectAll";
@@ -185,13 +183,13 @@ public class PlaceController {
 	//마이페이지 > 내가 등록한 명소
 	@RequestMapping("selectAllMypage.do")
 	public String selectAllMypage(PlaceSearchVO vo, Model model, HttpSession session, Paging paging) {
-		//전체 건수
+		vo.setMode("mypage");
+		vo.setMembernum((String)session.getAttribute("membernum"));
+		
 		int total = placeService.selectListTotCnt(vo);
 		paging.setTotalRecord(total);
 		vo.setFirst(paging.getFirst());
 		vo.setLast(paging.getLast());	
-		vo.setMode("mypage");
-		vo.setMembernum((String)session.getAttribute("membernum"));
 		model.addAttribute("placeList", placeService.selectAll(vo));
 		model.addAttribute("paging", paging);
 		return "member/myPage/myPlace";
@@ -200,13 +198,13 @@ public class PlaceController {
 	//마이페이지 > 내가 등록한 명소
 	@RequestMapping("selectAllLike.do")
 	public String selectAllLike(PlaceSearchVO vo, Model model, HttpSession session, Paging paging) {
-		//전체 건수
+		vo.setMode("like");
+		vo.setMembernum((String)session.getAttribute("membernum"));
+		
 		int total = placeService.selectListTotCnt(vo);
 		paging.setTotalRecord(total);
 		vo.setFirst(paging.getFirst());
 		vo.setLast(paging.getLast());	
-		vo.setMode("like");
-		vo.setMembernum((String)session.getAttribute("membernum"));
 		model.addAttribute("placeList", placeService.selectAll(vo));
 		model.addAttribute("paging", paging);
 		return "member/myPage/myLikeplace";

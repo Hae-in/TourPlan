@@ -46,78 +46,10 @@
 			return $("<li>").append(
 					"<div>" + item.country + " " + item.city + "</div>")
 					.appendTo(ul);
-		};
-		//$("#keyword").keyup(placeKeywordAutoComplete2);
-		
-	});	
-	
-	function categoryListRadio(areaId, selectedVal) {
-		$.ajax({
-			url : "../categoryAjax/selectAll.do?group=1",
-			type : "json",
-			success : function(data) {
-				var options = "";
-				for (i = 0; i < data.length; i++) {
-					options += '<span><input type="radio" name="categorynum" value="' + data[i].categorynum + '"> ' + data[i].categoryname + '</span>';
-				}
-				$("#"+areaId).append(options);
-				$("input[name='categorynum']:input[value='"+selectedVal+"']").attr("checked","checked");
-			}
-		});	
-	}
-	
-	function placeLike(){		
-		var placenum = $(this).attr('placenum');
-		var likeplacenum = $(this).attr('likeplacenum');
-		var thisSave = $(this);			
-		$.ajax("../likeplaceAjax/insert.do",{
-			method: 'post',
-			data: { placenum: placenum, likeplacenum: likeplacenum },
-			dataType:'json',
-			success : function(data, status){
-				if(status=="success") {
-					thisSave.attr('likeplacenum',data.likeplacenum);	
-					if(data.likeplacenum == null || data.likeplacenum == "") {
-						thisSave.text("♡");
-					} else {
-						thisSave.text("♥");
-					}
-				} else {
-					alert(status);	
-				}	
-			}				
-		});
-	}
-	
-/* 	function placeKeywordAutoComplete2(){
-		var keyword = $(this).val();
-		$("#keyword_result").text("");
-		if(keyword != "") {
-			$.ajax("../placeAjax/selectAllKeyword.do",{
-				method: 'post',
-				data: { keyword:keyword },
-				dataType:'json',
-				success : function(data, status){
-					if(status=="success") {
-						var options = "";
-						for (i = 0; i < data.length; i++) {
-							options += "<li><a href='#' onclick=''>" + data[i].country + " " + data[i].city + "</a></li>";
-						}
-						$("#keyword_result").append(options);
-					} else {
-						alert(status);	
-					}	
-				}				
-			});	
-		}	
-	} */
-	
-	function dolist(page){
-		document.frm.elements["page"].value = page
-		document.frm.submit();
-	}
-	
+		};		
+	});		
 </script>
+<script src='<c:url value='/'/>resources/js/place.js'></script>
 </head>
 <body>
 	<!-- Page Content -->
@@ -190,12 +122,11 @@
 											<a href="select.do?num=${i.placenum}">${i.placename}</a>
 										</h4>
 										<p class="card-text">
-											<%-- ${i.lat}${i.lon}${i.addr}${i.city}${i.country} --%>											
 											${i.content}
 										</p>
 									</div>
 									<div class="card-footer text-muted">
-										Like Count : ${i.likecnt}
+										Like Count : <span id="likeCnt${i.placenum}">${i.likecnt}</span>
 									</div>
 								</div>
 							</div>
@@ -204,8 +135,10 @@
 					
 					<myTag:paging paging="${paging}" jsfunc="dolist"/> 
 					
-					<a href="form.do" class="btn btn-primary">신규</a> 
-
+					<c:if test="${sessionScope.membernum != null and sessionScope.membernum != ''}">
+					<button type="button" onclick="modal_iframe('form.do','명소등록','1080','500')" class="btn btn-primary">신규</button>
+					<div id="dialog-place"></div> 
+					</c:if>
 				</div>
 			</div>
 			<!-- /.row -->
@@ -213,6 +146,8 @@
 
 	</div>
 	<!-- /.container -->
+	
+	
 </body>
 </html>
 

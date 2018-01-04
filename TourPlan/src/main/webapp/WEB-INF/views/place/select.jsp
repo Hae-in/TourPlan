@@ -20,8 +20,11 @@
 
 			}
 		});
+		
+		$(".likemy").click(placeLike);
 	});
 </script>
+<script src='<c:url value='/'/>resources/js/place.js'></script>
 </head>
 <body>
 	<input type="hidden" id="lat" value="${place.lat}" />
@@ -32,6 +35,12 @@
 	<div class="container">
 		<!-- Page Heading/Breadcrumbs -->
 		<h1 class="mt-4 mb-3">
+			<c:if test="${place.likemy != null}">
+				♥
+			</c:if>
+			<c:if test="${place.likemy == null}">
+				♡
+			</c:if>
 			${place.placename} <small>[${placeCategory.categoryname}]</small>
 		</h1>
 		<ol class="breadcrumb">
@@ -93,16 +102,18 @@
 			</footer>
 		</blockquote>
 		<p>${place.content}</p>
-		<button type="button" class="btn btn-primary">좋아요</button>
 		Like Count : ${place.likecnt}
+		<br><br>
 		<button type="button" data-toggle="modal" data-target="#reportModal" class="btn btn-primary">신고하기</button> 
 
 		<c:if test="${place.membernum == sessionScope.membernum}">
-		<a href="form.do?num=${place.placenum}" class="btn btn-primary">수정</a> 
+		<button type="button" onclick="modal_iframe('form.do?num=${place.placenum}','명소수정','1080','500')" class="btn btn-primary">수정</button>
+		<div id="dialog-place"></div>
+		<%-- <a href="form.do?num=${place.placenum}" class="btn btn-primary">수정</a>  --%>
 		<a href="delete.do?num=${place.placenum}" class="btn btn-primary">삭제</a> 
 		</c:if>
 		<a href="selectAll.do" class="btn btn-primary">목록</a>
-
+		<br><br><br><br>
  		<hr>
 		<div class="row">
 			<c:forEach items="${placeList}" var="i">
@@ -118,106 +129,30 @@
 							</c:if>
 						</a>
 						<div class="card-body">
-							<h4 class="card-title">
+							<h4 class="card-title">										
 								<c:if test="${sessionScope.membernum != null}">
-									<span class="likemy" placenum="${i.placenum}"
-										likeplacenum="${i.likemy}"> <c:if
-											test="${i.likemy != null}">
+									<span class="likemy" placenum="${i.placenum}" likeplacenum="${i.likemy}">
+									<c:if test="${i.likemy != null}">
 										♥
-									</c:if> <c:if test="${i.likemy == null}">
+									</c:if>
+									<c:if test="${i.likemy == null}">
 										♡
 									</c:if>
 									</span>
-								</c:if>
+								</c:if>	
 								<a href="select.do?num=${i.placenum}">${i.placename}</a>
 							</h4>
 							<p class="card-text">
-								<%-- ${i.lat}${i.lon}${i.addr}${i.city}${i.country} --%>
 								${i.content}
 							</p>
 						</div>
-						<div class="card-footer text-muted">Like Count : ${i.likecnt}</div>
+						<div class="card-footer text-muted">
+							Like Count : <span id="likeCnt${i.placenum}">${i.likecnt}</span>
+						</div>
 					</div>
 				</div>
 			</c:forEach>
 		</div>
-
-		<!-- Marketing Icons Section -->
-		<!-- 		<div class="row">
-			<div class="col-lg-4 mb-4">
-				<div class="card h-100">
-					<h4 class="card-header">Card Title</h4>
-					<div class="card-body">
-						<p class="card-text">Lorem ipsum dolor sit amet, consectetur
-							adipisicing elit. Sapiente esse necessitatibus neque.</p>
-					</div>
-					<div class="card-footer">
-						<a href="#" class="btn btn-primary">Learn More</a>
-					</div>
-				</div>
-			</div>
-			<div class="col-lg-4 mb-4">
-				<div class="card h-100">
-					<h4 class="card-header">Card Title</h4>
-					<div class="card-body">
-						<p class="card-text">Lorem ipsum dolor sit amet, consectetur
-							adipisicing elit. Reiciendis ipsam eos, nam perspiciatis natus
-							commodi similique totam consectetur praesentium molestiae atque
-							exercitationem ut consequuntur, sed eveniet, magni nostrum sint
-							fuga.</p>
-					</div>
-					<div class="card-footer">
-						<a href="#" class="btn btn-primary">Learn More</a>
-					</div>
-				</div>
-			</div>
-			<div class="col-lg-4 mb-4">
-				<div class="card h-100">
-					<h4 class="card-header">Card Title</h4>
-					<div class="card-body">
-						<p class="card-text">Lorem ipsum dolor sit amet, consectetur
-							adipisicing elit. Sapiente esse necessitatibus neque.</p>
-					</div>
-					<div class="card-footer">
-						<a href="#" class="btn btn-primary">Learn More</a>
-					</div>
-				</div>
-			</div>
-		</div> -->
-		<!-- /.row -->
-
-		<!-- Related Projects Row -->
-		<!-- 		<h3 class="my-4">Related Projects</h3>
-
-		<div class="row">
-
-			<div class="col-md-3 col-sm-6 mb-4">
-				<a href="#"> <img class="img-fluid"
-					src="http://placehold.it/500x300" alt="">
-				</a>
-			</div>
-
-			<div class="col-md-3 col-sm-6 mb-4">
-				<a href="#"> <img class="img-fluid"
-					src="http://placehold.it/500x300" alt="">
-				</a>
-			</div>
-
-			<div class="col-md-3 col-sm-6 mb-4">
-				<a href="#"> <img class="img-fluid"
-					src="http://placehold.it/500x300" alt="">
-				</a>
-			</div>
-
-			<div class="col-md-3 col-sm-6 mb-4">
-				<a href="#"> <img class="img-fluid"
-					src="http://placehold.it/500x300" alt="">
-				</a>
-			</div>
-
-		</div> -->
-		<!-- /.row -->
-
 	</div>
 	<!-- /.container -->
 
