@@ -233,10 +233,13 @@ public class PlanController {
 		String plannum = vo.getPlannum();
 		PlanTableVO t_vo = new PlanTableVO();
 		LikeplanVO l_vo = new LikeplanVO();
+		PostVO p_vo = new PostVO();
 		l_vo.setplannum(plannum);
 		t_vo.setPlannum(plannum);
+		p_vo.setPlannum(plannum);
 		likePlanService.delete(l_vo);
 		planTableService.delete(t_vo);
+		postService.delete(p_vo);
 		planService.delete(vo);
 		return "forward:selectMade.do";
 	}

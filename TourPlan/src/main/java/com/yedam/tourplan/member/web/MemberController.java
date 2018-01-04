@@ -1,5 +1,7 @@
 package com.yedam.tourplan.member.web;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,11 +27,14 @@ public class MemberController {
 	}
 	
 	@RequestMapping("select.do")
-	public String Mypage(MemberSearchVO vo, Model model) {
+	public String Mypage(MemberSearchVO vo, Model model, HttpSession session) {
 		FilesVO f_vo = new FilesVO();
 		f_vo.setTablename("member");
 		f_vo.setTablenum(vo.getMembernum());
 		model.addAttribute("m_picture", filesService.selectAll(f_vo));
+		
+		String mem_num = (String) session.getAttribute("membernum");
+		vo.setMembernum(mem_num);
 		model.addAttribute("member", memberService.select(vo));
 		return "member/myPage/myPage";
 	}

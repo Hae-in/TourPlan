@@ -17,6 +17,7 @@
 <script type="text/javascript" src="<c:url value='/'/>resources/js/redips-drag-min.js?v=<%=System.currentTimeMillis()%>"></script>
 <script type="text/javascript" src="<c:url value='/'/>resources/js/script.js?v=<%=System.currentTimeMillis()%>"></script>
 <script src='<c:url value='/'/>resources/js/jquery.form.min.js'></script>
+<link rel="stylesheet" href="../resources/css/plan.css" type="text/css" media="screen"/>
 <script>
 var plannum = <%=vo.getPlannum()%>; 
 var nowNum = 14;
@@ -170,269 +171,6 @@ var nowNum = 14;
 		nowNum -= 15;
 	}
 </script>
-<style>
-* {
-    box-sizing: border-box;
-}
-body {
-    margin: 0;
-}
-/* Style the header */
-.header {
-    background-color: #f1f1f1;
-    padding: 50px;
-    /* text-align: center; */
-    /* margin-left: 300px; */
-}
-/* Container for flexboxes */
-.footer {
-    display: -webkit-flex;
-    display: flex;
-}
-/* Create three unequal columns that sits next to each other */
-.column {
-    padding: 10px;
-    /* height: 200px; /* Should be removed. Only for demonstration */ */
-}
-/* Left column */
-.column.divNav {
-   -webkit-flex: 1;
-   -ms-flex: 1;
-   flex: 1;
-}
-/* Middle column */
-.column.divMain {
-    -webkit-flex: 2;
-    -ms-flex: 4;
-    flex: 4;
-}
-#planName {
-	width: 80%;
-	height: 50px;
-	margin-bottom: 20px;
-}
-/*공개여부*/
-#isopen {
-	float: left;
-	/* margin: 5px; */
-}
-.switch {
-	position: relative;
-	display: inline-block;
-	width: 60px;
-	height: 32px;
-}
-.switch input {
-	display: none;
-}
-.slider {
-	position: absolute;
-	cursor: pointer;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background-color: #ccc;
-	-webkit-transition: .4s;
-	transition: .4s;
-}
-.slider:before {
-	position: absolute;
-	content: "";
-	height: 24px;
-	width: 24px;
-	left: 4px;
-	bottom: 4px;
-	background-color: white;
-	-webkit-transition: .4s;
-	transition: .4s;
-}
-input:checked+.slider {
-	background-color: #2196F3;
-}
-input:focus+.slider {
-	box-shadow: 0 0 1px #2196F3;
-}
-input:checked+.slider:before {
-	-webkit-transform: translateX(26px);
-	-ms-transform: translateX(26px);
-	transform: translateX(26px);
-}
-/* Rounded sliders */
-.slider.round {
-	border-radius: 40px;
-}
-.slider.round:before {
-	border-radius: 50%;
-}
-/*공개여부끝*/
-.planCate {
-	width: 120px;
-}
-.tab {
-    overflow: hidden;
-    border: 1px solid #ccc;
-    background-color: #f1f1f1;
-}
-.tab button {
-    background-color: inherit;
-    float: left;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 14px 16px;
-    transition: 0.3s;
-    font-size: 17px;
-}
-.tab button:hover {
-    background-color: #ddd;
-}
-.tab button.active {
-    background-color: #ff8f00;
-	color: #fff;
-	font-weight: bold;
-}
-.tabcontent {
-    display: none;
-    padding: 6px 12px;
-    border: 1px solid #ccc;
-    border-top: none;
-}
-.tablinks {
-	width: 50%;
-}
-#map {
-	width: 100%;
-	height: 100%;
-}
-.redips-drag {	
-	cursor: move;
-	margin: auto;
-	z-index: 10;
-	color: #222;
-	text-align: center;
-	font-size: 10pt;
-	opacity: 0.7;
-	filter: alpha(opacity=70);
-	width: 180px;	/* table1 td item size */
-	height: 50px;
-	line-height: 20px;
-	border: 1px solid #555;
-	border-radius: 3px;
-	-moz-border-radius: 3px;
-}
-div#redips-drag table {
-	/* background-color: #eee; */ /* table2 background-color */
-	border-collapse: collapse;
-}
-div#redips-drag td {
-	border-style: solid;
-	border-width: 1px;
-	border-color: white;	/* 모든 table td border-color */
-	width: 200px;
-	height: 60px;
-	text-align: center;
-	font-size: 10pt;
-	padding: 2px;
-}
-div#redips-drag #table1 td {
-	border-width: 0px 0px 1px 0px;
-}
-div#redips-drag #table1 div {
-	margin-left: 5px;
-	float: left;
-}
-.ar { background-color: #AAC8E2; }
-.bi { background-color: #E7D783; }
-.ch { background-color: #E99AE6; }
-.dark{
-	color: #444;
-	background-color: #e0e0e0;
-}
-.button_container{
-	padding-top: 10px;
-	text-align: right;
-}
-/* "Save" button */
-.button_container input{
-	background-color: #6A93D4;
-	color: white; 
-	border-width: 1px;
-	width: 40px;
-	padding: 0px;
-}
-#searchTable td{
-	width: 200px;
-}
-.searchInput {
-  background-image: url('/css/searchicon.png');
-  background-position: 10px 10px;
-  background-repeat: no-repeat;
-  width: 100%;
-  font-size: 16px;
-  padding: 12px 20px 12px 40px;
-  border: 1px solid #ddd;
-  margin-bottom: 12px;
-}
-#trashTD {
-	width: 100%;
-	height: 50px;
-	margin-bottom: 10px;
-	text-align: center;
-	background-color: #DC4C46;
-	color: #fff;
-}
-.stay {
-	font-size: 11px;
-	width: 50px;
-	height: 15px;
-}
-.topTable {
-	width: 80%;
-}
-
-.topTable td {
-	padding: 2px;
-	text-align: center;
-	vertical-align: inherit;
-}
-
-.topTr {
-	padding: 2px;
-	background-color: #e0e0e0;
-}
-.btn-default {
-  width: 100%;
-  padding: 10px 12px;
-  font-size: 15px;
-  font-weight: normal;
-  text-align: center;
-  vertical-align: middle;
-  cursor: pointer;
-  border: 1px solid transparent;
-  border-radius: 4px;
-  color: #555;
-  background-color: #fff;
-  border-color: #ccc;
-}
-.btn-default:hover {
-  color: #333;
-  background-color: #e6e6e6;
-  border-color: #adadad;
-}
-.cal_btn {
-	cursor: pointer;
-    background-color: #ddd;
-    border: 1px solid #ddd;
-    padding: .375rem .75rem;
-    border-radius: .25rem;
-}
-
-.cal_btn:hover {
-	background-color: #ccc;
-	transition: background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-}
-</style>
 </head>
 <body>
 	<div class="header">
@@ -480,7 +218,7 @@ div#redips-drag #table1 div {
 		</div>
 	<div id="redips-drag">
 		<div class="footer">
-			<div class="column divNav" style="background-color:#aaa;">
+			<div class="column divNav" style="background-color:whitesmoke;">
 				<div id="left">
 					<input type="text" class="searchInput" id="searchInput-region" onkeyup="searchRegionFunction()" placeholder="Search.." title="Type in a name">
 					<!-- <input type="text" class="searchInput" id="searchInput-place" onkeyup="searchPlaceFunction()" placeholder="Search for place.." title="Type in a name"> -->
@@ -502,7 +240,7 @@ div#redips-drag #table1 div {
 					<button id="newPlaceBtn" class="btn-default">새장소등록</button>
 				</div>
 			</div>
-			<div class="column divMain" style="background-color:#bbb;">
+			<div class="column divMain" style="background-color:whitesmoke;">
 				<div class="tab">
 					<button class="tablinks" onclick="openTab(event, 'storyTab')">스토리</button>
 					<button class="tablinks" onclick="openTab(event, 'planTab')" id="defaultOpen">지도/일정표</button>
@@ -590,7 +328,7 @@ var copy_num = 0;
 	
 	//★★★포트바꿔야!
 	var webSocket = new WebSocket(
-			'ws://localhost:8090/tourplan/websocket/sharePlan.do');
+			'ws://localhost:80/tourplan/websocket/sharePlan.do');
 	webSocket.onerror = function(event) {
 		onError(event)
 	};
