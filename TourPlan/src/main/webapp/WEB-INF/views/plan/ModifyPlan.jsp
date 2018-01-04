@@ -294,7 +294,7 @@ var nowNum = 14;
 						<br>
 						<button class="btn" onclick="preView();">이전</button>
 						<button class="btn" onclick="moreView();">다음</button>
-						<br>
+						<br><br>
 						<button id="newPlaceBtn" class="btn-default">새장소등록</button>
 					</div>
 				</div>
@@ -386,7 +386,6 @@ function imageAdd(){
 			}
 		}).submit();
 	} else {
-		alert("이미지번호 : " + image_num);
 		$("#frm_img").ajaxForm({
 			dataType:"json",
 			data : {plannum: image_num,
@@ -431,8 +430,6 @@ function savePlan() {
 	   		,success     : function(data,status) {
 		       	if (status =="success") {
 		    	   	if(data.length > 0) {
-		    		   	alert("수정 성공");
-		    	   		alert("update한 plannum : " + data);
 		    	   		plannum = data;
 		    	   		saveTable();
 		    	   		}
@@ -451,8 +448,6 @@ function savePlan() {
 	   		,success     : function(data,status) {
 		       	if (status =="success") {
 		    	   	if(data.length > 0) {
-		    		   	alert("저장 성공");
-		    	   		alert("insert한 plannum : " + data);
 		    	   		plannum = data;
 		    	   		saveTable();
 		    	   		}
@@ -509,7 +504,7 @@ function saveTable() {
 		   ,success     : function(data,status) {
 		       if (status =="success") {
 		    	   if(data == true) {
-			    	   	alert("저장 성공"); }
+			    	   	alert("수정 성공"); }
 		    	   else {
 			    		alert("저장에 실패했습니다"); }
 	   		   } else { alert("에러발생 관리자에게 문의하세요") }
@@ -581,8 +576,8 @@ function dayCheck() {
 			}
 		} else { $("#day").val(last_day); }
 	} else if(form_day == last_day) {
-	} else if($("#day").val() > 31) {
-		alert('최대 31일까지 가능합니다');
+	} else if($("#day").val() > 7) {
+		alert('최대 7일까지 가능합니다');
 	} else {
 		alert('숫자만 입력가능합니다');
 		$("#day").val("1");
@@ -754,6 +749,7 @@ var MarkersArray2 = [];
 var co= [];
 var co2= [];
 var co3= [];
+var co4= [];
 var Coordinates;
 var color;
 var travelPathArray = [];
@@ -840,6 +836,7 @@ function initMap() {
     	  if(day=='1') { Coordinates = co; color = "#FF0000"; }
     	  else if(day == '2') { Coordinates = co2; color = "#33cc33"; }
     	  else if(day == '3') { Coordinates = co3; color = "#0000ff"; }
+    	  else if(day == '4') { Coordinates = co4; color = "#ff00ff"; }
     	  else {}
 			var mapLocation = new google.maps.LatLng(lat, lon); // 지도에서 가운데로 위치할 위도와 경도
 			var markLocation = new google.maps.LatLng(lat, lon);

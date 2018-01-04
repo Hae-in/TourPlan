@@ -23,7 +23,7 @@
 <tiles:insertAttribute name="header" />
 
     <!-- Page Content -->
-    <div class="container">
+    <div class="container" style="max-width:1300px;">
 
       <!-- Page Heading/Breadcrumbs -->
       <h1 class="mt-4 mb-3"></h1>

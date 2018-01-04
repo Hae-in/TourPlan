@@ -46,7 +46,7 @@ var nowNum = 14;
 		
 		var post_day = $("#day").val();
 		for(i=1; i<=post_day; i++) {
-			var day_div = "<div id='postDay" + i + "' style='border: 1px solid red;'><font size='5'><b>" + i + " Day</b></font>";
+			var day_div = "<div id='postDay" + i + "' class='post_day'><font size='5'><b>" + i + " Day</b></font>";
 			var table_td = "<td class='redips-mark dark'>Day" + i + "</td>";
 			$("#table2 tr:eq(0)").append(table_td);
 			for(j=0; j<9; j++) {
@@ -83,7 +83,7 @@ var nowNum = 14;
 							var div = "<div name='loc_"+data_place[j].lat+"_"+data_place[j].lon+"' id='place_" + data[i].placenum + "_" + data[i].plantablenum + "' class='redips-drag'>" + data_place[j].placename + "<br>" + data_place[j].city + ", " + data_place[j].country+ "<br><input class='stay' type='text' placeholder='몇 분' value='"+data[i].staytime+"' onchange='stayCheck(this);'></div>";
 							 $(div).appendTo($("#" + data[i].day + "a" + data[i].tr));
 							 
-							$("#post"+ data[i].day + "a" + data[i].tr).append("<div style='border: solid 1px orange;'>" + data_place[j].placename + "<br>" + data_place[j].city + ", " + data_place[j].country +  "</div>");
+							$("#post"+ data[i].day + "a" + data[i].tr).append("<div class='post_loc'>" + data_place[j].placename + "<br>" + data_place[j].city + ", " + data_place[j].country +  "</div>");
 							$("#post"+ data[i].day + "a" + data[i].tr + "+button").css("display", "block");
 						}
 						
@@ -215,7 +215,7 @@ var nowNum = 14;
 					</tr>
 				</table>
 			</div>
-		</div>
+		</div> 
 	<div id="redips-drag">
 		<div class="footer">
 			<div class="column divNav" style="background-color:whitesmoke;">
@@ -236,7 +236,7 @@ var nowNum = 14;
 					<br>
 					<button class="btn" onclick="preView();">이전</button>
 					<button class="btn" onclick="moreView();">다음</button>
-					<br>
+					<br><br>
 					<button id="newPlaceBtn" class="btn-default">새장소등록</button>
 				</div>
 			</div>
@@ -328,7 +328,7 @@ var copy_num = 0;
 	
 	//★★★포트바꿔야!
 	var webSocket = new WebSocket(
-			'ws://localhost:80/tourplan/websocket/sharePlan.do');
+			'ws://localhost:8090/tourplan/websocket/sharePlan.do');
 	webSocket.onerror = function(event) {
 		onError(event)
 	};
@@ -498,7 +498,7 @@ function imageAdd(){
 function savePlan() {
 	if($("#isopen_ck:checked").val() == null) {} 
 	else { $("#isopen").val("1"); }
-	var param2 = "planname=" + $("#planname").val() + "&departuredate=" + $("#departuredate").val() + "&arrivaldate=" + $("#arrivaldate").val()
+	var param2 = "planname=" + $("#planName").val() + "&departuredate=" + $("#departuredate").val() + "&arrivaldate=" + $("#arrivaldate").val()
 	+ "&people=" + $("#people").val() + "&categorynum=" + $("#sel").val() + "&isopen=" + $("#isopen").val() + "&state=0";
 	
 	param2 += "&plannum=" + plannum;
@@ -510,8 +510,6 @@ function savePlan() {
 		,success     : function(data,status) {
 	      	if (status =="success") {
 	    	   	if(data.length > 0) {
-	    		   	alert("수정 성공");
-	    	   		alert("update한 plannum : " + data);
 	    	   		plannum = data;
 	    	   		saveTable();
 	    	   		}
@@ -591,9 +589,9 @@ function dayCheck() {
 			}
 			
 			//포스트도 함께 추가
-			var day_div = "<div id='postDay"+(last_day+i)+"' style='border: 1px solid red;'><font size='5'><b>" + (last_day+i) + " Day</b></font>"
+			var day_div = "<div id='postDay"+(last_day+i)+"' class='post_day'><font size='5'><b>" + (last_day+i) + " Day</b></font>"
 			for(j=0; j<9; j++) {
-				day_div += "<div id='post"+(last_day+i)+"a"+j+"'></div><button id='"+(last_day+i)+"b"+j+"' class='postbtn' style='display:none;'>포스트쓰기</button>"
+				day_div += "<div id='post"+(last_day+i)+"a"+j+"' class='post_content'></div><button id='"+(last_day+i)+"b"+j+"' class='postbtn' style='display:none;'>포스트쓰기</button>"
 			}
 			day_div += "</div>";
 			$("#storyTab").append(day_div);
@@ -612,8 +610,8 @@ function dayCheck() {
 			}
 		} else { $("#day").val(last_day); }
 	} else if(form_day == last_day) {
-	} else if($("#day").val() > 31) {
-		alert('최대 31일까지 가능합니다');
+	} else if($("#day").val() > 7) {
+		alert('최대 7일까지 가능합니다');
 	} else {
 		alert('숫자만 입력가능합니다');
 		$("#day").val("1");
@@ -644,6 +642,7 @@ var MarkersArray = [];
 var co= [];
 var co2= [];
 var co3= [];
+var co4= [];
 var Coordinates = [];
 var color;
 var travelPathArray = [];
@@ -732,7 +731,7 @@ function initMap() {
             }
             
           } else {
-            window.alert('에러발생 관리자에게 문의하세요 : ' + status);
+            window.alert('구글api내에 데이터가 없습니다.');
           }
         });
       }
@@ -750,6 +749,7 @@ function initMap() {
     	  if(day=='1') { Coordinates = co; color = "#FF0000"; }
     	  else if(day == '2') { Coordinates = co2; color = "#33cc33"; }
     	  else if(day == '3') { Coordinates = co3; color = "#0000ff"; }
+    	  else if(day == '4') { Coordinates = co4; color = "#ff00ff"; }
     	  else {}
 			var mapLocation = new google.maps.LatLng(lat, lon); // 지도에서 가운데로 위치할 위도와 경도
 			var markLocation = new google.maps.LatLng(lat, lon);

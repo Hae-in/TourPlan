@@ -194,7 +194,6 @@ body {
     -webkit-flex: 2;
     -ms-flex: 4;
     flex: 4;
-    height: 1000px;
 }
 
 /*공개여부*/
@@ -624,6 +623,7 @@ var MarkersArray = [];
 var co= [];
 var co2= [];
 var co3= [];
+var co4= [];
 var Coordinates;
 var color;
 var travelPathArray = [];
@@ -700,7 +700,7 @@ function initMap() {
             }
             
           } else {
-            window.alert('에러발생 관리자에게 문의하세요 : ' + status);
+            window.alert('구글api내에 데이터가 없습니다.');
           }
         });
       }
@@ -710,6 +710,7 @@ function initMap() {
     	  if(day=='1') { Coordinates = co; color = "#FF0000"; }
     	  else if(day == '2') { Coordinates = co2; color = "#33cc33"; }
     	  else if(day == '3') { Coordinates = co3; color = "#0000ff"; }
+    	  else if(day == '4') { Coordinates = co4; color = "#cc33ff"; }
     	  else {}
 			var mapLocation = new google.maps.LatLng(lat, lon); // 지도에서 가운데로 위치할 위도와 경도
 			var markLocation = new google.maps.LatLng(lat, lon);

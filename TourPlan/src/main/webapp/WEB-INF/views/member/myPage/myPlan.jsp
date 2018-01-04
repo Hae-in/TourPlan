@@ -106,6 +106,7 @@ function confc(plannum) {
 		success : function(data) {
 			alert('승인요청되었습니다');
 			$("#conf").attr("display", "none");
+			window.location.reload(); 
 		}
 	});
 }
@@ -207,13 +208,14 @@ $(document).on("click", '.del_confirm', function(e) {
 						</div>
 						<div class="list-group-item">
 							공개여부<br />
-							<input type="radio" id="rd8" name="isopen" value="1"><label for="rd8">공개</label>
-							<input type="radio" id="rd9" name="isopen" value="0"><label for="rd9">비공개</label>
+							<span><input type="radio" id="rd8" name="isopen" value="1"><label for="rd8">공개</label></span>
+							<span><input type="radio" id="rd9" name="isopen" value="0"><label for="rd9">비공개</label></span>
 						</div>
 						<div class="list-group-item">
 							공유신청<br />
-							<input type="radio" id="rd10" name="state" value="1"><label for="rd10">승인된 일정</label>
-							<input type="radio" id="rd11" name="state" value="2"><label for="rd11">승인대기 일정</label>
+							<span><input type="radio" id="rd10" name="state" value="0"><label for="rd10">기본</label></span>
+							<span><input type="radio" id="rd11" name="state" value="1"><label for="rd11">승인된 일정</label></span><br>
+							<span><input type="radio" id="rd12" name="state" value="2"><label for="rd12">승인대기 일정</label></span>
 						</div>
 						<div class="list-group-item">
 							도시<br /> <input type="text" name="city" style="width: 220px; margin: 5px;"/>

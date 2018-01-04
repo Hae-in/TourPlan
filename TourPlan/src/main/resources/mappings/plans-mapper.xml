@@ -178,7 +178,7 @@
 		WHERE PLANNUM = #{plannum}
 	</update>
 
-	<delete id="shareDelete" parameterType="plan">
+	<delete id="shareDelete" parameterType="sharePlan">
 		<![CDATA[
 		DELETE FROM SHAREPLAN
 		WHERE PLANNUM = #{plannum}
