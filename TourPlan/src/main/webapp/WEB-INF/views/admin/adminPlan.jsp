@@ -1,116 +1,143 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+<!-- We support more than 40 localizations -->
+<script type="text/ecmascript"
+	src="<c:url value='/'/>resources/js/i18n/grid.locale-kr.js"></script>
+<!-- This is the Javascript file of jqGrid -->
+<script type="text/ecmascript"
+	src="<c:url value='/'/>resources/js/jquery.jqGrid.min.js"></script>
+<!-- A link to a Boostrap  and jqGrid Bootstrap CSS siles-->
 <link rel="stylesheet"
-	href='<c:url value='/'/>resources/js/jquery-ui.min.css'>
-<link rel="stylesheet"
-	href='<c:url value='/'/>resources/js/css/ui.jqgrid.css'>
-<script src='<c:url value='/'/>resources/js/jquery.jqGrid.min.js'></script>
-<script src='<c:url value='/'/>resources/js/i18n/grid.locale-kr.js'></script>
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" media="screen"
+	href="<c:url value='/'/>resources/js/css/ui.jqgrid-bootstrap.css" />
 <script>
+	$.jgrid.defaults.width = $(".col-lg-9").width();
 	$.jgrid.defaults.responsive = true;
+	$.jgrid.defaults.styleUI = 'Bootstrap';
+
+	$("body").css("padding-top", 0);
 </script>
-<style>
-table td {
-	font-size: large;
-}
-</style>
-<script>  
-	$(function() {
-		jQuery("#list2").jqGrid({
-			url : '../adminAjax/select',
-			editurl: "../plan/adminUpdate.do",
-			datatype : "json",
-			colNames : [ '일정번호', '아이디', '일정이름', '상태', '등록일' ],
-			colModel : [ {
-				name : 'plannum',
-				index : 'plannum',
-				id : 'plannum',
-				key : true,
-				width : 15,
-				align : "center",
-				formatter:formatOpt
-			}, {
-				name : 'userid',
-				index : 'userid',
-				width : 45,
-			}, {
-				name : 'planname',
-				index : 'planname',
-				width : 100,
-			}, {
-				name : 'state',
-				index : 'state',
-				width : 30,
-				align : "center",
-				formatter:'select', 
-				formatoptions: {
-					value : "0:기본;1:승인;2:승인대기;3:차단;"
-				},
-				editable : true,
-				edittype : "select",
-				editoptions : {
-					value : "0:대기;1:승인;2:승인대기;3:차단;"
-				}
-			}, {
-				name : 'writedate',
-				index : 'writedate',
-				width : 60,
-				align : "center"
-			} ],
-			editable : true,
-			autowidth : true,
-			height : "500px",
-			loadonce : true,
-			multiselect : true,
-			rowNum : 10,
-			rowList : [ 10, 20, 30 ],
-			pager : '#pager2',
-			viewrecords : true,
-			caption : "일정관리"  
-		});
-		jQuery("#list2").jqGrid('navGrid', '#pager2', {
-			edit : true,
-			add : false,
-			del : true
-		},   // options for the Edit Dialog
-        {
-			beforeSubmit : function( postdata, form , oper) {
-				if( confirm('수정하시겠습니까?') ) {
-					return [true,''];
-				} else {
-					return [false, '취소하셨습니다.'];
-				}
-			},
-			afterComplete:function(data) {
-				jQuery("#list2").jqGrid('setGridParam',{datatype:'json'}).trigger('reloadGrid');
-	        },
-            recreateForm: true,
-            closeAfterEdit: true,
-            errorTextFormat: function (data) {
-                return 'Error: ' + data.responseText
-            }
-        },   // options for the Delete Dailog
-        {
-            errorTextFormat: function (data) {
-                return 'Error: ' + data.responseText
-            }
-        });
-		
-		
-		function formatOpt(cellvalue, options, rowObject){      
-			return '<a href="../plan/select.do?plannum='+cellvalue+'" style="color: red;">'+cellvalue+'</a>'; 
-		}
-	});
-</script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<meta charset="utf-8" />
+<title>카테고리관리</title>
 </head>
 <body>
-  	<table id="list2"></table>
-	<div id="pager2"></div>
+	<div class="col-lg-9 mb-8" style="margin-left: -15px">
+		<table id="jqGrid"></table>
+		<div id="jqGridPager"></div>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$("#jqGrid").jqGrid({
+				url : '../adminAjax/select',
+				editurl: "../plan/adminUpdate.do",
+				datatype : "json",
+				colNames : [ '일정번호', '아이디', '일정이름', '상태', '등록일' ],
+				colModel : [ {
+					label : '번호',
+					name : 'plannum',
+					formatter:formatOpt,
+					width : 50,
+					key : true,
+					editable : false,
+					editoptions : {
+						readonly : true
+					}					
+				}, {
+					label : '아이디',
+					name : 'userid',
+					width : 45,
+				}, {
+					label : '일정명',
+					name : 'planname',
+					width : 100,
+				}, {
+					label : '상태',
+					name : 'state',
+					width : 30,
+					formatter:'select', 
+					formatoptions: {
+						value : "0:기본;1:승인;2:승인대기;3:차단;"
+					},
+					editable : true,
+					edittype : "select",
+					editoptions : {
+						value : "0:대기;1:승인;2:승인대기;3:차단;"
+					}
+				}, {
+					label : '등록일',
+					name : 'writedate',
+					width : 60,
+					align : "center"
+				} ],
+				loadonce : true,
+				viewrecords : true,
+				multiselect : true,
+				height : 400,
+				rowNum : 10,
+				pager : "#jqGridPager"				  
+			});
+			
+			$('#jqGrid').navGrid('#jqGridPager',
+			// the buttons to appear on the toolbar of the grid
+			{
+				edit : true,
+				add : false,
+				del : true,
+				search : true,
+				refresh : false,
+				view : false,
+				position : "left",
+				cloneToTop : false
+			},
+			// options for the Edit Dialog
+			{
+				editCaption : "The Edit Dialog",
+				recreateForm : true,
+				checkOnUpdate : true,
+				checkOnSubmit : true,
+				closeAfterEdit : true,
+				afterComplete : function(data) {
+					$(this).jqGrid('setGridParam', {
+						datatype : 'json'
+					}).trigger('reloadGrid');
+				},
+				errorTextFormat : function(data) {
+					return 'Error: ' + data.responseText
+				}
+			},
+			// options for the Add Dialog
+			{
+				closeAfterAdd : true,
+				recreateForm : true,
+				afterComplete : function(data) {
+					$(this).jqGrid('setGridParam', {
+						datatype : 'json'
+					}).trigger('reloadGrid');
+				},
+				errorTextFormat : function(data) {
+					return 'Error: ' + data.responseText
+				}
+			},
+			// options for the Delete Dailog
+			{
+				errorTextFormat : function(data) {
+					return 'Error: ' + data.responseText
+				}
+			});
+						
+			function formatOpt(cellvalue, options, rowObject){      
+				return '<a href="../plan/select.do?plannum='+cellvalue+'" style="color: red;">'+cellvalue+'</a>'; 
+			}
+		});
+	</script>
+	
 </body>
 </html>

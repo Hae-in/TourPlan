@@ -37,7 +37,7 @@
 		$(document).ready(function() {
 			$("#jqGrid").jqGrid({
 				url : '../reportAjax//selectAll',
-				editurl : "../report/update.do",
+				editurl : "../reportAjax//adminUpdate.do",
 				datatype : "json",
 				colModel : [ {
 					label : '번호',

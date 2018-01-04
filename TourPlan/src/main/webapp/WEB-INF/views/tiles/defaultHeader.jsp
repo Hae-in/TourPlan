@@ -832,7 +832,7 @@ $("#menuLogout").click(function() {
 		$.getJSON("../memberAjax/logout", function(data,status){
 			if(status =="success" ) {
 				if(data == true) {
-					location.reload();
+					location.href = "../main/main.do";
 				} else {
 					alert("에러발생 관리자에게 문의하세요");
 				}
