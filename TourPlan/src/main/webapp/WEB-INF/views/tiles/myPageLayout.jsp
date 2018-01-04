@@ -42,7 +42,7 @@
             <a href="<c:url value='/'/>plan/selectMade.do" class="list-group-item">내가 등록한 일정</a>
             <a href="<c:url value='/'/>place/selectAllMypage.do" class="list-group-item">내가 등록한 명소</a>
             <a href="<c:url value='/'/>plan/selectLike.do" class="list-group-item">좋아요일정</a>
-            <a href="<c:url value='/'/>likeplace/selectAllMypage.do" class="list-group-item">좋아요명소</a>
+            <a href="<c:url value='/'/>place/selectAllLike.do" class="list-group-item">좋아요명소</a>
             <a href="<c:url value='/'/>plan/selectShare.do" class="list-group-item">공유된 일정</a>
             <%-- <a href="<c:url value='/'/>#" class="list-group-item">회원탈퇴</a> --%>
           </div>

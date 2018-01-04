@@ -26,6 +26,7 @@ import com.yedam.tourplan.category.service.CategoryVO;
 import com.yedam.tourplan.common.Paging;
 import com.yedam.tourplan.files.service.FilesService;
 import com.yedam.tourplan.files.service.FilesVO;
+import com.yedam.tourplan.likeplace.service.LikeplaceSearchVO;
 import com.yedam.tourplan.member.service.MemberSearchVO;
 import com.yedam.tourplan.member.service.MemberService;
 import com.yedam.tourplan.member.service.MemberVO;
@@ -195,4 +196,20 @@ public class PlaceController {
 		model.addAttribute("paging", paging);
 		return "member/myPage/myPlace";
 	}	
+	
+	//마이페이지 > 내가 등록한 명소
+	@RequestMapping("selectAllLike.do")
+	public String selectAllLike(PlaceSearchVO vo, Model model, HttpSession session, Paging paging) {
+		//전체 건수
+		int total = placeService.selectListTotCnt(vo);
+		paging.setTotalRecord(total);
+		vo.setFirst(paging.getFirst());
+		vo.setLast(paging.getLast());	
+		vo.setMode("like");
+		vo.setMembernum((String)session.getAttribute("membernum"));
+		model.addAttribute("placeList", placeService.selectAll(vo));
+		model.addAttribute("paging", paging);
+		return "member/myPage/myLikeplace";
+	}	
+	
 }
