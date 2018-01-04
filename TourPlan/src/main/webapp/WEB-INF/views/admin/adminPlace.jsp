@@ -15,7 +15,7 @@
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" media="screen"
-	href="<c:url value='/'/>resources/js/css/ui.jqgrid-bootstrap.css" />
+	href="<c:url value='/'/>resources/js/css/ui.jqgrid-bootstrap.css" /> 
 <script>
 	$.jgrid.defaults.width = $(".col-lg-9").width();
 	$.jgrid.defaults.responsive = true;
