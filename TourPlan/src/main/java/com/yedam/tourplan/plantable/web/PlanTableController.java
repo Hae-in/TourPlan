@@ -43,7 +43,7 @@ public class PlanTableController {
 		String formattedDate = dateFormat.format(date);
 		model.addAttribute("serverTime", formattedDate );
 		
-		return "planTable/planTableView_dragdrop";
+		return "planTable/planTableView";
 	}
 	
 	@RequestMapping("/plan/shareView.do")
