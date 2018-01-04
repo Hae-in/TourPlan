@@ -106,7 +106,7 @@
 		<input type="text" id="planName" placeholder="아까 적은 여행제목 (수정가능)" />
 		<div class="divContents">
 			<div>
-				<table border="1">
+				<table id="table3" border="1">
 					<tr>
 						<td>출발일</td>
 						<td>도착일</td>
