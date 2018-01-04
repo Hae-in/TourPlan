@@ -131,7 +131,7 @@ $(document).on("click", '.del_confirm', function(e) {
 
 <!-- Modal -->
   <div class="modal fade" id="shareModal" role="dialog">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-md">
     
       <!-- Modal content-->
       <div class="modal-content">

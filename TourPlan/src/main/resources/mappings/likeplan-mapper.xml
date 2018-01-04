@@ -21,7 +21,7 @@
 			</if>
 		</where>
 	</select>
-	
+	  
 	<insert id="insert" statementType="CALLABLE" parameterType="likeplan">
 		{ 	call likeplan_ins_proc(
 				#{plannum},
@@ -33,11 +33,13 @@
 	
 	<delete id="delete">
 		delete from likeplan
-		<if test="likeplannum != null and likeplannum != ''">
-			where likeplannum = #{likeplannum}
-		</if>
-		<if test="plannum != null and plannum != ''">
-			where plannum = #{plannum}
-		</if>
+		<where>
+			<if test="likeplannum != null and likeplannum != ''">
+				likeplannum = #{likeplannum}
+			</if>
+			<if test="plannum != null and plannum != ''">
+				and plannum = #{plannum}
+			</if>			
+		</where>
 	</delete>
 </mapper>

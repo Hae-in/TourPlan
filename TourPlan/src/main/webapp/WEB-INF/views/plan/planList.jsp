@@ -59,12 +59,18 @@ function dolist(page){
 					if(status=="success") {
 						/* var l_count = parseInt($("#l_count").text()) + 1;
 						$("#l_count").text() */
+						var l_count;
+						l_count = thisSave.parent().parent().next(['div']).children(['span']).text();
 						
 						thisSave.attr('likeplannum', data.likeplannum);	
 						if(data.likeplannum == null || data.likeplannum == "") {
 							thisSave.text("♡");
+							l_count = parseInt(l_count) - 1;
+							thisSave.parent().parent().next(['div']).children(['span']).text(l_count);
 						} else {
 							thisSave.text("♥");
+							l_count = parseInt(l_count) + 1;
+							thisSave.parent().parent().next(['div']).children(['span']).text(l_count);
 						}
 					} else {
 						alert(status);	
