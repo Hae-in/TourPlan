@@ -57,6 +57,9 @@ function dolist(page){
 				dataType:'json',
 				success : function(data, status){
 					if(status=="success") {
+						/* var l_count = parseInt($("#l_count").text()) + 1;
+						$("#l_count").text() */
+						
 						thisSave.attr('likeplannum', data.likeplannum);	
 						if(data.likeplannum == null || data.likeplannum == "") {
 							thisSave.text("♡");
@@ -163,7 +166,7 @@ function dolist(page){
 										</p>
 									</div>
 									<div class="card-footer text-muted">Like Count :
-										${plan.likecount}</div>
+										<span id="l_count">${plan.likecount}</span></div>
 								</div>
 							</div>
 						</c:forEach>

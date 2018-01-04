@@ -749,7 +749,7 @@
 						<li class="nav-item"><a class="nav-link" id="menuLogout" style="cursor: pointer;">로그아웃</a></li>
 					</c:when>
 					<c:when test="${sessionScope.state != '9'}">
-						<li class="nav-item"><a class="nav-link" id="menuMy" href="../member/select.do?membernum=<%=membernum%>">Mypage</a></li>
+						<li class="nav-item"><a class="nav-link" id="menuMy" href="../member/select.do">Mypage</a></li>
 						<li class="nav-item"><a class="nav-link" id="menuLogout" style="cursor: pointer;">로그아웃</a></li>
 					</c:when>
 				</c:choose>

@@ -519,7 +519,7 @@ div.dark:hover {
 <!-- Modal End -->
 
 	<div class="header">
-		<input type="text" id="planName" name="planname" value="${vo.planname}" placeholder="제목과 간단한 소개"/>
+		<input type="text" id="planName" name="planname" value="" placeholder="제목과 간단한 소개"/>
 		<div class="divContents">
 				<table class="topTable" border="1">
 					<tr class="topTr">
