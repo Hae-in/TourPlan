@@ -3,6 +3,7 @@ package com.yedam.tourplan.place.web;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,7 +23,8 @@ public class PlaceAjaxController {
 	
 	@RequestMapping("selectAll.do")
 	@ResponseBody
-	public List<PlaceVO> selectAll(PlaceSearchVO vo) {
+	public List<PlaceVO> selectAll(PlaceSearchVO vo, HttpSession session) {
+		vo.setMembernum((String)session.getAttribute("membernum"));
 		return placeService.selectAll(vo);
 	}
 

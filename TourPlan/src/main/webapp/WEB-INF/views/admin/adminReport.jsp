@@ -66,10 +66,12 @@
 					label : '일정',
 					name : 'plannum',
 					width : 25,
+					formatter:formatOptPlan
 				}, {
 					label : '명소',
 					name : 'placenum',
 					width : 25,
+					formatter:formatOptPlace
 				}, {
 					label : '등록일',
 					name : 'reportdate',
@@ -142,6 +144,12 @@
 					return 'Error: ' + data.responseText
 				}
 			});
+			function formatOptPlan(cellvalue, options, rowObject){      
+				return '<a href="../plan/select.do?plannum='+cellvalue+'" style="color: red;">'+cellvalue+'</a>'; 
+			}
+			function formatOptPlace(cellvalue, options, rowObject){      
+				return '<a href="../place/select.do?num='+cellvalue+'" style="color: red;">'+cellvalue+'</a>'; 
+			}
 		});
 	</script>
 	

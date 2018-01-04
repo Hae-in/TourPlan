@@ -8,7 +8,14 @@ public class ReportVO {
 	private String reportdate;
 	private String state;
 	private String reportcontent;
+	private String userid;
 	
+	public String getUserid() {
+		return userid;
+	}
+	public void setUserid(String userid) {
+		this.userid = userid;
+	}
 	public String getReportnum() {
 		return reportnum;
 	}
