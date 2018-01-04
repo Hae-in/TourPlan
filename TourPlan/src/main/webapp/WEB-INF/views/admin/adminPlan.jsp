@@ -20,7 +20,7 @@ table td {
 	font-size: large;
 }
 </style>
-<script> 
+<script>  
 	$(function() {
 		jQuery("#list2").jqGrid({
 			url : '../adminAjax/select',
