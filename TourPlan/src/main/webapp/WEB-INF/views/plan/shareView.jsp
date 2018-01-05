@@ -328,7 +328,7 @@ var copy_num = 0;
 	
 	//★★★포트바꿔야!
 	var webSocket = new WebSocket(
-			'ws://localhost:80/tourplan/websocket/sharePlan.do');
+			'ws://192.168.0.59/tourplan/websocket/sharePlan.do');
 	webSocket.onerror = function(event) {
 		onError(event)
 	};
