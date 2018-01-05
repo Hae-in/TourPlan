@@ -151,16 +151,7 @@ function dolist(page){
 											<a href="../plan/shareView.do?plannum=${plan.plannum}">${plan.planname}</a>
 										</h4>
 										<p class="card-text">
-											함께하는 친구들 : 
-											<c:forEach items="${shareList}" var="share">
-												<c:if test="${share.plannum == plan.plannum}">
-													1.${share.writernick} 2.${share.member1nick} 
-													<c:if test="${not empty share.member2nick}">
-														3.${share.member2}</c:if>
-													<c:if test="${not empty share.member3nick}">
-														4.${share.member3}</c:if>
-												</c:if>
-											</c:forEach>
+											함께하는 친구들 : 1.${shareList[0].writernick} 2.${shareList[0].member1nick} 
 										</p>
 									</div>
 									<div class="card-footer text-muted">Like Count :

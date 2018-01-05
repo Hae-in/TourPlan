@@ -28,12 +28,13 @@ public class MemberController {
 	
 	@RequestMapping("select.do")
 	public String Mypage(MemberSearchVO vo, Model model, HttpSession session) {
+		String mem_num = (String) session.getAttribute("membernum");
+		
 		FilesVO f_vo = new FilesVO();
 		f_vo.setTablename("member");
-		f_vo.setTablenum(vo.getMembernum());
+		f_vo.setTablenum(mem_num);
 		model.addAttribute("m_picture", filesService.selectAll(f_vo));
 		
-		String mem_num = (String) session.getAttribute("membernum");
 		vo.setMembernum(mem_num);
 		model.addAttribute("member", memberService.select(vo));
 		return "member/myPage/myPage";
