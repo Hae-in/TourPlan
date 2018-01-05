@@ -8,7 +8,7 @@
 <link rel="stylesheet" type="text/css"
 	href='<c:url value='/'/>resources/css/google_map_place.css' />
 <script src='<c:url value='/'/>resources/js/jquery-3.2.1.min.js'></script>
-<script>
+<script> 
 	$(function() {
 		$.ajax({
 			url : "../categoryAjax/selectAll.do?group=1",
