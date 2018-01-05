@@ -151,7 +151,9 @@ function dolist(page){
 											<a href="../plan/shareView.do?plannum=${plan.plannum}">${plan.planname}</a>
 										</h4>
 										<p class="card-text">
-											함께하는 친구들 : 1.${shareList[0].writernick} 2.${shareList[0].member1nick} 
+											<c:if test="${not empty shareList}">
+											함께하는 친구들 : 1.${shareList[0].writernick} 2.${shareList[0].member1nick}
+											</c:if> 
 										</p>
 									</div>
 									<div class="card-footer text-muted">Like Count :
